@@ -4,19 +4,52 @@
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>
   </head>
 
   <body>
+
+<div class="wrapper">
+<div class="globalHeader">
+profile | routes | connections | sign out
+
+</div>
+
+<div class="leftContent">
     <div id="map-canvas"></div>
+  </div>
+
+  <div class="rightContent">
+<div class="leftSection profilePic">
+<img src="images/profile.jpg" />
+
+</div>
+<div class="leftSection routes">
+  
+List of routes
+
+</div>
+
+<div class="leftSection connections">
+  List of connections
+
+</div>
+
+<div class="leftSection waypointActions">
+  Enter waypoints here
+
+</div>
+
+<div class="leftSection waypointTotal">
+  
+Waypoint totals data
+</div>
+
+
+  </div>
+</div>
     <script src="javascripts/gmap.js"></script>
   </body>
 
