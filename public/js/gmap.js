@@ -1,6 +1,7 @@
 var markers = {};
 var map;
 var markerCount = 0;
+var elevator;
 
 function loadScript() {
   var script = document.createElement('script');
@@ -37,7 +38,8 @@ function initialize(position) {
     addMarker(event.latLng);
   });
 
-  
+  elevator = new google.maps.ElevationService();
+
 }
 
 // Add a marker to the map and push to the array.
@@ -52,8 +54,30 @@ function addMarker(location) {
     marker.setMap(null);
     delete markers[marker.zIndex];
   });
+  getElevation(location, marker);
+  console.log(markers);
   markers[marker.zIndex] = marker;
   markerCount++;
+}
+
+function getElevation(location, marker) {
+
+  var position = {
+    'locations': [location]
+  }
+
+  elevator.getElevationForLocations(position, function(results, status) {
+    if (status == google.maps.ElevationStatus.OK){
+      if (results[0]){
+        marker.elevation = results[0].elevation
+      } else {
+        marker.elevation = null;
+      }
+    } else {
+        marker.elevation = null;
+    }
+  });  
+
 }
 
 window.onload = loadScript;
