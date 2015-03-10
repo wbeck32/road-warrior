@@ -48,7 +48,7 @@ function addMarker(location) {
     zIndex: markerCount
   });
   map.panTo(location);
-  google.maps.event.addListener(marker, 'rightclick', function(event){
+  google.maps.event.addListener(marker, 'dblclick', function(event){
     marker.setMap(null);
     delete markers[marker.zIndex];
   });
