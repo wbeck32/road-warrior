@@ -1,58 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="roadWarrior">
   <head>
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+
     <link rel="stylesheet" href="css/foundation.css">
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/styles.css">
-  <script src="js/modernizr.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>
+    <script src="js/modernizr.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="js/ngApp.js"></script>
+
   </head>
 
   <body>
 
-<div class="wrapper">
-<div class="globalHeader">
-profile | routes | connections | sign out
+    <div class="wrapper">
+      <div class="globalHeader">
+	profile | routes | connections | sign out
+      </div>
 
-</div>
+      <div class="leftContent">
+	<div id="map-canvas"></div>
+      </div>
 
-<div class="leftContent">
-    <div id="map-canvas"></div>
-  </div>
+      <div class="rightContent">
 
-  <div class="rightContent">
-<div class="leftSection profilePic">
-<img src="images/profile.jpg" />
+	<div class="leftSection profilePic">
+	  <img src="images/profile.jpg" />
+	</div>
 
-</div>
-<div class="leftSection routes">
-  
-List of routes
+	<div class="leftSection routes">
+	  List of routes
+	</div>
 
-</div>
+	<div class="leftSection connections">
+	  List of connections
+	</div>
 
-<div class="leftSection connections">
-  List of connections
+	<div class="leftSection waypointActions">
+	  <ul ng-controller="MainCtrl as main">
+	    <li ng-repeat="marker in main.markers">{{marker}}</li>
+	  </ul>
+	</div>
 
-</div>
+	<div class="leftSection waypointTotal">
+	  Waypoint totals data
+	</div>
 
-<div class="leftSection waypointActions">
-  Enter waypoints here
+      </div>
+    </div>
 
-</div>
-
-<div class="leftSection waypointTotal">
-  
-Waypoint totals data
-</div>
-
-
-  </div>
-</div>
     <script src="js/gmap.js"></script>
-  </body>
 
+  </body>
 </html>
