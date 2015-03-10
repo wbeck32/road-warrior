@@ -1,5 +1,6 @@
-var markers = [];
+var markers = {};
 var map;
+var markerCount = 0;
 
 function loadScript() {
   var script = document.createElement('script');
@@ -36,15 +37,23 @@ function initialize(position) {
     addMarker(event.latLng);
   });
 
+  
 }
 
 // Add a marker to the map and push to the array.
 function addMarker(location) {
   var marker = new google.maps.Marker({
     position: location,
-    map: map
+    map: map,
+    zIndex: markerCount
   });
-  markers.push(marker);
+  map.panTo(location);
+  google.maps.event.addListener(marker, 'rightclick', function(event){
+    marker.setMap(null);
+    delete markers[marker.zIndex];
+  });
+  markers[marker.zIndex] = marker;
+  markerCount++;
 }
 
 window.onload = loadScript;
