@@ -1,16 +1,44 @@
-var map;
 var markers = [];
+var map;
 
-function initialize() {
+function loadScript() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E&callback=getLocation';
+  document.body.appendChild(script);
+}
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function locationAllowed(position) {
+	var pos = new google.maps.LatLng(position.coords.latitude,
+					 position.coords.longitude);
+	initialize(pos);
+      },
+      function locationDenied() {
+	initialize();
+      });
+  } else{
+    initialize();
+  }
+}
+
+function initialize(position) {
   var mapOptions = {
-    zoom: 18,
-    draggableCursor: 'crosshair'
+    zoom: 16,
+    draggableCursor: 'crosshair',
+    center: position || {lat: 45.5227, lng: -122.6731}
   };
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+  google.maps.event.addListener(map, 'click', function(event) {
+    addMarker(event.latLng);
+  });
 
- // Add a marker to the map and push to the array.
+}
+
+// Add a marker to the map and push to the array.
 function addMarker(location) {
   var marker = new google.maps.Marker({
     position: location,
@@ -19,43 +47,6 @@ function addMarker(location) {
   markers.push(marker);
 }
 
-// Try HTML5 geolocation
-if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = new google.maps.LatLng(position.coords.latitude,
-                                       position.coords.longitude);
-	addMarker(pos);
-      map.setCenter(pos);
-    }, function() {
-      handleNoGeolocation(true);
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    handleNoGeolocation(false);
-  }
+window.onload = loadScript;
 
 
-function handleNoGeolocation(errorFlag) {
-  if (errorFlag) {
-    var content = 'Error: The Geolocation service failed.';
-  } else {
-    var content = 'Error: Your browser doesn\'t support geolocation.';
-  }
-
-  var options = {
-    map: map,
-    position: new google.maps.LatLng(60, 105),
-    content: content
-  };
-
-  var infowindow = new google.maps.InfoWindow(options);
-  map.setCenter(options.position);
-}
-///end geolocation
-
-google.maps.event.addListener(map, 'click', function(event) {
-    addMarker(event.latLng);
-});
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);

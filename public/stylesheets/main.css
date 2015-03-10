@@ -1,0 +1,26 @@
+html, body, #map-canvas {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+#leftCol, #rightCol {
+    height: 90%;
+    margin: 2.5% 0 2.5%;
+    margin-left: 2.5%;
+    float: left;
+}
+
+#leftCol {
+    width: 65%;
+}
+
+#rightCol {
+    width: 25%;
+}
+
+#profile {
+    height: 45%;
+    border: 1px solid black;
+    padding: 10px;
+}
+

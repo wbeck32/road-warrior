@@ -1,22 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="roadWarrior">
   <head>
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-    </style>
+    <link rel="stylesheet" href="stylesheets/main.css"/>
 
-    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="javascripts/ngApp.js"></script>
   </head>
 
   <body>
-    <div id="map-canvas"></div>
+
+    <div id="leftCol">
+      <div id="map-canvas"></div>
+    </div>
+    
+    <div id="rightCol">
+      <div id="profile">
+	profile
+      </div>
+      <div>
+	<ul ng-controller="MainCtrl as main">
+	  <li ng-repeat="marker in main.markers">{{marker}}</li>
+	</ul>
+      </div>
+    </div>
+
     <script src="javascripts/gmap.js"></script>
   </body>
 
