@@ -74,6 +74,7 @@ module.controller('RouteCtrl', function(RouteService) {
   }
   this.save = function() {
     RouteService.createRoute(self.currentMarkers);
+    self.currentMarkers = '';
   }
 
 })
