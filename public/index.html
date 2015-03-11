@@ -27,7 +27,7 @@
 	       <div id="map-canvas" ng-click='Route.click()'></div>
       </div>
 
-      <div class="rightContent" >
+      <div class="rightContent" ng-controller='CompletedRouteCtrl as completeCtrl' >
 
       	<div class="leftSection profilePic">
       	  <img src="images/profile.jpg" />
@@ -35,6 +35,7 @@
 
       	<div class="leftSection routes">
       	  List of routes
+          <p>{{completeCtrl.completedRoute.length}}</p>
       	</div>
 
       	<div class="leftSection connections">
@@ -46,6 +47,7 @@
       	  <ul>
       	    <li>{{Route.currentMarkers.length}}</li>
       	  </ul>
+          <button ng-click='Route.save(); completeCtrl.click()'>Save</button>
       	</div>
 
       	<div class="leftSection waypointTotal">

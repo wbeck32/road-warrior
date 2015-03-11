@@ -71,9 +71,18 @@ module.controller('RouteCtrl', function(RouteService) {
   this.currentMarkers;
   this.click = function() {
     self.currentMarkers = RouteService.getMarkers();
-    console.log(self.currentMarkers);
   }
-  console.log(this.currentMarkers);
+  this.save = function() {
+    RouteService.createRoute(self.currentMarkers);
+  }
 
+})
+
+module.controller('CompletedRouteCtrl', function(RouteService) {
+  var self = this
+  this.completedRoute;
+  this.click = function() {
+    self.completedRoute = RouteService.getRoute();
+  }
 })
 
