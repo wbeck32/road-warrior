@@ -12,6 +12,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="js/ngApp.js"></script>
+    <script src="js/routeCtrl.js"></script>
 
   </head>
 
@@ -22,11 +23,11 @@
 	profile | routes | connections | sign out
       </div>
 
-      <div class="leftContent">
+      <div class="leftContent" ng-controller="MapCtrl as Map">
 	<div id="map-canvas"></div>
       </div>
 
-      <div class="rightContent">
+      <div class="rightContent" ng-controller="RouteCtrl as Route">
 
 	<div class="leftSection profilePic">
 	  <img src="images/profile.jpg" />
@@ -41,8 +42,8 @@
 	</div>
 
 	<div class="leftSection waypointActions">
-	  <ul ng-controller="MainCtrl as main">
-	    <li ng-repeat="marker in main.markers">{{marker}}</li>
+	  <ul>
+	    <li ng-repeat="marker in Route.markers">{{marker}}</li>
 	  </ul>
 	</div>
 
@@ -53,7 +54,10 @@
       </div>
     </div>
 
-    <script src="js/gmap.js"></script>
+<!--
+   <script src="js/gmap.js"></script>
 
+-->
+<script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    
   </body>
 </html>
