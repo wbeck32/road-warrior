@@ -8,33 +8,31 @@
     <link rel="stylesheet" href="css/foundation.css">
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/modernizr.js"></script>
-
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src="js/ngApp.js"></script>
-    <script src="js/routeCtrl.js"></script>
 
   </head>
 
-  <body>
+  <body ng-controller="RouteCtrl as Route">
 
     <div class="wrapper">
+
       <div class="globalHeader">
 	profile | routes | connections | sign out
       </div>
 
       <div class="leftContent" ng-controller="MapCtrl as Map">
-	<div id="map-canvas"></div>
+	<div id="map-canvas" ng-click="Route.update()"></div>
       </div>
 
-      <div class="rightContent" ng-controller="RouteCtrl as Route">
+      <div class="rightContent">
 
 	<div class="leftSection profilePic">
 	  <img src="images/profile.jpg" />
 	</div>
 
 	<div class="leftSection routes">
-	  List of routes
+	  <ul>
+	    <li ng-repeat="route in Route.routes">{{route.name}}</li>
+	  </ul>
 	</div>
 
 	<div class="leftSection connections">
@@ -42,22 +40,31 @@
 	</div>
 
 	<div class="leftSection waypointActions">
-	  <ul>
-	    <li ng-repeat="marker in Route.markers">{{marker}}</li>
-	  </ul>
+	  <div ng-repeat="marker in Route.markers track by $index">
+	    <span>{{marker.name || $index}} | <a href="#" ng-click="Route.toggleEdit($index)">edit</a> | <a href="#" ng-click="Route.toggleDetails($index)">details</a> </span>
+	    <form>
+	      <input type="text" ng-model="marker.name" ng-show="Route.showEdit[$index]"/>
+	    </form>
+	    <div ng-show="Route.showDetails[$index]">
+	      elevation: {{marker.elevation}}
+	    </div>
+	  </div>
 	</div>
-
 	<div class="leftSection waypointTotal">
 	  Waypoint totals data
 	</div>
 
       </div>
+
     </div>
 
-<!--
-   <script src="js/gmap.js"></script>
+    <!-- Vendor Libs: angular and googlemaps -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    
+    <!-- App Libs -->
+    <script src="js/app/app.js"></script>
+    <script src="js/app/controllers.js"></script>
+    <script src="js/app/factories.js"></script>
 
--->
-<script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    
   </body>
 </html>
