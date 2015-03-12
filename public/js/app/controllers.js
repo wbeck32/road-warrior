@@ -43,11 +43,9 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
   };
 
   this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-  var directionsDisplay = new google.maps.DirectionsRenderer();
+  var renderersArray = [];
   var directionsService = new google.maps.DirectionsService();
-  directionsDisplay.setMap(this.map);
-  directionsDisplay.setOptions({suppressMarkers: true, preserveViewport: true});
+  var renderOptions = {suppressMarkers: true, preserveViewport: true};
   getLocation();
 
   google.maps.event.addListener(this.map, 'click', function(event) {
@@ -76,6 +74,9 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
       routeFactory.removeMarker(marker);
     });
     getElevation(latLng, marker);
+    var directionsDisplay = new google.maps.DirectionsRenderer(renderOptions);
+    renderersArray.push(directionsDisplay);
+    directionsDisplay.setMap(self.map);
     if (routeFactory.getLatestMarker()) {
       var request = {
         origin: routeFactory.getLatestMarker().getPosition(),
