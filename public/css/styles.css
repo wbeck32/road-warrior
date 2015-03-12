@@ -22,7 +22,7 @@ img {
 	height:100%;
 }
 
-.leftContent,.rightContent {
+.leftContent,.sidebarContent {
 	float:left;
 	height:90%;
 	margin:10px;
@@ -33,12 +33,12 @@ img {
 	width:65%;
 }
 
-.rightContent {
+.sidebarContent {
 	width:30%;
 	float:right;
 }
 
-.leftSection {
+.sidebarSection {
 	margin:5px;
 	padding:10px;
 	border:1px solid orange;

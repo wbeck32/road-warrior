@@ -14,51 +14,50 @@
   <body ng-controller="RouteCtrl as Route">
 
     <div class="wrapper">
+
       <div class="globalHeader">
 	      profile | routes | connections | sign out
       </div>
 
       <div class="leftContent" ng-controller="MapCtrl as Map">
-	      <div id="map-canvas" ng-click='Route.click()'></div>
+
+				<div id="map-canvas" ng-click="Route.update()"></div>
       </div>
 
-      <div class="rightContent" ng-controller='CompletedRouteCtrl as completeCtrl' >
-
-      	<div class="leftSection profilePic">
+      <div class="sidebarContent" ng-controller='CompletedRouteCtrl as completeCtrl' >
+      	<div class="sidebarSection profilePic">
       	  <img src="images/profile.jpg" />
       	</div>
+				<div class="sidebarSection routes">
+	  			<ul>
+	    			<li ng-repeat="route in Route.routes">{{route.name}}</li>
+	  			</ul>
+				</div>
+				<div class="sidebarSection waypointActions">
+		 			<div ng-repeat="marker in Route.markers track by $index">
+		    		<span>{{marker.name || $index}} | <a href="#" ng-click="Route.toggleEdit($index)">edit</a> | <a href="#" ng-click="Route.toggleDetails($index)">details</a> </span>
+			    	<form>
+			      	<input type="text" ng-model="marker.name" ng-show="Route.showEdit[$index]"/>
+			    	</form>
+				    <div ng-show="Route.showDetails[$index]">
+				      elevation: {{marker.elevation}}
+				    </div>
+		  		</div>
+		  		<div class="waypointTotal">
+			  		Waypoint totals data
+					</div>
+				</div>
+    	</div>
 
-      	<div class="leftSection routes">
-      	  List of routes
-          <p>{{completeCtrl.completedRoute.length}}</p>
-      	</div>
+  	</div>
 
-      	<div class="leftSection connections">
-      	  List of connections
-      	</div>
+	  <!-- Vendor Libs: angular and googlemaps -->
+	  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	  <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    
+	  <!-- App Libs -->
+	  <script src="js/app/app.js"></script>
+	  <script src="js/app/controllers.js"></script>
+	  <script src="js/app/factories.js"></script>
 
-      	<div class="leftSection waypointActions" >
-          <h1>Yadda Yadda</h1>
-      	  <ul>
-      	    <li>{{Route.currentMarkers.length}}</li>
-      	  </ul>
-          <button ng-click='Route.save(); completeCtrl.click()'>Save</button>
-      	</div>
-
-      	<div class="leftSection waypointTotal">
-      	  Waypoint totals data
-      	</div>
-
-      </div>
-    </div>
-
-<!--
-   <script src="js/gmap.js"></script>
-
--->
-<script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/ngApp.js"></script>
   </body>
 </html>
