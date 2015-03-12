@@ -47,7 +47,7 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
   var directionsDisplay = new google.maps.DirectionsRenderer();
   var directionsService = new google.maps.DirectionsService();
   directionsDisplay.setMap(this.map);
-  directionsDisplay.setOptions({suppressMarkers: true});
+  directionsDisplay.setOptions({suppressMarkers: true, preserveViewport: true});
   getLocation();
 
   google.maps.event.addListener(this.map, 'click', function(event) {
