@@ -1,5 +1,7 @@
 // this is controllers.js
 
+// Route Controller
+
 roadWarrior.controller('RouteCtrl', function(routeFactory){
 
   this.showEdit = [];
@@ -26,7 +28,9 @@ roadWarrior.controller('RouteCtrl', function(routeFactory){
 
 });
 
-roadWarrior.controller('MapCtrl', function(routeFactory){
+// Map Controller
+
+roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
   
   this.currentPosition = {lat: 45.5227, lng: -122.6731};
 
@@ -35,7 +39,8 @@ roadWarrior.controller('MapCtrl', function(routeFactory){
   var mapOptions = {
     zoom: 16,
     draggableCursor: 'crosshair',
-    center: this.currentPosition
+    center: this.currentPosition,
+    styles: mapStyles
   };
 
   this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
