@@ -8,9 +8,8 @@ roadWarrior.controller('RouteCtrl', function(routeFactory){
   this.showDetails = [];
 
   this.update = function(){
-    this.markers = routeFactory.getCurrent().markers;
-    this.routes = routeFactory.getAll();
-    for (var i = 0; i<this.markers.length; i++){
+    this.route = routeFactory.getCurrent();
+    for (var i = 0; i < this.route.markers.length; i++){
       this.showEdit[i] = false;
       this.showDetails[i] = false;
     }
@@ -45,6 +44,10 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
 
   this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+  var directionsDisplay = new google.maps.DirectionsRenderer();
+  var directionsService = new google.maps.DirectionsService();
+  directionsDisplay.setMap(this.map);
+
   getLocation();
 
   google.maps.event.addListener(this.map, 'click', function(event) {
@@ -73,6 +76,18 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
       routeFactory.removeMarker(marker);
     });
     getElevation(latLng, marker);
+    if (routeFactory.getLatestMarker()) {
+      var request = {
+        origin: routeFactory.getLatestMarker().getPosition(),
+        destination: latLng,
+        travelMode: google.maps.TravelMode.WALKING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+    }
     routeFactory.addMarker(marker);
   };
 

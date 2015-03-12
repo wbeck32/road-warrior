@@ -1,16 +1,12 @@
-
 var module = angular.module('roadWarrior.services', [])
-
-
 
 // this is factories.js
 
 roadWarrior.factory('routeFactory', function(){
 
   var allRoutes = [];
-  var currentRoute = 0;
-
-  initialize();
+  var currentRoute = new Route();
+  allRoutes.push(currentRoute);
 
   function Route(){
     this.markers = [];
@@ -20,28 +16,24 @@ roadWarrior.factory('routeFactory', function(){
     this.name = "route " + (allRoutes.length + 1);
   }
   
-  function initialize(){
-    allRoutes.push(new Route());
-  }
-  
-
   return  {
     create : function(){
       var route = new Route();
       allRoutes.push(route);
-      currentRoute = allRoutes.length - 1;
+      currentRoute = route;
     },
 
     getCurrent : function(){
-      return allRoutes[currentRoute];
+      return currentRoute;
     },
 
-    setCurrent : function(index){
-      currentRoute = index;
+    getLatestMarker : function(){
+      console.log(currentRoute.markers);
+      return currentRoute.markers[currentRoute.markers.length - 1];
     },
 
     addMarker : function(marker){
-      allRoutes[currentRoute].addMarker(marker);
+      currentRoute.addMarker(marker);
     },
 
     getAll : function(){
@@ -49,18 +41,16 @@ roadWarrior.factory('routeFactory', function(){
     },
 
     removeMarker : function(marker){
-      var index = allRoutes[currentRoute].markers.indexOf(marker);
-      allRoutes[currentRoute].markers.splice(index, 1);	
+      var index = currentRoute.markers.indexOf(marker);
+      currentRoute.markers.splice(index, 1);
+    },	
 
-    saveRoute = function() {
+    saveRoute : function() {
       allRoutes.push(currentRoute);
-    }
+    },
 
-    getSavedRoute = function() {
+    getSavedRoute : function() {
       return allRoutes;
     }
-    }
   };
-
 });
-

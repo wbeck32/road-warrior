@@ -4,9 +4,6 @@
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/modernizr.js"></script>    
   </head>
@@ -29,12 +26,10 @@
       	  <img src="images/profile.jpg" />
       	</div>
 				<div class="sidebarSection routes">
-	  			<ul>
-	    			<li ng-repeat="route in Route.routes">{{route.name}}</li>
-	  			</ul>
+	  			<h3>Current Route</h3>
 				</div>
 				<div class="sidebarSection waypointActions">
-		 			<div ng-repeat="marker in Route.markers track by $index">
+		 			<div ng-repeat="marker in Route.route.markers track by $index">
 		    		<span>{{marker.name || $index}} | <a href="#" ng-click="Route.toggleEdit($index)">edit</a> | <a href="#" ng-click="Route.toggleDetails($index)">details</a> </span>
 			    	<form>
 			      	<input type="text" ng-model="marker.name" ng-show="Route.showEdit[$index]"/>
