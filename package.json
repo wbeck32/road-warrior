@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.12.2"
+    "express": "^4.12.2",
+    "gulp-sass": "^1.3.3",
+    "node-sass": "^2.0.1"
   }
 }

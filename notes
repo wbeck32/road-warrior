@@ -24,3 +24,5 @@ elevation
 	elevation service in js api
 get a route from a to b
 	directions service in js api
+set custom route from a to b
+	draggable directions service in js api

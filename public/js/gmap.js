@@ -1,6 +1,6 @@
 var markers = {};
 var map;
-var markerCount = 0;
+var waypts = [];
 
 function loadScript() {
   var script = document.createElement('script');
@@ -32,28 +32,34 @@ function initialize(position) {
     center: position || {lat: 45.5227, lng: -122.6731}
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-  google.maps.event.addListener(map, 'click', function(event) {
+  google.maps.event.addListener(map, 'click', function(event) {   
     addMarker(event.latLng);
+    waypts.push({
+      location: event.latLng
+    });
   });
-
-  
 }
 
-// Add a marker to the map and push to the array.
 function addMarker(location) {
   var marker = new google.maps.Marker({
     position: location,
     map: map,
-    zIndex: markerCount
   });
   map.panTo(location);
+  
+//delete markers
   google.maps.event.addListener(marker, 'dblclick', function(event){
-    marker.setMap(null);
+    marker.setMap(null);    
     delete markers[marker.zIndex];
+    var tmpWaypoints = [];  
+    waypts.forEach(function(e, i, a){
+      if(e.location.k !== marker.position.k && e.location.D !== marker.position.D) {
+        tmpWaypoints.push(e);
+      }
+    });
+    waypts = tmpWaypoints;
   });
   markers[marker.zIndex] = marker;
-  markerCount++;
 }
 
 window.onload = loadScript;
