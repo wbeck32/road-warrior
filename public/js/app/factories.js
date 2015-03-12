@@ -1,5 +1,3 @@
-var module = angular.module('roadWarrior.services', [])
-
 // this is factories.js
 
 roadWarrior.factory('routeFactory', function(){
@@ -28,7 +26,6 @@ roadWarrior.factory('routeFactory', function(){
     },
 
     getLatestMarker : function(){
-      console.log(currentRoute.markers);
       return currentRoute.markers[currentRoute.markers.length - 1];
     },
 

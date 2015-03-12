@@ -111,9 +111,9 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
   }
 });
 
-roadWarrior.controller('CompletedRouteCtrl', function() {
+roadWarrior.controller('CompletedRouteCtrl', function(routeFactory) {
   this.click = function() {
-    routeFactory.saveRoute;
-  }
-})
+    routeFactory.saveRoute();
+  };
+});
 
