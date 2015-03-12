@@ -18,39 +18,39 @@
   <body>
 
     <div class="wrapper">
-      <div class="globalHeader">
-	profile | routes | connections | sign out
-      </div>
+   
+      <nav class="navigation">
+          <p id="logo">Road Warrior</p>
+          <p>Profile</p>
+          <p>Routes</p>
+          <p>Connections</p>
+          <p>Sign Out</p>
+      </nav>
 
       <div class="leftContent">
-	<div id="map-canvas"></div>
+  	    <div id="map-canvas"></div>
       </div>
 
       <div class="rightContent">
-
-	<div class="leftSection profilePic">
-	  <img src="images/profile.jpg" />
-	</div>
-
-	<div class="leftSection routes">
-	  List of routes
-	</div>
-
-	<div class="leftSection connections">
-	  List of connections
-	</div>
-
-	<div class="leftSection waypointActions">
-	  <ul ng-controller="MainCtrl as main">
-	    <li ng-repeat="marker in main.markers">{{marker}}</li>
-	  </ul>
-	</div>
-
-	<div class="leftSection waypointTotal">
-	  Waypoint totals data
-	</div>
-
+        <div class="leftSection profilePic">
+  	      <img src="images/profile.jpg" />
+  	    </div>
+        <div class="leftSection routes">
+          List of routes
+        </div>
+      	<div class="leftSection connections">
+      	  List of connections
+      	</div>
+      	<div class="leftSection waypointActions">
+      	  <ul ng-controller="MainCtrl as main">
+      	    <li ng-repeat="marker in main.markers">{{marker}}</li>
+      	  </ul>
+      	</div>
+      	<div class="leftSection waypointTotal">
+      	  Waypoint totals data
+      	</div>
       </div>
+
     </div>
 
     <script src="js/gmap.js"></script>

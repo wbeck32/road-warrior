@@ -1,7 +1,12 @@
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
 html, body, #map-canvas {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	box-sizing: border-box;
 }
 
 img {
@@ -10,10 +15,21 @@ img {
 	border:1px solid red;
 }
 
-.globalHeader {
-	text-align: right;
-	margin:5px;
-	padding:5px;
+.navigation {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+	width: 100%;
+	padding: 10px;
+}
+
+.navigation p {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#logo {
+	flex: 1;
 }
 
 .wrapper {
