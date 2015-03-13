@@ -4,21 +4,15 @@ roadWarrior.factory('trekFactory', function(mapFactory){
 
   var renderOptions = {suppressMarkers: true, preserveViewport: true};
   var directionsService = new google.maps.DirectionsService();
-  var trek = {
-    first: null,
-    last: null,
-    length: 0
-  }
+  var trek = [];
 
-  var firstMarker = null;
+  var trekOrigin = null;
 
   function Leg(origin, dest){
     this.origin = origin;
     this.dest = dest;
     this.rend = new google.maps.DirectionsRenderer(renderOptions);
     this.rend.setMap(mapFactory);
-    this.prev = null;
-    this.next = null;
   }
 
   function getDirections(leg){
@@ -35,16 +29,19 @@ roadWarrior.factory('trekFactory', function(mapFactory){
   }
   
   function getNeighbors (marker) {
-    var currentLeg = trek.last;
+    var currentLeg = trek[0];
     var prevLeg;
     var nextLeg;
+    var counter = 0;
     while (!prevLeg || !nextLeg) {
       if(currentLeg.origin === marker) {
         nextLeg = currentLeg;
       } if (currentLeg.dest === marker) {
         prevLeg = currentLeg;
       } 
-      currentLeg = currentLeg.prev;
+      counter++;
+      currentLeg = trek[counter];
+
     }
     return {prevLeg: prevLeg, nextLeg: nextLeg};
 
@@ -52,35 +49,46 @@ roadWarrior.factory('trekFactory', function(mapFactory){
 
   return  {
     addLeg : function(dest){
-      if (trek.last){
-        var leg = new Leg(trek.last.dest, dest);
+      if (trek.length > 0){
+        var lastLeg = trek[trek.length - 1];
+        var leg = new Leg(lastLeg.dest, dest);
         getDirections(leg);
-        leg.prev = trek.last;
-        trek.last.next = leg;
-        trek.last = leg;
-      } else if (!firstMarker){
-        firstMarker = dest;
+        trek.push(leg);
+      } else if (!trekOrigin){
+        trekOrigin = dest;
       } else { 
-        var leg = new Leg(firstMarker, dest);
-        trek.first = leg;
-        trek.last = leg;
+        var leg = new Leg(trekOrigin, dest);
         getDirections(leg);
-        firstMarker = null;
+        trek.push(leg);
+        trekOrigin = null;
       }
     },  
 
     removeMarker : function(marker){
-      var neighbors = getNeighbors(marker);
-      console.log(neighbors);
-      neighbors.prevLeg.rend.setMap(null);
-      neighbors.nextLeg.rend.setMap(null);
       marker.setMap(null);
-      var newLeg = new Leg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
-      getDirections(newLeg);
-      neighbors.prevLeg.prev.next = newLeg;
-      neighbors.nextLeg.next.prev = newLeg;
+      if (trek.length === 0) {
+        trekOrigin = null;
+      } else if (trek.length === 1) {
+        if(marker === trek[0].origin) {
+          trekOrigin = trek[0].dest;
+        } else {
+          trekOrigin = trek[0].origin; 
+        }
+        trek.pop().rend.setMap(null);
+      } else if (marker === trek[trek.length - 1].dest) {
+        trek.pop().rend.setMap(null);
+      } else if (marker === trek[0].origin) {
+        trek.shift().rend.setMap(null);
+      } else {
+        var neighbors = getNeighbors(marker);
+        neighbors.prevLeg.rend.setMap(null);
+        neighbors.nextLeg.rend.setMap(null);
+        var newLeg = new Leg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
+        getDirections(newLeg);
+        var prevIndex = trek.indexOf(neighbors.prevLeg);
+        trek.splice(prevIndex, 2, newLeg);
+      }
     }
-
   };
 });
 
