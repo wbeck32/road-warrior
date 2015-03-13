@@ -69,28 +69,45 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
       map: self.map
     });
     self.map.panTo(latLng);
+
+    var directionsDisplay = new google.maps.DirectionsRenderer(renderOptions);
+    directionsDisplay.setMap(self.map);
+
     google.maps.event.addListener(marker, 'click', function(event){
       marker.setMap(null);
+      directionsDisplay.setMap(null);
+      var neighbors = routeFactory.getNeighbors(marker);
       routeFactory.removeMarker(marker);
+      if (routeFactory.getLatestMarker() !== marker){
+	var reRenderer = new google.maps.DirectionsRenderer(renderOptions);
+	reRenderer.setMap(self.map);
+	getDirections(neighbors[0].getPosition(), neighbors[1].getPosition(), reRenderer);
+      }
     });
+
     getElevation(latLng, marker);
-    var directionsDisplay = new google.maps.DirectionsRenderer(renderOptions);
-    renderersArray.push(directionsDisplay);
-    directionsDisplay.setMap(self.map);
+
+    // renderersArray.push(directionsDisplay);
+
     if (routeFactory.getLatestMarker()) {
-      var request = {
-        origin: routeFactory.getLatestMarker().getPosition(),
-        destination: latLng,
-        travelMode: google.maps.TravelMode.WALKING
-      };
-      directionsService.route(request, function(response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(response);
-        }
-      });
+      getDirections(routeFactory.getLatestMarker().getPosition(), marker.getPosition(), directionsDisplay);
     }
     routeFactory.addMarker(marker);
   };
+
+  function getDirections(origin, dest, renderer){
+    var request = {
+      origin: origin,
+      destination: dest,
+      travelMode: google.maps.TravelMode.WALKING
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        renderer.setDirections(response);
+      }
+    });
+  }
+
 
   function getElevation(latLng, marker) {
 

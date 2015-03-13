@@ -42,6 +42,11 @@ roadWarrior.factory('routeFactory', function(){
       currentRoute.markers.splice(index, 1);
     },	
 
+    getNeighbors : function(marker){
+      var index = currentRoute.markers.indexOf(marker);
+      return [currentRoute.markers[index-1], currentRoute.markers[index+1]];
+    },
+
     saveRoute : function() {
       allRoutes.push(currentRoute);
     },
