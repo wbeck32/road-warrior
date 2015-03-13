@@ -52,6 +52,22 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
     addMarker(event.latLng);
   });
 
+  function renderRoute(markersArray) {
+    // Clear everything from map 
+    var legs = [];
+
+    markersArray.forEach(function(marker, index, array){
+
+      // add marker
+      // line
+      if (index > 0){
+        var renderer = new google.maps.DirectionsRenderer(renderOptions);
+        renderer.setMap(self.map);
+        // getDirections(markersArray[index-1].getPosition(), marker.getPosition(), renderer);
+      } 
+    })
+  }
+
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -69,9 +85,6 @@ roadWarrior.controller('MapCtrl', function(routeFactory, mapStyles){
       map: self.map
     });
     self.map.panTo(latLng);
-
-    var directionsDisplay = new google.maps.DirectionsRenderer(renderOptions);
-    directionsDisplay.setMap(self.map);
 
     google.maps.event.addListener(marker, 'click', function(event){
       marker.setMap(null);
