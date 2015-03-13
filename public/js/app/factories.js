@@ -23,8 +23,8 @@ roadWarrior.factory('trekFactory', function(mapFactory){
 
   function getDirections(leg){
     var request = {
-      origin: leg.origin,
-      destination: leg.dest,
+      origin: leg.origin.getPosition(),
+      destination: leg.dest.getPosition(),
       travelMode: google.maps.TravelMode.WALKING
     };
     directionsService.route(request, function(response, status) {
@@ -38,10 +38,10 @@ roadWarrior.factory('trekFactory', function(mapFactory){
     var currentLeg = trek.last;
     var prevLeg;
     var nextLeg;
-    while (!prevLeg && !nextLeg) {
+    while (!prevLeg || !nextLeg) {
       if(currentLeg.origin === marker) {
         nextLeg = currentLeg;
-      } else if (currentLeg.dest === marker) {
+      } if (currentLeg.dest === marker) {
         prevLeg = currentLeg;
       } 
       currentLeg = currentLeg.prev;
@@ -64,12 +64,14 @@ roadWarrior.factory('trekFactory', function(mapFactory){
         var leg = new Leg(firstMarker, dest);
         trek.first = leg;
         trek.last = leg;
+        getDirections(leg);
         firstMarker = null;
       }
     },  
 
     removeMarker : function(marker){
       var neighbors = getNeighbors(marker);
+      console.log(neighbors);
       neighbors.prevLeg.rend.setMap(null);
       neighbors.nextLeg.rend.setMap(null);
       marker.setMap(null);
