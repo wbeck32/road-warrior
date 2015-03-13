@@ -3,15 +3,19 @@
 // Trek Controller
 
 roadWarrior.controller('TrekCtrl', function(trekFactory){
-  
+  this.legs = trekFactory.getTrek();
   this.toggleEdit = function(index){
     this.showEdit[index] = !this.showEdit[index];
   };
-
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
   };
+  this.update = function() {  
+    this.legs = trekFactory.getTrek();
+    console.log(this.legs);
+  };
 });
+
 
 // Map Controller
 

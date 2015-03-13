@@ -48,6 +48,11 @@ roadWarrior.factory('trekFactory', function(mapFactory){
   };
 
   return  {
+
+    getTrek : function() {
+      return trek;
+    },
+
     addLeg : function(dest){
       if (trek.length > 0){
         var lastLeg = trek[trek.length - 1];

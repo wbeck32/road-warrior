@@ -18,7 +18,7 @@
 
       <div class="leftContent" ng-controller="MapCtrl as Map">
 
-				<div id="map-canvas"></div>
+				<div id="map-canvas" ng-click="Trek.update()"></div>
       </div>
 
       <div class="sidebarContent" >
@@ -29,7 +29,10 @@
 	  			<h3>Current Trek</h3>
 				</div>
 				<div class="sidebarSection waypointActions">
-		 			Leg List
+		 		<ul>Leg List
+       <li ng-repeat="leg in Trek.legs">{{leg.origin.elevation}}</li>
+
+        </ul>	
 				</div>
     	</div>
 
