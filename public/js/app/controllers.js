@@ -4,15 +4,32 @@
 
 roadWarrior.controller('TrekCtrl', function(trekFactory){
   this.legs = trekFactory.getTrek();
+  this.showEdit = []; 
+  this.showDetails = [];
+  
+  this.removeLeg = function(index) {
+    if(this.legs.length === 1) {
+      this.legs[0].origin.setMap(null);
+      trekFactory.removeMarker(this.legs[0].dest);
+      trekFactory.resetOrigin();
+    } else {
+      trekFactory.removeMarker(this.legs[index].dest);
+    }          
+  };
+
   this.toggleEdit = function(index){
     this.showEdit[index] = !this.showEdit[index];
   };
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
   };
+
   this.update = function() {  
     this.legs = trekFactory.getTrek();
-    console.log(this.legs);
+    for(var i = 0;i < this.legs.length; i++) {
+      this.showEdit[i] = false;
+      this.showDetails[i] = false;
+    }
   };
 });
 

@@ -5,7 +5,7 @@ roadWarrior.factory('trekFactory', function(mapFactory){
   var renderOptions = {suppressMarkers: true, preserveViewport: true};
   var directionsService = new google.maps.DirectionsService();
   var trek = [];
-
+  var markerIndex = 65;
   var trekOrigin = null;
 
   function Leg(origin, dest){
@@ -44,7 +44,6 @@ roadWarrior.factory('trekFactory', function(mapFactory){
 
     }
     return {prevLeg: prevLeg, nextLeg: nextLeg};
-
   };
 
   return  {
@@ -53,7 +52,13 @@ roadWarrior.factory('trekFactory', function(mapFactory){
       return trek;
     },
 
+    resetOrigin : function() {
+      trekOrigin = null;
+    },
+
     addLeg : function(dest){
+      dest.name = String.fromCharCode(markerIndex);
+      markerIndex++;
       if (trek.length > 0){
         var lastLeg = trek[trek.length - 1];
         var leg = new Leg(lastLeg.dest, dest);
