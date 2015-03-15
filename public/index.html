@@ -4,23 +4,19 @@
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/modernizr.js"></script>    
   </head>
 
   <body ng-controller="TrekCtrl as Trek">
-
     <div class="wrapper">
-
       <div class="globalHeader">
 	      profile | treks | connections | sign out
       </div>
-
       <div class="leftContent" ng-controller="MapCtrl as Map">
-
 				<div id="map-canvas"></div>
       </div>
-
       <div class="sidebarContent" >
       	<div class="sidebarSection profilePic">
       	  <img src="images/profile.jpg" />
@@ -30,11 +26,23 @@
 				</div>
 				<div class="sidebarSection waypointActions">
 		 			Leg List
-				</div>
-    	</div>
-
-  	</div>
-
+          <div ng-repeat="leg in Trek.legs track by $index" style="margin:6px;">
+              {{leg.origin.name}} => {{leg.dest.name}}
+            <button ng-click="Trek.toggleDetails($index)">Details</button>
+            <button ng-click="Trek.toggleEdit($index)">Edit</button>
+            <button ng-click="Trek.removeLeg($index)">Delete</button>
+            <div ng-show="Trek.showDetails[$index]" class="legOptions sidebarDropdown">
+              <div>Elevation: {{}}</div>
+              <div>Distance: {{}}</div>
+            </div>
+            <div ng-show="Trek.showEdit[$index]" class="sidebarDropdown">
+              <div>Origin name: <input type="text" ng-model="leg.origin.name" /></div>
+              <div>Destination name: <input type="text" ng-model="leg.dest.name" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 	  <!-- Vendor Libs: angular and googlemaps -->
 	  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 	  <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    
@@ -43,6 +51,5 @@
 	  <script src="js/app/controllers.js"></script>
 	  <script src="js/app/factories.js"></script>
 	  <script src="js/app/mapStyles.js"></script>
-
   </body>
 </html>
