@@ -2,7 +2,7 @@
 
 roadWarrior.factory('trekFactory', function(mapFactory){
 
-  var renderOptions = {suppressMarkers: true, preserveViewport: true};
+  var renderOptions = {suppressMarkers: true, preserveViewport: true, draggable: true};
   var directionsService = new google.maps.DirectionsService();
   var trek = [];
   var markerIndex = 65;
