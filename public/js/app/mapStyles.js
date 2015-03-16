@@ -92,5 +92,3 @@ roadWarrior.value('mapStyles',
     }
   ]
 );
-
-// map.setOptions({styles: styles});

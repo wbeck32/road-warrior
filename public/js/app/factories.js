@@ -77,7 +77,6 @@ roadWarrior.factory('trekFactory', function(mapFactory){
         leg = new Leg(trekOrigin, dest);
         getDirections(leg);
         trek.push(leg);
-        trekOrigin = null;
       }
     },  
 
@@ -85,7 +84,7 @@ roadWarrior.factory('trekFactory', function(mapFactory){
       marker.setMap(null);
       var neighbors = getNeighbors(marker);
       if (!neighbors.prevLeg && !neighbors.nextLeg) {
-        trekOrigin = null;
+        this.resetOrigin();
       } else if (!neighbors.prevLeg && neighbors.nextLeg) {
         trekOrigin = neighbors.nextLeg.dest;
 	trek.shift().rend.setMap(null);
