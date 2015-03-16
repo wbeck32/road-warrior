@@ -12,6 +12,8 @@ roadWarrior.controller('TrekCtrl', function(trekFactory){
       this.legs[0].origin.setMap(null);
       trekFactory.removeMarker(this.legs[0].dest);
       trekFactory.resetOrigin();
+    } else if (index === 0){
+      trekFactory.removeMarker(this.legs[0].origin);
     } else {
       trekFactory.removeMarker(this.legs[index].dest);
     }          
@@ -58,12 +60,17 @@ roadWarrior.controller('MapCtrl', function(mapFactory, trekFactory){
   function addMarker(latLng) {
     var marker = new google.maps.Marker({
       position: latLng,
-      map: mapFactory
+      map: mapFactory,
+      draggable: true
     });
     mapFactory.panTo(latLng);
 
     google.maps.event.addListener(marker, 'click', function(event){
       trekFactory.removeMarker(marker);
+    });
+
+    google.maps.event.addListener(marker, 'dragend', function(event){
+      trekFactory.moveMarker(marker);
     });
 
     getElevation(latLng, marker);

@@ -16,16 +16,19 @@ roadWarrior.factory('trekFactory', function(mapFactory){
   }
 
   function getDirections(leg){
-    var request = {
-      origin: leg.origin.getPosition(),
-      destination: leg.dest.getPosition(),
-      travelMode: google.maps.TravelMode.WALKING
-    };
-    directionsService.route(request, function(response, status) {
-      if (status == google.maps.DirectionsStatus.OK) {
-        leg.rend.setDirections(response);
-      }
-    });
+
+    if (leg) {
+      var request = {
+	origin: leg.origin.getPosition(),
+	destination: leg.dest.getPosition(),
+	travelMode: google.maps.TravelMode.WALKING
+      };
+      directionsService.route(request, function(response, status) {
+	if (status == google.maps.DirectionsStatus.OK) {
+          leg.rend.setDirections(response);
+	}
+      });
+    }
   }
   
   function getNeighbors (marker) {
@@ -33,15 +36,18 @@ roadWarrior.factory('trekFactory', function(mapFactory){
     var prevLeg;
     var nextLeg;
     var counter = 0;
-    while (!prevLeg || !nextLeg) {
-      if(currentLeg.origin === marker) {
-        nextLeg = currentLeg;
-      } if (currentLeg.dest === marker) {
-        prevLeg = currentLeg;
-      } 
-      counter++;
-      currentLeg = trek[counter];
+    if (trek.length > 0) {
+      while (!prevLeg || !nextLeg) {
+	if(currentLeg.origin === marker) {
+          nextLeg = currentLeg;
+	} if (currentLeg.dest === marker) {
+          prevLeg = currentLeg;
+	} 
+	counter++;
+	if(counter > trek.length -1) break;
+	currentLeg = trek[counter];
 
+      }
     }
     return {prevLeg: prevLeg, nextLeg: nextLeg};
   };
@@ -59,15 +65,16 @@ roadWarrior.factory('trekFactory', function(mapFactory){
     addLeg : function(dest){
       dest.name = String.fromCharCode(markerIndex);
       markerIndex++;
+      var leg;
       if (trek.length > 0){
         var lastLeg = trek[trek.length - 1];
-        var leg = new Leg(lastLeg.dest, dest);
+        leg = new Leg(lastLeg.dest, dest);
         getDirections(leg);
         trek.push(leg);
       } else if (!trekOrigin){
         trekOrigin = dest;
       } else { 
-        var leg = new Leg(trekOrigin, dest);
+        leg = new Leg(trekOrigin, dest);
         getDirections(leg);
         trek.push(leg);
         trekOrigin = null;
@@ -76,21 +83,16 @@ roadWarrior.factory('trekFactory', function(mapFactory){
 
     removeMarker : function(marker){
       marker.setMap(null);
-      if (trek.length === 0) {
+      var neighbors = getNeighbors(marker);
+      if (!neighbors.prevLeg && !neighbors.nextLeg) {
         trekOrigin = null;
-      } else if (trek.length === 1) {
-        if(marker === trek[0].origin) {
-          trekOrigin = trek[0].dest;
-        } else {
-          trekOrigin = trek[0].origin; 
-        }
+      } else if (!neighbors.prevLeg && neighbors.nextLeg) {
+        trekOrigin = neighbors.nextLeg.dest;
+	trek.shift().rend.setMap(null);
+
+      } else if (neighbors.prevLeg && !neighbors.nextLeg) {
         trek.pop().rend.setMap(null);
-      } else if (marker === trek[trek.length - 1].dest) {
-        trek.pop().rend.setMap(null);
-      } else if (marker === trek[0].origin) {
-        trek.shift().rend.setMap(null);
       } else {
-        var neighbors = getNeighbors(marker);
         neighbors.prevLeg.rend.setMap(null);
         neighbors.nextLeg.rend.setMap(null);
         var newLeg = new Leg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
@@ -98,6 +100,12 @@ roadWarrior.factory('trekFactory', function(mapFactory){
         var prevIndex = trek.indexOf(neighbors.prevLeg);
         trek.splice(prevIndex, 2, newLeg);
       }
+    },
+
+    moveMarker : function (marker){
+      var neighbors = getNeighbors(marker);
+      getDirections(neighbors.prevLeg);
+      getDirections(neighbors.nextLeg);
     }
   };
 });
