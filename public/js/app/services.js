@@ -21,7 +21,3 @@ angular.module('roadWarrior').factory('neighborsService', function(){
     return {prevLeg: prevLeg, nextLeg: nextLeg};
   };
 });
-
-angular.module('roadWarrior').factory('legArrayFactory', function(){
-  return [];
-});
