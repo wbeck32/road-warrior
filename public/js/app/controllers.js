@@ -6,9 +6,9 @@ angular.module('roadWarrior').controller('TrekController',
 					 ['legFactory', 
 					  'neighborsService', 
 					  'mapFactory', 
-  function(legFactory, neighborsService, mapFactory){
-    this.legs = [];
-    this.test = [1,2,3,4,5];
+					  'legArrayFactory',
+  function(legFactory, neighborsService, mapFactory, legArrayFactory){
+    this.legs = legArrayFactory;
     this.showEdit = []; 
     this.showDetails = [];
     this.value = "test";
@@ -20,6 +20,7 @@ angular.module('roadWarrior').controller('TrekController',
       for (var i = 0; i < this.legs.length; i++){
 	this.showEdit[i] = false;
 	this.showDetails[i] = false;
+	this.legs = legArrayFactory;
       }
     };
 
@@ -32,15 +33,15 @@ angular.module('roadWarrior').controller('TrekController',
       dest.name = String.fromCharCode(markerIndex);
       markerIndex++;
       var leg;
-      if (this.legs.length > 0){
-	var lastLeg = this.legs[this.legs.length - 1];
+      if (legArrayFactory.length > 0){
+	var lastLeg = legArrayFactory[legArrayFactory.length - 1];
 	leg = legFactory.create(lastLeg.dest, dest);
-	this.legs.push(leg);
+	legArrayFactory.push(leg);
       } else if (!trekOrigin){
 	trekOrigin = dest;
       } else { 
 	leg = legFactory.create(trekOrigin, dest);
-	this.legs.push(leg);
+	legArrayFactory.push(leg);
       }
     };  
 
@@ -64,40 +65,40 @@ angular.module('roadWarrior').controller('TrekController',
     };
 
     this.moveMarker = function(marker){
-      var neighbors = neighborsService(marker, this.legs);
+      var neighbors = neighborsService(marker, legArrayFactory);
       if(neighbors.prevLeg) neighbors.prevLeg.getDirections();
       if(neighbors.nextLeg) neighbors.nextLeg.getDirections();
     };
 
     this.removeMarker = function(marker){
       marker.setMap(null);
-      var neighbors = neighborsService(marker, this.legs);
+      var neighbors = neighborsService(marker, legArrayFactory);
       if (!neighbors.prevLeg && !neighbors.nextLeg) {
 	trekOrigin = null;
       } else if (!neighbors.prevLeg && neighbors.nextLeg) {
 	trekOrigin = neighbors.nextLeg.dest;
-	this.legs.shift().rend.setMap(null);
+	legArrayFactory.shift().rend.setMap(null);
 
       } else if (neighbors.prevLeg && !neighbors.nextLeg) {
-	this.legs.pop().rend.setMap(null);
+	legArrayFactory.pop().rend.setMap(null);
       } else {
 	neighbors.prevLeg.rend.setMap(null);
 	neighbors.nextLeg.rend.setMap(null);
 	var newLeg = legFactory.create(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
-	var prevIndex = this.legs.indexOf(neighbors.prevLeg);
-	this.legs.splice(prevIndex, 2, newLeg);
+	var prevIndex = legArrayFactory.indexOf(neighbors.prevLeg);
+	legArrayFactory.splice(prevIndex, 2, newLeg);
       }
     };
     
     this.removeLeg = function(index) {
-      if(this.legs.length === 1) {
-	this.legs[0].origin.setMap(null);
-	this.removeMarker(this.legs[0].dest);
+      if(legArrayFactory.length === 1) {
+	legArrayFactory[0].origin.setMap(null);
+	this.removeMarker(legArrayFactory[0].dest);
 	trekOrigin = null;
       } else if (index === 0){
-	this.removeMarker(this.legs[0].origin);
+	this.removeMarker(legArrayFactory[0].origin);
       } else {
-	this.removeMarker(this.legs[index].dest);
+	this.removeMarker(legArrayFactory[index].dest);
       }          
     };
 
