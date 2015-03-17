@@ -2,12 +2,18 @@ html, body, #map-canvas {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 12px;
 }
 
 img {
 	width:120px;
 	height:100px;
 	border:1px solid red;
+}
+
+button {
+	margin:5px;
 }
 
 .globalHeader {
@@ -41,5 +47,20 @@ img {
 .sidebarSection {
 	margin:5px;
 	padding:10px;
-	border:1px solid orange;
+	border-bottom:1px solid black;
+}
+
+.leg {
+	margin: 5px 0;
+}
+
+.legOptions {
+	padding: 5px;
+	margin: 5px;
+	border: 1px solid gray;
+	border-radius: 5px;
+}
+
+.legOptions div {
+	margin:6px 0;
 }
