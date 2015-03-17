@@ -108,7 +108,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
 }]);
 
-angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', function($rootScope, mapFactory){
+angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
  
   var markerIndex = 65;
 
@@ -121,6 +121,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 	draggable: true
       });
 
+      elevationService(latLng, marker);
       marker.name = String.fromCharCode(markerIndex);
       markerIndex++;
 
@@ -137,7 +138,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 	  thisObj.moveMarker(marker);
 	});
       });
-
+      console.log(marker);
       return marker;
     }
   }; 

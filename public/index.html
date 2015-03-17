@@ -8,7 +8,7 @@
     <script src="js/modernizr.js"></script>    
   </head>
 
-  <body ng-controller="TrekController as Trek">
+  <body ng-controller="geolocationController as geo">
 
     <div class="wrapper">
 
@@ -20,7 +20,7 @@
 	<div id="map-canvas"></div>
       </div>
 
-      <div class="sidebarContent">
+      <div class="sidebarContent" ng-controller="TrekController as Trek">
 
       	<div class="sidebarSection profilePic">
       	  <img src="images/profile.jpg" />

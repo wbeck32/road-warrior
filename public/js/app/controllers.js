@@ -29,43 +29,39 @@ angular.module('roadWarrior').controller('TrekController', ['legService', 'neigh
   };
 }]);
 
-/*
- // Map Controller
+angular.module('roadWarrior').controller('geolocationController', function(mapFactory){
 
- roadWarrior.controller('MapCtrl', function(mapFactory, trekFactory){
+  this.getLocation = function(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+	function locationAllowed(position) {
+	  mapFactory.panTo({lat: position.coords.latitude, lng: position.coords.longitude});
+	});
+    } 
+  };
+  this.getLocation();
+});
 
- var elevator = new google.maps.ElevationService();  
- 
- // getLocation();
+angular.module('roadWarrior').factory('elevationService', function(){
 
- function getLocation() {
- if (navigator.geolocation) {
- navigator.geolocation.getCurrentPosition(
- function locationAllowed(position) {
- mapFactory.panTo(position);
- });
- } 
- }
+  var elevator = new google.maps.ElevationService();  
 
+  return function(latLng, marker) {
 
- function getElevation(latLng, marker) {
+    var position = {
+      'locations': [latLng]
+    };
 
- var position = {
- 'locations': [latLng]
- };
-
- elevator.getElevationForLocations(position, function(results, status) {
- if (status == google.maps.ElevationStatus.OK){
- if (results[0]){
- marker.elevation = results[0].elevation;
- } else {
- marker.elevation = null;
- }
- } else {
- marker.elevation = null;
- }
- });  
- }
- });
-
- */
+    elevator.getElevationForLocations(position, function(results, status) {
+      if (status == google.maps.ElevationStatus.OK){
+	if (results[0]){
+	  marker.elevation = results[0].elevation;
+	} else {
+	  marker.elevation = null;
+	}
+      } else {
+	marker.elevation = null;
+      }
+    });  
+  };
+});
