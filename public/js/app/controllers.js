@@ -2,22 +2,24 @@
 
 // Trek Controller
 
-roadWarrior.controller('TrekCtrl', function(trekFactory){
-  this.legs = trekFactory.getTrek();
+angular.module('roadWarrior').controller('TrekController', ['legService', 'neighborsService', 'mapFactory', 'markerFactory', function(legService, neighborsService, mapFactory, markerFactory){
+
+  this.legs = legService.legs;
   this.showEdit = []; 
   this.showDetails = [];
-  
-  this.removeLeg = function(index) {
-    if(this.legs.length === 1) {
-      this.legs[0].origin.setMap(null);
-      trekFactory.removeMarker(this.legs[0].dest);
-      trekFactory.resetOrigin();
-    } else if (index === 0){
-      trekFactory.removeMarker(this.legs[0].origin);
-    } else {
-      trekFactory.removeMarker(this.legs[index].dest);
+
+  var self = this;
+
+  this.hideFields = function(){
+    for (var i = 0; i < self.legs.length; i++){
+      self.showEdit[i] = false;
+      self.showDetails[i] = false;
     }
-    this.update();
+  };
+
+  this.removeLeg = function(index){
+    legService.removeLeg(index);
+    this.hideFields();
   };
 
   this.toggleEdit = function(index){
@@ -26,60 +28,26 @@ roadWarrior.controller('TrekCtrl', function(trekFactory){
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
   };
+}]);
 
-  this.update = function() {  
-    this.legs = trekFactory.getTrek();
-    for(var i = 0;i < this.legs.length; i++) {
-      this.showEdit[i] = false;
-      this.showDetails[i] = false;
-    }
-  };
-});
+angular.module('roadWarrior').controller('geolocationController', function(mapFactory){
 
-
-// Map Controller
-
-roadWarrior.controller('MapCtrl', function(mapFactory, trekFactory){
-
-  var elevator = new google.maps.ElevationService();  
-  
- // getLocation();
-
-  google.maps.event.addListener(mapFactory, 'click', function(event) {
-    addMarker(event.latLng);
-  });
-
-  function getLocation() {
+  this.getLocation = function(){
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        function locationAllowed(position) {
-          mapFactory.panTo(position);
-      });
+	function locationAllowed(position) {
+	  mapFactory.panTo({lat: position.coords.latitude, lng: position.coords.longitude});
+	});
     } 
-  }
-
-  function addMarker(latLng) {
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: mapFactory,
-      draggable: true
-    });
-    mapFactory.panTo(latLng);
-
-    google.maps.event.addListener(marker, 'click', function(event){
-      trekFactory.removeMarker(marker);
-    });
-
-    google.maps.event.addListener(marker, 'dragend', function(event){
-      trekFactory.moveMarker(marker);
-    });
-
-    getElevation(latLng, marker);
-
-    trekFactory.addLeg(marker);
   };
+  this.getLocation();
+});
 
-  function getElevation(latLng, marker) {
+angular.module('roadWarrior').factory('elevationService', function(){
+
+  var elevator = new google.maps.ElevationService();  
+
+  return function(latLng, marker) {
 
     var position = {
       'locations': [latLng]
@@ -87,15 +55,14 @@ roadWarrior.controller('MapCtrl', function(mapFactory, trekFactory){
 
     elevator.getElevationForLocations(position, function(results, status) {
       if (status == google.maps.ElevationStatus.OK){
-  if (results[0]){
-          marker.elevation = results[0].elevation;
-  } else {
-          marker.elevation = null;
-  }
+	if (results[0]){
+	  marker.elevation = results[0].elevation;
+	} else {
+	  marker.elevation = null;
+	}
       } else {
-  marker.elevation = null;
+	marker.elevation = null;
       }
     });  
-  }
+  };
 });
-

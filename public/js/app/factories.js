@@ -1,125 +1,161 @@
 // this is factories.js
 
-roadWarrior.factory('trekFactory', function(mapFactory){
-
+angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', function($rootScope, mapFactory, markerFactory, neighborsService){
+  
+  this.legs = [];
+  var trekOrigin = null;
   var renderOptions = {suppressMarkers: true, preserveViewport: true, draggable: true};
   var directionsService = new google.maps.DirectionsService();
-  var trek = [];
-  var markerIndex = 65;
-  var trekOrigin = null;
 
-  function Leg(origin, dest){
-    this.origin = origin;
-    this.dest = dest;
-    this.rend = new google.maps.DirectionsRenderer(renderOptions);
-    this.rend.setMap(mapFactory);
-  }
+  var self = this;
 
-  function getDirections(leg){
+  this.createLeg = function(org, des){
+    
+    function Leg(origin, dest){
+      this.origin = origin;
+      this.dest = dest;
+      this.rend = new google.maps.DirectionsRenderer(renderOptions);
+      this.rend.setMap(mapFactory);
+      var thisLeg = this;
 
-    if (leg) {
-      var request = {
-	origin: leg.origin.getPosition(),
-	destination: leg.dest.getPosition(),
-	travelMode: google.maps.TravelMode.WALKING
-      };
-      directionsService.route(request, function(response, status) {
-	if (status == google.maps.DirectionsStatus.OK) {
-          leg.rend.setDirections(response);
-	}
+      google.maps.event.addListener(thisLeg.rend, 'directions_changed', function(){
+	$rootScope.$apply(function(){ 
+	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
+	    var newMarker = markerFactory.create(thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
+	    var newLeg = self.createLeg(newMarker, thisLeg.dest);
+	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
+	    thisLeg.dest = newMarker;
+	    thisLeg.getDirections();
+	  }
+	});
       });
+      
+      this.getDirections = function(){
+	var request = {
+	  origin: this.origin.getPosition(),
+	  destination: this.dest.getPosition(),
+	  travelMode: google.maps.TravelMode.WALKING
+	};
+	directionsService.route(request, function(response, status) {
+	  if (status == google.maps.DirectionsStatus.OK) {
+            thisLeg.rend.setDirections(response);
+	  }
+	});
+      };
+      this.getDirections();
     }
-  }
-  
-  function getNeighbors (marker) {
-    var currentLeg = trek[0];
-    var prevLeg;
-    var nextLeg;
-    var counter = 0;
-    if (trek.length > 0) {
-      while (!prevLeg || !nextLeg) {
-	if(currentLeg.origin === marker) {
-          nextLeg = currentLeg;
-	} if (currentLeg.dest === marker) {
-          prevLeg = currentLeg;
-	} 
-	counter++;
-	if(counter > trek.length -1) break;
-	currentLeg = trek[counter];
 
-      }
-    }
-    return {prevLeg: prevLeg, nextLeg: nextLeg};
+    return new Leg(org, des);
   };
 
-  return  {
+  this.addLeg = function(dest){
+    var leg;
+    if (this.legs.length > 0){
+      var lastLeg = this.legs[this.legs.length - 1];
+      leg = this.createLeg(lastLeg.dest, dest);
+    } else if (!trekOrigin){
+      trekOrigin = dest;
+    } else { 
+      leg = this.createLeg(trekOrigin, dest);
+    }
+    if (leg){
+      this.legs.push(leg);
+    }
+  };  
 
-    getTrek : function() {
-      return trek;
-    },
+  google.maps.event.addListener(mapFactory, 'click', function(event) {
+    var newMarker = markerFactory.create(event.latLng, self);
+    self.addLeg(newMarker);
+  });
 
-    resetOrigin : function() {
+  this.moveMarker = function(marker){
+    var neighbors = neighborsService(marker, this.legs);
+    if(neighbors.prevLeg) neighbors.prevLeg.getDirections();
+    if(neighbors.nextLeg) neighbors.nextLeg.getDirections();
+  };
+
+  this.removeMarker = function(marker){
+    marker.setMap(null);
+    var neighbors = neighborsService(marker, this.legs);
+    if (!neighbors.prevLeg && !neighbors.nextLeg) {
       trekOrigin = null;
-    },
+    } else if (!neighbors.prevLeg && neighbors.nextLeg) {
+      trekOrigin = neighbors.nextLeg.dest;
+      this.legs.shift().rend.setMap(null);
 
-    addLeg : function(dest){
-      dest.name = String.fromCharCode(markerIndex);
-      markerIndex++;
-      var leg;
-      if (trek.length > 0){
-        var lastLeg = trek[trek.length - 1];
-        leg = new Leg(lastLeg.dest, dest);
-        getDirections(leg);
-        trek.push(leg);
-      } else if (!trekOrigin){
-        trekOrigin = dest;
-      } else { 
-        leg = new Leg(trekOrigin, dest);
-        getDirections(leg);
-        trek.push(leg);
-      }
-    },  
-
-    removeMarker : function(marker){
-      marker.setMap(null);
-      var neighbors = getNeighbors(marker);
-      if (!neighbors.prevLeg && !neighbors.nextLeg) {
-        this.resetOrigin();
-      } else if (!neighbors.prevLeg && neighbors.nextLeg) {
-        trekOrigin = neighbors.nextLeg.dest;
-	trek.shift().rend.setMap(null);
-
-      } else if (neighbors.prevLeg && !neighbors.nextLeg) {
-        trek.pop().rend.setMap(null);
-      } else {
-        neighbors.prevLeg.rend.setMap(null);
-        neighbors.nextLeg.rend.setMap(null);
-        var newLeg = new Leg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
-        getDirections(newLeg);
-        var prevIndex = trek.indexOf(neighbors.prevLeg);
-        trek.splice(prevIndex, 2, newLeg);
-      }
-    },
-
-    moveMarker : function (marker){
-      var neighbors = getNeighbors(marker);
-      getDirections(neighbors.prevLeg);
-      getDirections(neighbors.nextLeg);
+    } else if (neighbors.prevLeg && !neighbors.nextLeg) {
+      this.legs.pop().rend.setMap(null);
+    } else {
+      neighbors.prevLeg.rend.setMap(null);
+      neighbors.nextLeg.rend.setMap(null);
+      var newLeg = this.createLeg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
+      var prevIndex = this.legs.indexOf(neighbors.prevLeg);
+      this.legs.splice(prevIndex, 2, newLeg);
     }
   };
-});
+  
+  this.removeLeg = function(index) {
+    if(this.legs.length === 1) {
+      this.legs[0].origin.setMap(null);
+      this.removeMarker(this.legs[0].dest);
+      trekOrigin = null;
+    } else if (index === 0){
+      this.removeMarker(this.legs[0].origin);
+    } else {
+      this.removeMarker(this.legs[index].dest);
+    }          
+  };
 
-roadWarrior.factory('mapFactory', function(mapStyles){
+}]);
 
-  this.currentPosition = {lat: 45.5227, lng: -122.6731};
+angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
+ 
+  var markerIndex = 65;
+
+  return {
+
+    create : function(latLng, thisObj) {
+      var marker = new google.maps.Marker({
+	position: latLng,
+	map: mapFactory,
+	draggable: true
+      });
+
+      elevationService(latLng, marker);
+      marker.name = String.fromCharCode(markerIndex);
+      markerIndex++;
+
+      mapFactory.panTo(latLng);
+
+      google.maps.event.addListener(marker, 'click', function(event){
+	$rootScope.$apply(function(){
+	  thisObj.removeMarker(marker);
+	});
+      });
+
+      google.maps.event.addListener(marker, 'dragend', function(event){
+	$rootScope.$apply(function(){
+	  thisObj.moveMarker(marker);
+	});
+      });
+      console.log(marker);
+      return marker;
+    }
+  }; 
+
+}]);
+
+angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapStyles){
+
+  var currentPosition = {lat: 45.5227, lng: -122.6731};
 
   var mapOptions = {
     zoom: 16,
     draggableCursor: 'crosshair',
-    center: this.currentPosition,
+    center: currentPosition,
     styles: mapStyles
   };
 
   return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-});
+}]);
