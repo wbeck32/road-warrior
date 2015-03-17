@@ -16,7 +16,8 @@ roadWarrior.controller('TrekCtrl', function(trekFactory){
       trekFactory.removeMarker(this.legs[0].origin);
     } else {
       trekFactory.removeMarker(this.legs[index].dest);
-    }          
+    }
+    this.update();
   };
 
   this.toggleEdit = function(index){
