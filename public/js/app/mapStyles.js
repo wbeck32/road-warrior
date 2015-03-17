@@ -1,4 +1,6 @@
-roadWarrior.value('mapStyles', 
+// this file contains the styles for the google maps object
+
+angular.module('roadWarrior').value('mapStyles', 
   [
     {
       "featureType": "administrative",
