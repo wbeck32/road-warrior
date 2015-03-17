@@ -2,20 +2,21 @@
 
 // Trek Controller
 
-roadWarrior.controller('TrekCtrl', function(trekFactory){
-  this.legs = trekFactory.getTrek();
+roadWarrior.controller('TrekCtrl', function(trekService, mapFactory, $window){
+  this.legs = trekService.trek;
   this.showEdit = []; 
   this.showDetails = [];
-  
+  var self = this;
+
   this.removeLeg = function(index) {
     if(this.legs.length === 1) {
       this.legs[0].origin.setMap(null);
-      trekFactory.removeMarker(this.legs[0].dest);
-      trekFactory.resetOrigin();
+      trekService.removeMarker(this.legs[0].dest);
+      trekService.resetOrigin();
     } else if (index === 0){
-      trekFactory.removeMarker(this.legs[0].origin);
+      trekService.removeMarker(this.legs[0].origin);
     } else {
-      trekFactory.removeMarker(this.legs[index].dest);
+      trekService.removeMarker(this.legs[index].dest);
     }          
   };
 
@@ -27,25 +28,34 @@ roadWarrior.controller('TrekCtrl', function(trekFactory){
   };
 
   this.update = function() {  
-    this.legs = trekFactory.getTrek();
-    for(var i = 0;i < this.legs.length; i++) {
-      this.showEdit[i] = false;
-      this.showDetails[i] = false;
-    }
+    $window.setTimeout(function(){
+      self.legs = trekService.trek;
+      for(var i = 0;i < self.legs.length; i++) {
+	self.showEdit[i] = false;
+	self.showDetails[i] = false;
+      }
+    }, 2000);
   };
+  google.maps.event.addListener(mapFactory, 'center_changed', function(event) {
+    self.update();
+  });
+
 });
 
 
 // Map Controller
 
-roadWarrior.controller('MapCtrl', function(mapFactory, trekFactory){
+roadWarrior.controller('MapCtrl', function(mapFactory, trekService){
 
   var elevator = new google.maps.ElevationService();  
   
  // getLocation();
 
   google.maps.event.addListener(mapFactory, 'click', function(event) {
-    addMarker(event.latLng);
+    var newMarker = trekService.createMarker(event.latLng);
+    mapFactory.panTo(event.latLng);
+    getElevation(event.latLng, newMarker);
+    trekService.addLeg(newMarker);
   });
 
   function getLocation() {
@@ -66,16 +76,12 @@ roadWarrior.controller('MapCtrl', function(mapFactory, trekFactory){
     mapFactory.panTo(latLng);
 
     google.maps.event.addListener(marker, 'click', function(event){
-      trekFactory.removeMarker(marker);
+      trekService.removeMarker(marker);
     });
 
     google.maps.event.addListener(marker, 'dragend', function(event){
-      trekFactory.moveMarker(marker);
+      trekService.moveMarker(marker);
     });
-
-    getElevation(latLng, marker);
-
-    trekFactory.addLeg(marker);
   };
 
   function getElevation(latLng, marker) {
