@@ -44,7 +44,7 @@
             </div>
 
             <div ng-show="Trek.showDetails[$index]" class="legOptions">
-              <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }}</div>
+              <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
               <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
             </div>
 
