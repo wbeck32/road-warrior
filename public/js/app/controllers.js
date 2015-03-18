@@ -24,7 +24,6 @@ angular.module('roadWarrior').controller('TrekController', ['legService', 'pathE
 
   this.toggleEdit = function(index){
     this.showEdit[index] = !this.showEdit[index];
-    pathElevationService(this.legs);
 
   };
   this.toggleDetails = function(index){
