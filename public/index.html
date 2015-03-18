@@ -46,7 +46,7 @@
 
             <div ng-show="Trek.showDetails[$index]" class="legOptions">
               <div>Elevation: {{}}</div>
-              <div>Distance: {{}}</div>
+              <div>Distance: {{leg.rend.directions.routes[0].legs[0].distance.text}}</div>
             </div>
 
           </div>
