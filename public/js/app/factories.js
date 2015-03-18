@@ -17,7 +17,6 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.rend = new google.maps.DirectionsRenderer(renderOptions);
       this.rend.setMap(mapFactory);
       var thisLeg = this;
-
       google.maps.event.addListener(thisLeg.rend, 'directions_changed', function(){
 	$rootScope.$apply(function(){ 
 	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
@@ -138,7 +137,6 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 	  thisObj.moveMarker(marker);
 	});
       });
-      console.log(marker);
       return marker;
     }
   }; 
@@ -159,3 +157,59 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
 }]);
+
+angular.module('roadWarrior').factory('pathElevationService', function(){
+
+  var pathElevator = new google.maps.ElevationService();  
+
+  return function(legsArray) {
+    latLngArray = [];
+
+    var path = {
+      path: latLngArray,
+      samples: 10
+    }
+    for (var i = 0; i < legsArray.length; i++) {
+      if(i === 0){
+        latLngArray.push(legsArray[i].origin.position);
+        latLngArray.push(legsArray[i].dest.position);
+      } else {
+        latLngArray.push(legsArray[i].dest.position);
+      }
+    };
+    console.log(latLngArray);
+
+    pathElevator.getElevationAlongPath(path, function(results, status) {
+      if (status == google.maps.ElevationStatus.OK){
+        console.log('HOROOORAAAYY IT WOR KED');
+      } else {
+        console.log('You suck, sucker');
+      }
+    });  
+  };
+});
+
+angular.module('roadWarrior').factory('elevationService', function(){
+
+  var elevator = new google.maps.ElevationService();  
+
+  return function(latLng, marker) {
+
+    var position = {
+      'locations': [latLng]
+    };
+
+    elevator.getElevationForLocations(position, function(results, status) {
+      if (status == google.maps.ElevationStatus.OK){
+  if (results[0]){
+    marker.elevation = results[0].elevation;
+  } else {
+    marker.elevation = null;
+  }
+      } else {
+  marker.elevation = null;
+      }
+    });  
+  };
+});
+
