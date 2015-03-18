@@ -1,6 +1,6 @@
 // this is factories.js
 
-angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService){
+angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', 'elevationProfileFactory', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService, elevationProfileFactory){
   
   this.legs = [];
   var trekOrigin = null;
@@ -16,6 +16,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.dest = dest;
       this.rend = new google.maps.DirectionsRenderer(renderOptions);
       this.rend.setMap(mapFactory);
+      this.elevationProfile = [];
       var thisLeg = this;
       google.maps.event.addListener(thisLeg.rend, 'directions_changed', function(){
       	$rootScope.$apply(function(){ 
@@ -25,7 +26,6 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
       	    thisLeg.dest = newMarker;
       	    thisLeg.getDirections();
-            pathElevationService(this.legs)
       	  }
       	});
       });
@@ -38,7 +38,8 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       	};
       	directionsService.route(request, function(response, status) {
       	  if (status == google.maps.DirectionsStatus.OK) {
-                  thisLeg.rend.setDirections(response);
+              thisLeg.rend.setDirections(response);
+              pathElevationService(thisLeg, self.legs);
       	  }
       	});
       };
@@ -60,7 +61,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     }
     if (leg){
       this.legs.push(leg);
-      pathElevationService(this.legs);
+      elevationProfileFactory(this.legs);
     }
     
   };  
@@ -94,7 +95,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       var prevIndex = this.legs.indexOf(neighbors.prevLeg);
       this.legs.splice(prevIndex, 2, newLeg);
     }
-    pathElevationService(this.legs);
+    elevationProfileFactory(this.legs);
   };
   
   this.removeLeg = function(index) {
@@ -106,8 +107,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.removeMarker(this.legs[0].origin);
     } else {
       this.removeMarker(this.legs[index].dest);
-    } 
-    pathElevationService(this.legs);         
+    }     
   };
 
 }]);
@@ -163,62 +163,72 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
 
 }]);
 
-angular.module('roadWarrior').factory('pathElevationService', function(mapFactory){
-
+angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'elevationProfileFactory', function(mapFactory, elevationProfileFactory){
+  
   var pathElevator = new google.maps.ElevationService();  
 
-  return function(legsArray) {
-    latLngArray = [];
+  return function(leg, legArray) {
 
+    var steps = leg.rend.getDirections().routes[0].legs[0].steps;
+    
+    var latLngArray = [];
+
+    for (var i = 0; i < steps.length; i++) {
+      for (var j = 0; j < steps[i].path.length; j++) {
+        latLngArray.push(steps[i].path[j])
+      }
+    }
+    
+    if(latLngArray.length > 300) {
+      var incr = Math.ceil(latLngArray.length/300);
+      var newLatLngArray = [];
+      for (var i = 0; i < latLngArray.length; i+=incr) {
+        newLatLngArray.push(latLngArray[i])
+      }
+      latLngArray = newLatLngArray;
+    }
+    console.log(latLngArray.length);
     var path = {
       path: latLngArray,
-      samples: 250
+      samples: latLngArray.length/2
     }
-    for (var i = 0; i < legsArray.length; i++) {
-      if(i === 0){
-        latLngArray.push(legsArray[i].origin.position);
-        latLngArray.push(legsArray[i].dest.position);
-      } else {
-        latLngArray.push(legsArray[i].dest.position);
-      }
-    };
 
     pathElevator.getElevationAlongPath(path, function(results, status) {
       if (status == google.maps.ElevationStatus.OK){
-        function drawElevation(results) {
-          elevations = results;
-
-          chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
-
-          var elevationPath = [];
-          for (var i = 0; i < results.length; i++) {
-            elevationPath.push(elevations[i].location);
-          }
-          var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Sample');
-            data.addColumn('number', 'Elevation');
-          for (var i = 0; i < results.length; i++) {
-            data.addRow(['', elevations[i].elevation]);
-          }
-
-          document.getElementById('elevation-chart').style.display = 'block';
-          chart.draw(data, {
-            width: 960,
-            height: 300,
-            legend: 'none',
-            titleY: 'Elevation (m)'
-        });
-        }
-
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawElevation(results));
-        
+        leg.elevationProfile = results;
+        elevationProfileFactory(legArray)
       } else {
-        console.log('You suck, sucker');
+        console.log('You suck, sucker', status);
       }
     });  
   };
-});
+}]);
+
+angular.module('roadWarrior').factory('elevationProfileFactory', function(){
+  return function (legArray) {
+    
+
+    chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'Elevation');
+    for (var i = 0; i < legArray.length; i++) {
+      for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
+        data.addRow([legArray[i].elevationProfile[j].elevation]);
+
+      }
+    };
+    
+
+    document.getElementById('elevation-chart').style.display = 'block';
+    chart.draw(data, {
+      width: 960,
+      height: 300,
+      legend: 'none',
+      titleY: 'Elevation (m)'
+  });
+  }
+})
 
 angular.module('roadWarrior').factory('elevationService', function(){
 
@@ -232,13 +242,13 @@ angular.module('roadWarrior').factory('elevationService', function(){
 
     elevator.getElevationForLocations(position, function(results, status) {
       if (status == google.maps.ElevationStatus.OK){
-  if (results[0]){
-    marker.elevation = results[0].elevation;
-  } else {
-    marker.elevation = null;
-  }
+        if (results[0]){
+          marker.elevation = results[0].elevation;
+        } else {
+          marker.elevation = null;
+        }
       } else {
-  marker.elevation = null;
+        marker.elevation = null;
       }
     });  
   };
