@@ -179,8 +179,8 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
       }
     }
     
-    if(latLngArray.length > 300) {
-      var incr = Math.ceil(latLngArray.length/300);
+    if(latLngArray.length > 200) {
+      var incr = Math.ceil(latLngArray.length/200);
       var newLatLngArray = [];
       for (var i = 0; i < latLngArray.length; i+=incr) {
         newLatLngArray.push(latLngArray[i])
@@ -222,8 +222,6 @@ angular.module('roadWarrior').factory('elevationProfileFactory', function(){
 
     document.getElementById('elevation-chart').style.display = 'block';
     chart.draw(data, {
-      width: 960,
-      height: 300,
       legend: 'none',
       titleY: 'Elevation (m)'
   });

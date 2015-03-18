@@ -18,17 +18,18 @@
 
       <div class="leftContent">
 	     <div id="map-canvas"></div>
-       <div id='elevation-chart'></div>
       </div>
 
       <div class="sidebarContent" ng-controller="TrekController as Trek">
 
-      	<div class="sidebarSection profilePic">
-      	  <img class="profileimg" src="images/profile.jpg" />
+      	<div class="sidebarSection">
+          <div id="elevation-chart"></div>
+
+<!--      	  <img class="profileimg" src="images/profile.jpg" /> 
       	</div>
 
 	<div class="sidebarSection treks">
-	  <h3>Current Trek</h3>
+	  <h3>Current Trek</h3>-->
 	</div>
 
 	<div class="sidebarSection">
@@ -52,6 +53,8 @@
           </div>
 	  <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
         </div>
+
+
       </div>
       
     </div>
