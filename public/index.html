@@ -6,7 +6,6 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/styles.css">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <script src="js/modernizr.js"></script>    
   </head>
 
   <body ng-controller="geolocationController as geo">
@@ -45,11 +44,12 @@
             </div>
 
             <div ng-show="Trek.showDetails[$index]" class="legOptions">
-              <div>Elevation: {{}}</div>
-              <div>Distance: {{}}</div>
+              <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }}</div>
+              <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
             </div>
 
           </div>
+	  <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
         </div>
       </div>
     </div>
@@ -63,6 +63,7 @@
     <script src="js/app/services.js"></script>
     <script src="js/app/factories.js"></script>
     <script src="js/app/controllers.js"></script>
+    <script src="js/app/filters.js"></script>
 
   </body>
 </html>
