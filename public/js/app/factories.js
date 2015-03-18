@@ -1,6 +1,6 @@
 // this is factories.js
 
-angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', function($rootScope, mapFactory, markerFactory, neighborsService){
+angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService){
   
   this.legs = [];
   var trekOrigin = null;
@@ -18,28 +18,29 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.rend.setMap(mapFactory);
       var thisLeg = this;
       google.maps.event.addListener(thisLeg.rend, 'directions_changed', function(){
-	$rootScope.$apply(function(){ 
-	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
-	    var newMarker = markerFactory.create(thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
-	    var newLeg = self.createLeg(newMarker, thisLeg.dest);
-	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
-	    thisLeg.dest = newMarker;
-	    thisLeg.getDirections();
-	  }
-	});
+      	$rootScope.$apply(function(){ 
+      	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
+      	    var newMarker = markerFactory.create(thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
+      	    var newLeg = self.createLeg(newMarker, thisLeg.dest);
+      	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
+      	    thisLeg.dest = newMarker;
+      	    thisLeg.getDirections();
+            pathElevationService(this.legs)
+      	  }
+      	});
       });
       
       this.getDirections = function(){
-	var request = {
-	  origin: this.origin.getPosition(),
-	  destination: this.dest.getPosition(),
-	  travelMode: google.maps.TravelMode.WALKING
-	};
-	directionsService.route(request, function(response, status) {
-	  if (status == google.maps.DirectionsStatus.OK) {
-            thisLeg.rend.setDirections(response);
-	  }
-	});
+      	var request = {
+      	  origin: this.origin.getPosition(),
+      	  destination: this.dest.getPosition(),
+      	  travelMode: google.maps.TravelMode.WALKING
+      	};
+      	directionsService.route(request, function(response, status) {
+      	  if (status == google.maps.DirectionsStatus.OK) {
+                  thisLeg.rend.setDirections(response);
+      	  }
+      	});
       };
       this.getDirections();
     }
@@ -59,7 +60,9 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     }
     if (leg){
       this.legs.push(leg);
+      pathElevationService(this.legs);
     }
+    
   };  
 
   google.maps.event.addListener(mapFactory, 'click', function(event) {
@@ -91,6 +94,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       var prevIndex = this.legs.indexOf(neighbors.prevLeg);
       this.legs.splice(prevIndex, 2, newLeg);
     }
+    pathElevationService(this.legs);
   };
   
   this.removeLeg = function(index) {
@@ -102,7 +106,8 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.removeMarker(this.legs[0].origin);
     } else {
       this.removeMarker(this.legs[index].dest);
-    }          
+    } 
+    pathElevationService(this.legs);         
   };
 
 }]);
@@ -167,7 +172,7 @@ angular.module('roadWarrior').factory('pathElevationService', function(mapFactor
 
     var path = {
       path: latLngArray,
-      samples: 10
+      samples: 250
     }
     for (var i = 0; i < legsArray.length; i++) {
       if(i === 0){
@@ -183,28 +188,12 @@ angular.module('roadWarrior').factory('pathElevationService', function(mapFactor
         function drawElevation(results) {
           elevations = results;
 
-          chart = new google.visualization.ColumnChart(document.getElementById('elevation-chart'));
+          chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
 
-          // Extract the elevation samples from the returned results
-          // and store them in an array of LatLngs.
           var elevationPath = [];
           for (var i = 0; i < results.length; i++) {
             elevationPath.push(elevations[i].location);
           }
-
-          // Display a polyline of the elevation path.
-          var pathOptions = {
-            path: elevationPath,
-            strokeColor: '#0000CC',
-            opacity: 0.9,
-            map: mapFactory
-          }
-          polyline = new google.maps.Polyline(pathOptions);
-
-          // Extract the data from which to populate the chart.
-          // Because the samples are equidistant, the 'Sample'
-          // column here does double duty as distance along the
-          // X axis.
           var data = new google.visualization.DataTable();
             data.addColumn('string', 'Sample');
             data.addColumn('number', 'Elevation');
@@ -212,7 +201,6 @@ angular.module('roadWarrior').factory('pathElevationService', function(mapFactor
             data.addRow(['', elevations[i].elevation]);
           }
 
-          // Draw the chart using the data within its DIV.
           document.getElementById('elevation-chart').style.display = 'block';
           chart.draw(data, {
             width: 960,
@@ -224,7 +212,6 @@ angular.module('roadWarrior').factory('pathElevationService', function(mapFactor
 
         google.load("visualization", "1", {packages:["corechart"]});
         google.setOnLoadCallback(drawElevation(results));
-        console.log('HOROOORAAAYY IT WOR KED', results);
         
       } else {
         console.log('You suck, sucker');
