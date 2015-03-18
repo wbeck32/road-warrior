@@ -1,6 +1,6 @@
 // this is factories.js
 
-angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', function($rootScope, mapFactory, markerFactory, neighborsService){
+angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService){
   
   this.legs = [];
   var trekOrigin = null;
@@ -60,6 +60,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     if (leg){
       this.legs.push(leg);
     }
+    pathElevationService(this.legs);
   };  
 
   google.maps.event.addListener(mapFactory, 'click', function(event) {
@@ -158,16 +159,16 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
 
 }]);
 
-angular.module('roadWarrior').factory('pathElevationService', function(){
-
-  var pathElevator = new google.maps.ElevationService();  
+angular.module('roadWarrior').factory('pathElevationService', function(){ 
 
   return function(legsArray) {
+    var chart;
+    var pathElevator = new google.maps.ElevationService(); 
     latLngArray = [];
 
     var path = {
       path: latLngArray,
-      samples: 10
+      samples: 250
     }
     for (var i = 0; i < legsArray.length; i++) {
       if(i === 0){
@@ -176,16 +177,26 @@ angular.module('roadWarrior').factory('pathElevationService', function(){
       } else {
         latLngArray.push(legsArray[i].dest.position);
       }
-    };
-    console.log(latLngArray);
-
-    pathElevator.getElevationAlongPath(path, function(results, status) {
-      if (status == google.maps.ElevationStatus.OK){
-        console.log('HOROOORAAAYY IT WOR KED');
-      } else {
-        console.log('You suck, sucker');
-      }
-    });  
+        chart = new google.visualization.LineChart(document.getElementById('elevation_chart'));
+        pathElevator.getElevationAlongPath(path, function(results, status) {
+        if (status == google.maps.ElevationStatus.OK){
+        console.log('Elevation results returned.');
+        }
+        var elevations = results;
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Sample');
+        data.addColumn('number', 'Elevation');
+        for (var i = 0; i < results.length; i++) {
+        data.addRow(['', elevations[i].elevation]);
+        }
+        document.getElementById('elevation_chart').style.display = 'block';
+        chart.draw(data, {
+          height: 150,
+          legend: 'none',
+          titleY: 'Elevation (m)'
+        });
+      });
+    };    
   };
 });
 

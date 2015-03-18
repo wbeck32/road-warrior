@@ -20,12 +20,13 @@ angular.module('roadWarrior').controller('TrekController', ['legService', 'pathE
   this.removeLeg = function(index){
     legService.removeLeg(index);
     this.hideFields();
+    pathElevationService(this.legs);
+
   };
 
   this.toggleEdit = function(index){
     this.showEdit[index] = !this.showEdit[index];
     pathElevationService(this.legs);
-
   };
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];

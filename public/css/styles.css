@@ -68,3 +68,9 @@ button {
 .legOptions div {
 	margin:6px 0;
 }
+
+#elevation_chart {
+	display: block;
+	width: 100%;
+	float: left;
+}
