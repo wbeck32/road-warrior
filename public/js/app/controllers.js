@@ -24,6 +24,7 @@ angular.module('roadWarrior').controller('TrekController', ['legService', 'neigh
 
   this.toggleEdit = function(index){
     this.showEdit[index] = !this.showEdit[index];
+    console.log(this.legs[0])
   };
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
