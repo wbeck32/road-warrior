@@ -115,9 +115,9 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 
     create : function(latLng, thisObj) {
       var marker = new google.maps.Marker({
-	position: latLng,
-	map: mapFactory,
-	draggable: true
+      	position: latLng,
+      	map: mapFactory,
+      	draggable: true
       });
 
       elevationService(latLng, marker);
@@ -127,15 +127,15 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       mapFactory.panTo(latLng);
 
       google.maps.event.addListener(marker, 'click', function(event){
-	$rootScope.$apply(function(){
-	  thisObj.removeMarker(marker);
-	});
+      	$rootScope.$apply(function(){
+      	  thisObj.removeMarker(marker);
+      	});
       });
 
       google.maps.event.addListener(marker, 'dragend', function(event){
-	$rootScope.$apply(function(){
-	  thisObj.moveMarker(marker);
-	});
+      	$rootScope.$apply(function(){
+      	  thisObj.moveMarker(marker);
+      	});
       });
       return marker;
     }
@@ -158,7 +158,7 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
 
 }]);
 
-angular.module('roadWarrior').factory('pathElevationService', function(){
+angular.module('roadWarrior').factory('pathElevationService', function(mapFactory){
 
   var pathElevator = new google.maps.ElevationService();  
 
@@ -177,11 +177,55 @@ angular.module('roadWarrior').factory('pathElevationService', function(){
         latLngArray.push(legsArray[i].dest.position);
       }
     };
-    console.log(latLngArray);
 
     pathElevator.getElevationAlongPath(path, function(results, status) {
       if (status == google.maps.ElevationStatus.OK){
-        console.log('HOROOORAAAYY IT WOR KED');
+        function drawElevation(results) {
+          elevations = results;
+
+          chart = new google.visualization.ColumnChart(document.getElementById('elevation-chart'));
+
+          // Extract the elevation samples from the returned results
+          // and store them in an array of LatLngs.
+          var elevationPath = [];
+          for (var i = 0; i < results.length; i++) {
+            elevationPath.push(elevations[i].location);
+          }
+
+          // Display a polyline of the elevation path.
+          var pathOptions = {
+            path: elevationPath,
+            strokeColor: '#0000CC',
+            opacity: 0.9,
+            map: mapFactory
+          }
+          polyline = new google.maps.Polyline(pathOptions);
+
+          // Extract the data from which to populate the chart.
+          // Because the samples are equidistant, the 'Sample'
+          // column here does double duty as distance along the
+          // X axis.
+          var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Sample');
+            data.addColumn('number', 'Elevation');
+          for (var i = 0; i < results.length; i++) {
+            data.addRow(['', elevations[i].elevation]);
+          }
+
+          // Draw the chart using the data within its DIV.
+          document.getElementById('elevation-chart').style.display = 'block';
+          chart.draw(data, {
+            width: 960,
+            height: 300,
+            legend: 'none',
+            titleY: 'Elevation (m)'
+        });
+        }
+
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawElevation(results));
+        console.log('HOROOORAAAYY IT WOR KED', results);
+        
       } else {
         console.log('You suck, sucker');
       }

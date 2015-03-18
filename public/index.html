@@ -52,11 +52,14 @@
 	  <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
         </div>
       </div>
+      <div id='elevation-chart'></div>
     </div>
 
     <!-- Vendor Libs: angular and googlemaps -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>    
+    <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>   
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart" type="text/javascript"></script> 
     <!-- App Libs -->
     <script src="js/app/app.js"></script>
     <script src="js/app/mapStyles.js"></script>
