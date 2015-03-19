@@ -191,12 +191,12 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
     var path = {
       path: latLngArray,
       samples: latLngArray.length/2
-    }
+    };
 
     pathElevator.getElevationAlongPath(path, function(results, status) {
       if (status == google.maps.ElevationStatus.OK){
         leg.elevationProfile = results;
-        elevationProfileFactory(legArray)
+        elevationProfileFactory(legArray);
       } else {
         console.log('You suck, sucker', status);
       }
@@ -221,9 +221,9 @@ angular.module('roadWarrior').factory('elevationProfileFactory', function(){
     
 
     document.getElementById('elevation-chart').style.display = 'block';
-    chart.draw(data, { legend: 'none',forceIFrame: false});
-  }
-})
+    chart.draw(data, { legend: 'none', forceIFrame: false, chartArea: {width: '100%' } });
+  };
+});
 
 angular.module('roadWarrior').factory('elevationService', function(){
 
