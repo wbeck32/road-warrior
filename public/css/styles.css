@@ -58,18 +58,21 @@ html, body{
 	border:1px solid black;
 }
 
-button {
-	margin:5px;
+.buttonBlock {
+    float:right;
 }
 
+button {
+	margin:0 5px;
+}
 
 .leg {
-	margin: 5px 0;
+	margin: 20px 0;
 }
 
 .legOptions {
 	padding: 5px;
-	margin: 5px;
+	margin: 10px 5px;
 	border: 1px solid gray;
 	border-radius: 5px;
 }
