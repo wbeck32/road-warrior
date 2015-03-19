@@ -17,7 +17,7 @@
 	<div id="elevation-chart"></div>
       </div>
 
-      <div class="sidebarContent" ng-controller="TrekController as Trek">
+      <div class="sidebarContent"> 
 	<div class="sidebarSection">
 	  <div class="globalHeader">
 	    <img id="logo" src="images/logo.png">
@@ -28,8 +28,24 @@
           <img class="profileimg" src="images/profile.jpg" />  profile | treks | connections | sign out
       	</div>
 
-	<div class="sidebarSection">
-  	  Leg List
+	<div class="sidebarSection" ng-controller="AllTreksController as AllTreks">
+	  Trek List
+	  <div ng-repeat="trek in AllTreks.treks track by $index">
+	    <a href="#" ng-click="AllTreks.renderTrek($index)">{{trek.name}}</a>
+	  </div>
+	</div>
+
+	<div class="sidebarSection" ng-controller="TrekController as Trek">
+
+	  <div>
+	    <span ng-click="Trek.editName()" ng-hide="Trek.showEditName">{{Trek.name}}</span>
+	    <span class="buttonBlock"><button ng-click="Trek.saveTrek()">Save Trek</button></span>
+	  </div>
+
+	  <form ng-show="Trek.showEditName" ng-submit="Trek.editName()">
+	    <input type="text" ng-model="Trek.name" />
+	  </form>
+
           <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
             {{leg.origin.name}} => {{leg.dest.name}}
 	    <span class="buttonBlock">

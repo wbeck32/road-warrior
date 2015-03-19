@@ -2,13 +2,25 @@
 
 // Trek Controller
 
-angular.module('roadWarrior').controller('TrekController', ['legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', function(legService, pathElevationService, neighborsService, mapFactory, markerFactory){
+angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', function(trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory){
 
   this.legs = legService.legs;
   this.showEdit = []; 
   this.showDetails = [];
+  this.showEditName = false;
+  this.name = legService.name;
 
   var self = this;
+
+  this.saveTrek = function(){
+    trekService.allTreks.push({
+      name: this.name,
+      legs: this.legs
+    });
+    legService.unRenderAll();
+    this.legs = legService.legs;
+    this.name = legService.name;
+  };
 
   this.hideFields = function(){
     for (var i = 0; i < self.legs.length; i++){
@@ -29,6 +41,11 @@ angular.module('roadWarrior').controller('TrekController', ['legService', 'pathE
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
   };
+
+  this.editName = function(){
+    this.showEditName = !this.showEditName;
+  };
+
 }]);
 
 angular.module('roadWarrior').controller('geolocationController', function(mapFactory){
@@ -43,3 +60,16 @@ angular.module('roadWarrior').controller('geolocationController', function(mapFa
   };
   this.getLocation();
 });
+
+angular.module('roadWarrior').controller('AllTreksController', ['legService', 'trekService', function(legService, trekService){
+
+  this.treks = trekService.allTreks;
+
+  this.renderTrek = function(index){
+    legService.unRenderAll();
+    legService.legs = this.treks[index].legs;
+    legService.name = this.treks[index].name;
+    legService.renderAll();
+  };
+
+}]);
