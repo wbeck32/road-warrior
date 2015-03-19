@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html ng-app="roadWarrior">
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-  </head>
+<head>
+<title>Simple Map</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/styles.css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+</head>
 
-  <body ng-controller="geolocationController as geo">
+<body ng-controller="geolocationController as geo">
 
-    <div class="wrapper">
+<div class="wrapper">
 
-      <div class="leftContent">
-	<div id="map-canvas"></div>
-	<div id="elevation-chart"></div>
+  <div class="leftContent">
+    <div id="map-canvas"></div>
+    <div id="elevation-chart"></div>
+  </div>
+
+  <div class="sidebarContent" ng-controller="TrekController as Trek"> 
+    <div class="sidebarSection">
+      <div class="globalHeader">
+        <img id="logo" src="images/logo.png">
       </div>
+  </div>
 
-      <div class="sidebarContent"> 
-	<div class="sidebarSection">
-	  <div class="globalHeader">
-	    <img id="logo" src="images/logo.png">
-	  </div>
-	</div>
-	
-	<div class="sidebarSection">
-          <img class="profileimg" src="images/profile.jpg" />  profile | treks | connections | sign out
-      	</div>
-
-	<div class="sidebarSection" ng-controller="AllTreksController as AllTreks">
-	  Trek List
-	  <div ng-repeat="trek in AllTreks.treks track by $index">
-	    <a href="#" ng-click="AllTreks.renderTrek($index)">{{trek.name}}</a>
-	  </div>
-	</div>
-
-	<div class="sidebarSection" ng-controller="TrekController as Trek">
-
-	  <div>
-	    <span ng-click="Trek.editName()" ng-hide="Trek.showEditName">{{Trek.name}}</span>
-	    <span class="buttonBlock"><button ng-click="Trek.saveTrek()">Save Trek</button></span>
-	  </div>
-
-	  <form ng-show="Trek.showEditName" ng-submit="Trek.editName()">
-	    <input type="text" ng-model="Trek.name" />
-	  </form>
-
-          <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
-            {{leg.origin.name}} => {{leg.dest.name}}
-	    <span class="buttonBlock">
-              <button ng-click="Trek.toggleDetails($index)">Details</button>
-              <button ng-click="Trek.toggleEdit($index)">Edit</button>
-              <button ng-click="Trek.removeLeg($index)">Delete</button>
-	    </span>
-            <div ng-show="Trek.showEdit[$index]" class="legOptions">
-              <div>Origin name: <input type="text" ng-model="leg.origin.name" /></div>
-              <div>Destination name: <input type="text" ng-model="leg.dest.name" /></div>
-            </div>
-
-            <div ng-show="Trek.showDetails[$index]" class="legOptions">
-              <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-              <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
-            </div>
-
-          </div>
-	  <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
-        </div>
-
-
-      </div>
-      
+    <div class="sidebarSection">
+      <img class="profileimg" src="images/profile.jpg" />  profile | treks | connections | sign out
     </div>
 
-    <!-- Vendor Libs: angular and googlemaps -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>   
-    <script src="https://www.google.com/jsapi"></script>
-    <script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart"></script> 
-    <!-- App Libs -->
-    <script src="js/app/app.js"></script>
-    <script src="js/app/mapStyles.js"></script>
-    <script src="js/app/services.js"></script>
-    <script src="js/app/factories.js"></script>
-    <script src="js/app/controllers.js"></script>
-    <script src="js/app/filters.js"></script>
+    <div class="sidebarSection">
+      Trek List
+      <div ng-repeat="trek in Trek.treks track by $index">
+        <a href="#" ng-click="Trek.renderTrek($index)">{{trek.name}}</a>
+      </div>
+    </div>
 
-  </body>
+    <div class="sidebarSection">
+
+      <div>
+        <span ng-click="Trek.editName()" ng-hide="Trek.showEditName">{{Trek.name}}</span>
+        <span class="buttonBlock"><button ng-click="Trek.saveTrek()">Save Trek</button></span>
+      </div>
+
+      <form ng-show="Trek.showEditName" ng-submit="Trek.editName()">
+        <input type="text" ng-model="Trek.name" />
+      </form>
+
+      <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
+        {{leg.origin.name}} => {{leg.dest.name}}
+        <span class="buttonBlock">
+          <button ng-click="Trek.toggleDetails($index)">Details</button>
+          <button ng-click="Trek.toggleEdit($index)">Edit</button>
+          <button ng-click="Trek.removeLeg($index)">Delete</button>
+        </span>
+        <div ng-show="Trek.showEdit[$index]" class="legOptions">
+          <div>Origin name: <input type="text" ng-model="leg.origin.name" /></div>
+          <div>Destination name: <input type="text" ng-model="leg.dest.name" /></div>
+        </div>
+
+        <div ng-show="Trek.showDetails[$index]" class="legOptions">
+          <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+          <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
+        </div>
+
+      </div>
+    <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
+  </div>
+
+
+</div>
+
+</div>
+
+<!-- Vendor Libs: angular and googlemaps -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>   
+<script src="https://www.google.com/jsapi"></script>
+<script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart"></script> 
+<!-- App Libs -->
+<script src="js/app/app.js"></script>
+<script src="js/app/mapStyles.js"></script>
+<script src="js/app/services.js"></script>
+<script src="js/app/factories.js"></script>
+<script src="js/app/controllers.js"></script>
+<script src="js/app/filters.js"></script>
+
+</body>
 </html>

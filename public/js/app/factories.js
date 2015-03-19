@@ -11,16 +11,21 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
   var self = this;
 
   this.unRenderAll = function(){
-    this.legs[0].origin.setMap(null);
-    this.legs.forEach(function(leg){
+    markerFactory.markerIndex = 65;
+    trekOrigin = null;
+    this.name = "new trek";
+    if (this.legs.length > 0){
+      this.legs[0].origin.setMap(null);
+      this.legs.forEach(function(leg){
       leg.dest.setMap(null);
       leg.rend.setMap(null);
     });
-    this.legs = [];
-    this.name = "new trek";
+      this.legs = [];
+    }
   };
 
   this.renderAll = function(){
+    trekOrigin = this.legs[0].origin;
     this.legs[0].origin.setMap(mapFactory);
     this.legs.forEach(function(leg){
       leg.dest.setMap(mapFactory);
@@ -133,10 +138,12 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
 angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
  
-  var markerIndex = 65;
+  
 
   return {
-
+    
+    markerIndex : 65,
+    
     create : function(latLng, thisObj) {
       var marker = new google.maps.Marker({
       	position: latLng,
@@ -145,8 +152,8 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       });
 
       elevationService(latLng, marker);
-      marker.name = String.fromCharCode(markerIndex);
-      markerIndex++;
+      marker.name = String.fromCharCode(this.markerIndex);
+      this.markerIndex++;
 
       mapFactory.panTo(latLng);
 

@@ -9,15 +9,30 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.showDetails = [];
   this.showEditName = false;
   this.name = legService.name;
+  this.treks = trekService.allTreks;
+  this.currentTrekIndex = trekService.allTreks.length;
 
   var self = this;
+  
+  this.renderTrek = function(index){
+    legService.unRenderAll();
+    legService.legs = this.treks[index].legs;
+    legService.name = this.treks[index].name;
+    legService.renderAll();
+    this.currentTrekIndex = index;
+    this.legs = legService.legs;
+    this.name = legService.name;
+    this.hideFields();
+  };
+
 
   this.saveTrek = function(){
-    trekService.allTreks.push({
+    trekService.allTreks[this.currentTrekIndex] = {
       name: this.name,
       legs: this.legs
-    });
+    };
     legService.unRenderAll();
+    this.currentTrekIndex = trekService.allTreks.length;
     this.legs = legService.legs;
     this.name = legService.name;
   };
@@ -60,16 +75,3 @@ angular.module('roadWarrior').controller('geolocationController', function(mapFa
   };
   this.getLocation();
 });
-
-angular.module('roadWarrior').controller('AllTreksController', ['legService', 'trekService', function(legService, trekService){
-
-  this.treks = trekService.allTreks;
-
-  this.renderTrek = function(index){
-    legService.unRenderAll();
-    legService.legs = this.treks[index].legs;
-    legService.name = this.treks[index].name;
-    legService.renderAll();
-  };
-
-}]);
