@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="roadWarrior">
+
   <head>
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -11,56 +12,54 @@
   <body ng-controller="geolocationController as geo">
 
     <div class="wrapper">
-
       <div class="leftContent">
-	<div id="map-canvas"></div>
-	<div id="elevation-chart"></div>
+  	    <div id="map-canvas"> 
+        </div>
+  	    <div id="elevation-chart">  
+        </div>
       </div>
-
       <div class="sidebarContent" ng-controller="TrekController as Trek">
-	<div class="sidebarSection">
-	  <div class="globalHeader">
-	    <img id="logo" src="images/logo.png">
-	  </div>
-	</div>
-	
-	<div class="sidebarSection">
+	      <div class="sidebarSection">
+	        <div class="globalHeader">
+	          <img id="logo" src="images/logo.png">
+	        </div>
+	      </div>
+	      <div class="sidebarSection">
           <img class="profileimg" src="images/profile.jpg" />  profile | treks | connections | sign out
       	</div>
-
-	<div class="sidebarSection">
-  	  Leg List
+        <div class="sidebarSection">
+          <h3>Leg List</h3>
           <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
             {{leg.origin.name}} => {{leg.dest.name}}
-	    <span class="buttonBlock">
+  	        <span class="buttonBlock">
               <button ng-click="Trek.toggleDetails($index)">Details</button>
               <button ng-click="Trek.toggleEdit($index)">Edit</button>
               <button ng-click="Trek.removeLeg($index)">Delete</button>
-	    </span>
+  	        </span>
             <div ng-show="Trek.showEdit[$index]" class="legOptions">
-              <div>Origin name: <input type="text" ng-model="leg.origin.name" /></div>
-              <div>Destination name: <input type="text" ng-model="leg.dest.name" /></div>
+              <div>Origin name: <input type="text" ng-model="leg.origin.name" />
+              </div>
+              <div>Destination name: <input type="text" ng-model="leg.dest.name" />
+              </div>
             </div>
-
             <div ng-show="Trek.showDetails[$index]" class="legOptions">
-              <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-              <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
+              <p>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet
+              </p>
+              <p>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</p>
             </div>
-
           </div>
-	  <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
+  	      <p>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</p> 
         </div>
-
-
       </div>
-      
     </div>
+  </div>
 
     <!-- Vendor Libs: angular and googlemaps -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>   
     <script src="https://www.google.com/jsapi"></script>
     <script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart"></script> 
+    
     <!-- App Libs -->
     <script src="js/app/app.js"></script>
     <script src="js/app/mapStyles.js"></script>
