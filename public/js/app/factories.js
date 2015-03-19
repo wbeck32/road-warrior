@@ -248,7 +248,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', function(){
     
 
     document.getElementById('elevation-chart').style.display = 'block';
-    chart.draw(data, { legend: 'none', forceIFrame: false, chartArea: {width: '100%' } });
+    chart.draw(data, { legend: 'none', forceIFrame: false, chartArea: {width: '100%', height: '98%'} });
   };
 });
 
