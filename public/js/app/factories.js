@@ -221,10 +221,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', function(){
     
 
     document.getElementById('elevation-chart').style.display = 'block';
-    chart.draw(data, {
-      legend: 'none',
-      titleY: 'none'
-  });
+    chart.draw(data, { legend: 'none',forceIFrame: false});
   }
 })
 

@@ -9,15 +9,17 @@ html, body{
 #map-canvas {
 	margin: 0px;
 	padding: 0px;
-	height: 70%;
+	height: 85%;
 }
 
 #elevation-chart {
 	width: 100%;
+	height: 15%;
 }
+
 #logo {
 	float: left;
-	height:100px;
+	height:65px;
 }
 
 .profileimg {
@@ -51,6 +53,7 @@ button {
 
 .leftContent {
 	width:65%;
+	overflow: hidden;
 }
 
 .sidebarContent {
