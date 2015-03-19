@@ -31,6 +31,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       leg.dest.setMap(mapFactory);
       leg.rend.setMap(mapFactory);
     });
+    elevationProfileFactory(this.legs);
   };
 
   this.createLeg = function(org, des){
