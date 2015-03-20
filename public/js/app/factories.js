@@ -51,6 +51,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
       	    var newMarker = markerFactory.create(thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
       	    var newLeg = self.createLeg(newMarker, thisLeg.dest);
+	    newLeg.travelMode = thisLeg.travelMode;
       	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
       	    thisLeg.dest = newMarker;
       	    thisLeg.getDirections();
