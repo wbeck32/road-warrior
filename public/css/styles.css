@@ -67,6 +67,16 @@ button {
 	margin:0 5px;
 }
 
+#trekDetails {
+    height: 50%;
+}
+
+#legList {
+    max-height: 95%;
+    width: 100%;
+    overflow:auto;
+}
+
 .leg {
 	margin: 20px 0;
 }
