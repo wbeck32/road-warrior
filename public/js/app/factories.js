@@ -62,7 +62,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       	var request = {
       	  origin: this.origin.getPosition(),
       	  destination: this.dest.getPosition(),
-      	  travelMode: google.maps.TravelMode.WALKING
+      	  travelMode: this.travelMode
       	};
       	directionsService.route(request, function(response, status) {
       	  if (status == google.maps.DirectionsStatus.OK) {
