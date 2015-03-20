@@ -2,7 +2,7 @@
 
 // Trek Controller
 
-angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', function(trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory){
+angular.module('roadWarrior').controller('TrekController', ['$http', 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', function($http, trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory){
 
   this.legs = legService.legs;
   this.showEdit = []; 
@@ -33,14 +33,27 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
 
   this.saveTrek = function(){
-    trekService.allTreks[this.currentTrekIndex] = {
+    var trek = {
       name: this.name,
       legs: this.legs
-    };
+    }
+    trekService.allTreks[this.currentTrekIndex] = trek;
     legService.unRenderAll();
     this.currentTrekIndex = trekService.allTreks.length;
     this.legs = legService.legs;
     this.name = legService.name;
+    console.log(trek.name);
+    $http({
+      method: 'POST',
+      url:'/api/saveatrek', 
+      data: {trek: trek},
+      headers: {'Content-Type': undefined}
+    }).
+      success(function(data, status, headers, config){
+      console.log('success');
+    }).error(function(data, status, headers, config){
+      console.log('failure')
+    });
   };
 
   this.hideFields = function(){
