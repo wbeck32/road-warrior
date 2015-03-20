@@ -62,7 +62,7 @@
           <form ng-submit="Trek.toggleEdit($index)">
 	    <div><label>origin name: </label><input type="text" ng-model="leg.origin.name" /></div>
 	    <div><label>destination name: </label><input type="text" ng-model="leg.dest.name" /></div>
-	    travel mode: <select ng-model="leg.travelMode">
+	    travel mode: <select ng-model="leg.travelMode" ng-change="leg.getDirections()">
 	      <option value="WALKING">Walking</option>
 	      <option value="DRIVING">Driving</option>
 	      <option value="BICYCLING">Bicycling</option>
