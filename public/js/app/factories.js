@@ -215,7 +215,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
       }
       latLngArray = newLatLngArray;
     }
-    console.log(latLngArray.length);
+
     var path = {
       path: latLngArray,
       samples: latLngArray.length/2

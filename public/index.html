@@ -6,6 +6,7 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/styles.css">
 <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+
 </head>
 
 <body ng-controller="geolocationController as geo">
@@ -42,8 +43,8 @@
         <span class="buttonBlock"><button ng-click="Trek.saveTrek()">Save Trek</button></span>
       </div>
 
-      <form ng-show="Trek.showEditName" ng-submit="Trek.editName()">
-        <input type="text" ng-model="Trek.name" />
+      <form ng-show="Trek.showEditName">
+        <input type="text" ng-model="Trek.name" ng-blur="Trek.editName()"/>
       </form>
 
       <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
@@ -59,7 +60,7 @@
           <form ng-submit="Trek.toggleEdit($index)">
 	    <div><label>Origin name: </label><input type="text" ng-model="leg.origin.name" /></div>
 	    <div><label>Destination name: </label><input type="text" ng-model="leg.dest.name" /></div>
-	    <input type="submit"></input>
+	    <input type="submit" ng-hide="true"/>
 	 </form>
         </div>
 
