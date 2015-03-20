@@ -111,8 +111,10 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     var neighbors = neighborsService(marker, this.legs);
     if (!neighbors.prevLeg && !neighbors.nextLeg) {
       trekOrigin = null;
+      markerFactory.markerIndex = 65;
     } else if (!neighbors.prevLeg && neighbors.nextLeg) {
       trekOrigin = neighbors.nextLeg.dest;
+      trekOrigin.setIcon("https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + trekOrigin.index + "|009900|000000");
       this.legs.shift().rend.setMap(null);
 
     } else if (neighbors.prevLeg && !neighbors.nextLeg) {
@@ -132,6 +134,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.legs[0].origin.setMap(null);
       this.removeMarker(this.legs[0].dest);
       trekOrigin = null;
+      markerFactory.markerIndex = 65;
     } else if (index === 0){
       this.removeMarker(this.legs[0].origin);
     } else {
