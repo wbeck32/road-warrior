@@ -22,7 +22,7 @@
       <div class="globalHeader">
         <img id="logo" src="images/logo.png">
       </div>
-  </div>
+    </div>
 
     <div class="sidebarSection">
       <img class="profileimg" src="images/profile.jpg" />  profile | treks | connections | sign out
@@ -30,12 +30,12 @@
 
     <div class="sidebarSection">
       Trek List
-      <div ng-repeat="trek in Trek.treks track by $index">
+      <div ng-repeat="trek in Trek.treks track by $index" ng-cloak>
         <a href="#" ng-click="Trek.renderTrek($index)">{{trek.name}}</a>
       </div>
     </div>
 
-    <div class="sidebarSection">
+    <div class="sidebarSection" ng-cloak>
 
       <div>
         <span ng-click="Trek.editName()" ng-hide="Trek.showEditName">{{Trek.name}}</span>
@@ -64,8 +64,8 @@
         </div>
 
       </div>
-    <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
-  </div>
+      <span>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
+    </div>
 
 
 </div>
@@ -74,7 +74,7 @@
 
 <!-- Vendor Libs: angular and googlemaps -->
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E'></script>   
+<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>   
 <script src="https://www.google.com/jsapi"></script>
 <script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart"></script> 
 <!-- App Libs -->
