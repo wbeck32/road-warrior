@@ -43,6 +43,8 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.rend = new google.maps.DirectionsRenderer(renderOptions);
       this.rend.setMap(mapFactory);
       this.elevationProfile = [];
+      this.travelMode = "WALKING";
+
       var thisLeg = this;
       google.maps.event.addListener(thisLeg.rend, 'directions_changed', function(){
       	$rootScope.$apply(function(){ 
@@ -150,11 +152,12 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       var marker = new google.maps.Marker({
       	position: latLng,
       	map: mapFactory,
-      	draggable: true
+      	draggable: true,
+	icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + String.fromCharCode(this.markerIndex) + "|ff0000|000000"
       });
 
       elevationService(latLng, marker);
-      marker.name = String.fromCharCode(this.markerIndex);
+      marker.index = String.fromCharCode(this.markerIndex);
       this.markerIndex++;
 
       mapFactory.panTo(latLng);

@@ -40,7 +40,7 @@
 
       <div>
         <span ng-click="Trek.editName()" ng-hide="Trek.showEditName">{{Trek.name}}</span>
-        <span class="buttonBlock"><button ng-click="Trek.saveTrek()">Save Trek</button></span>
+        <span class="buttonBlock"><button ng-click="Trek.saveTrek()">save trek</button></span>
       </div>
 
       <form ng-show="Trek.showEditName">
@@ -50,16 +50,24 @@
       <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
 
 
-        <span ng-click="Trek.toggleEdit($index)">{{leg.origin.name}} => {{leg.dest.name}}</span>
+        <span ng-click="Trek.toggleEdit($index)">
+	  <b>{{leg.origin.index}}</b>{{Trek.markerName(leg.origin)}} => <b>{{leg.dest.index}}</b>{{Trek.markerName(leg.dest)}}
+	</span>
 
         <span class="buttonBlock">
-          <button ng-click="Trek.toggleDetails($index)">Details</button>
-          <button ng-click="Trek.removeLeg($index)">Delete</button>
+          <button ng-click="Trek.toggleDetails($index)">details</button>
+          <button ng-click="Trek.removeLeg($index)">delete</button>
         </span>
         <div ng-show="Trek.showEdit[$index]" class="legOptions">
           <form ng-submit="Trek.toggleEdit($index)">
-	    <div><label>Origin name: </label><input type="text" ng-model="leg.origin.name" /></div>
-	    <div><label>Destination name: </label><input type="text" ng-model="leg.dest.name" /></div>
+	    <div><label>origin name: </label><input type="text" ng-model="leg.origin.name" /></div>
+	    <div><label>destination name: </label><input type="text" ng-model="leg.dest.name" /></div>
+	    travel mode: <select name="travelMode">
+	      <option value="WALKING">Walking</option>
+	      <option value="DRIVING">Driving</option>
+	      <option value="TRANSIT">Transit</option>
+	      <option value="BICYCLING">Bicycling</option>
+	    </select>
 	    <input type="submit" ng-hide="true"/>
 	 </form>
         </div>

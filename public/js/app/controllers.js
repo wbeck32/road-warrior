@@ -12,6 +12,12 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.treks = trekService.allTreks;
   this.currentTrekIndex = trekService.allTreks.length;
 
+  this.markerName = function(marker){
+    if(marker.name){
+      return ": " + marker.name;
+    } else return "";
+  };
+
   var self = this;
   
   this.renderTrek = function(index){
