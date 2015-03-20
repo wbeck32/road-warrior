@@ -143,18 +143,23 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
 angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
  
-  
 
   return {
     
     markerIndex : 65,
-    
+
+    markerColor : function(){
+      if (this.markerIndex === 65){
+	return "|009900|000000";
+      } else return "|ff0000|000000";
+    },
+
     create : function(latLng, thisObj) {
       var marker = new google.maps.Marker({
       	position: latLng,
       	map: mapFactory,
       	draggable: true,
-	icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + String.fromCharCode(this.markerIndex) + "|ff0000|000000"
+	icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + String.fromCharCode(this.markerIndex) + this.markerColor()
       });
 
       elevationService(latLng, marker);
