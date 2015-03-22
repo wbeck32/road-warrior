@@ -15,7 +15,7 @@
   <div class="leftContent">
     <div id="map-canvas">
     </div>
-    <div id="elevation-chart" ng-hide="checked">
+    <div id="elevation-chart" ng-hide="checked">    
     </div>
   </div>
   <div class="sidebarContent" ng-controller="TrekController as Trek"> 
@@ -81,9 +81,9 @@
     </div>
     <span ng-cloak>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles
     </span>
-    <div class="button">
+    <span>
       <input type="checkbox" ng-model="checked">
-        <label for="">Hide Elevation
+        <label for"">Hide Elevation
         </label>
     </div>
   </div>
