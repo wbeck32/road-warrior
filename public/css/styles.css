@@ -15,13 +15,44 @@ html, body{
 	padding: 1%;
 }
 
+.slider {
+	position:relative;
+	color:#000;
+	text-decoration: none;
+}
+
+.slider:hover {
+	color:#000;
+}
+
+.slider:before {
+	content: "";
+	position:absolute;
+	width:100%;
+	height:2px;
+	bottom: 0;
+	left: 0;
+	background-color: #acbcc9;
+	visibility: hidden;
+	-webkit-transform: scaleX(0);
+  	transform: scaleX(0);
+  	-webkit-transition: all 0.2s ease-in-out 0s;
+  	transition: all 0.2s ease-in-out 0s;
+}
+
+.slider:hover:before {
+	visibility: visible;
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+}
+
 .leftContent,.sidebarContent {
 	height:100%;
 	padding:0;
 }
 
 .leftContent {
-        float: left;
+    float: left;
 	width:68%;
 }
 
@@ -35,7 +66,11 @@ html, body{
 .sidebarSection {
 	border-bottom:1px solid black;
 	width:100%;
-	padding: 5px;
+	padding: 7px 5px;
+}
+
+.myTreks {
+	margin: 0 0 12px 0;
 }
 
 #map-canvas {
@@ -57,6 +92,7 @@ html, body{
 	width:60px;
 	height:50px;
 	border:1px solid black;
+	margin: 0 10px 0 0;
 }
 
 .buttonBlock {
