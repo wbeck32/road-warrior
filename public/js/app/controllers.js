@@ -81,3 +81,10 @@ angular.module('roadWarrior').controller('geolocationController', function(mapFa
   };
   this.getLocation();
 });
+
+angular.module('roadWarrior').controller('ElevationProfileController', function(){
+  this.show = true;
+  this.slide = function(){
+    this.show = !this.show;
+  }
+})
