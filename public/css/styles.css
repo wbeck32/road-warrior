@@ -102,6 +102,27 @@ html, body{
 
 }
 
+.chart-image.ng-hide-add,
+#elevation-chart.ng-hide-remove {
+  display:block!important;
+}
+
+.chart-image.ng-hide-remove.ng-hide-remove-active {
+  -webkit-animation:0.5s slide-up;
+  animation:0.5s slide-up;
+  transition: .3s linear all;
+  height: 100%;
+
+}
+
+.chart-image.ng-hide-add.ng-hide-add-active {
+  -webkit-animation:0.5s slide-down;
+  animation:0.5s slide-down;
+  transition: .3s linear all;
+  height: 0%;
+
+}
+
 #logo {
 	height:65px;
 	display: block;
