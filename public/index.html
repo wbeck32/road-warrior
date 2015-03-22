@@ -1,90 +1,92 @@
 <!DOCTYPE html>
 <html ng-app="roadWarrior">
+
 <head>
 <title>Simple Map</title>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/styles.css">
 <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-
 </head>
 
 <body ng-controller="geolocationController as geo">
 
 <div class="wrapper">
-
   <div class="leftContent">
-    <div id="map-canvas"></div>
-    <div id="elevation-chart"></div>
+    <div id="map-canvas">
+    </div>
+    <div id="elevation-chart" ng-hide="checked">
+    </div>
   </div>
-
   <div class="sidebarContent" ng-controller="TrekController as Trek"> 
     <div class="sidebarSection">
       <div class="globalHeader">
         <img id="logo" src="images/logo.png">
       </div>
     </div>
-
     <div class="sidebarSection">
       <img class="profileimg" src="images/profile.jpg" /> <span class="slider">profile</span>&nbsp;|&nbsp;<span class="slider">sign out</span>
     </div>
-
     <div class="sidebarSection" id="trekList">
       <div class="myTreks">My Treks</div>
       <div ng-repeat="trek in Trek.treks track by $index" ng-cloak>
         <span class="slider" ng-click="Trek.renderTrek($index)">{{trek.name}}</span>
       </div>
     </div>
-
     <div class="sidebarSection" id="trekDetails" ng-cloak>
-
       <div>
         <span ng-click="Trek.editName()" ng-hide="Trek.showEditName" class="slider">{{Trek.name}}</span>
         <span class="buttonBlock"><button ng-click="Trek.saveTrek()">save trek</button></span>
       </div>
-
       <form ng-show="Trek.showEditName">
         <input type="text" ng-model="Trek.name" ng-blur="Trek.editName()"/>
       </form>
-
       <div id="legList">
-
-	<div ng-repeat="leg in Trek.legs track by $index" class="leg" >
-
-  <span ng-click="Trek.toggleEdit($index)">
-	    <span class="slider"><b>{{leg.origin.index}}</b>{{Trek.markerName(leg.origin)}} => <b>{{leg.dest.index}}</b>{{Trek.markerName(leg.dest)}}</span>
-	  </span>
-
+        <div ng-repeat="leg in Trek.legs track by $index" class="leg" >
+          <span ng-click="Trek.toggleEdit($index)">
+  	      <span class="slider"><b>{{leg.origin.index}}</b>{{Trek.markerName(leg.origin)}} => <b>{{leg.dest.index}}</b>{{Trek.markerName(leg.dest)}}</span>
+  	      </span>
           <span class="buttonBlock">
             <button ng-click="Trek.toggleDetails($index)">details</button>
             <button ng-click="Trek.removeLeg($index)">delete</button>
           </span>
           <div ng-show="Trek.showEdit[$index]" class="legOptions">
             <form ng-submit="Trek.toggleEdit($index)">
-	      <div><label>origin name: </label><input type="text" ng-model="leg.origin.name" /></div>
-	      <div><label>destination name: </label><input type="text" ng-model="leg.dest.name" /></div>
-	      travel mode: <select ng-model="leg.travelMode" ng-change="leg.getDirections()">
-		<option value="WALKING">Walking</option>
-		<option value="DRIVING">Driving</option>
-		<option value="BICYCLING">Bicycling</option>
-		<option value="TRANSIT">Transit</option>
-	      </select>
-	      <input type="submit" ng-hide="true"/>
-	    </form>
+  	          <div>
+                <label>origin name: </label>
+                <input type="text" ng-model="leg.origin.name" />
+              </div>
+  	          <div>
+                <label>destination name: </label>
+                <input type="text" ng-model="leg.dest.name" />
+              </div>
+  	          <span>travel mode: </span>
+              <select ng-model="leg.travelMode" ng-change="leg.getDirections()">
+            		<option value="WALKING">Walking</option>
+            		<option value="DRIVING">Driving</option>
+            		<option value="BICYCLING">Bicycling</option>
+            		<option value="TRANSIT">Transit</option>
+  	          </select>
+  	            <input type="submit" ng-hide="true"/>
+  	       </form>
           </div>
-
           <div ng-show="Trek.showDetails[$index]" class="legOptions">
-            <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-            <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
+            <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet
+            </div>
+            <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles
+            </div>
           </div>
-
-	</div>
+        </div>
       </div>
     </div>
-    <span ng-cloak>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
-
-</div>
-
+    <span ng-cloak>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles
+    </span>
+    <div class="button">
+      <input type="checkbox" ng-model="checked">
+        <label for="">Hide Elevation
+        </label>
+    </div>
+  </div>
 </div>
 
 <!-- Vendor Libs: angular and googlemaps -->
@@ -101,4 +103,5 @@
 <script src="js/app/filters.js"></script>
 
 </body>
+
 </html>
