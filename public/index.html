@@ -16,7 +16,7 @@
   <div class="leftContent" ng-controller="ElevationProfileController as Elevation" >
     <div id="map-canvas"></div>
     <div class="chart-slide" ng-animate="'animate'" ng-click="Elevation.slide()" ng-show="Elevation.show">
-      <div id="elevation-chart" class="animate-slide"  ></div>  
+      <div id="elevation-chart" ng-show="Elevation.show" ></div>  
     </div>
   </div>
 

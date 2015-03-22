@@ -42,10 +42,6 @@ html, body{
 	height: 85%;
 }
 
-.animate-slide {
-	height: 100%;
-	width: 100%;
-}
 /*Elevation Chart and chart slide*/
 .chart-slide.ng-hide-add,
 .chart-slide.ng-hide-remove {
@@ -53,12 +49,16 @@ html, body{
 }
 
 .chart-slide.ng-hide-remove.ng-hide-remove-active {
+  -webkit-animation:0.5s slide-up;
+  animation:0.5s slide-up;
   transition: .3s linear all;
   height: 15%;
 
 }
 
 .chart-slide.ng-hide-add.ng-hide-add-active {
+  -webkit-animation:0.5s slide-down;
+  animation:0.5s slide-down;
   transition: .3s linear all;
   height: 5%;
 
@@ -67,6 +67,7 @@ html, body{
 .chart-slide{
 	height: 15%;
 	width: 100%;
+  border: 5px solid black;
 }
 
 .chart-slide.ng-hide {
@@ -77,6 +78,28 @@ html, body{
 #elevation-chart {
 	width: 90%;
 	height: 100%;
+  border: 2px solid orange;
+}
+
+#elevation-chart.ng-hide-add,
+#elevation-chart.ng-hide-remove {
+  display:block!important;
+}
+
+#elevation-chart.ng-hide-remove.ng-hide-remove-active {
+  -webkit-animation:0.5s slide-up;
+  animation:0.5s slide-up;
+  transition: .3s linear all;
+  height: 100%;
+
+}
+
+#elevation-chart.ng-hide-add.ng-hide-add-active {
+  -webkit-animation:0.5s slide-down;
+  animation:0.5s slide-down;
+  transition: .3s linear all;
+  height: 0%;
+
 }
 
 #logo {
