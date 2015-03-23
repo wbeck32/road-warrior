@@ -268,13 +268,26 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     
 
     chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
-    google.visualization.events.addListener(chart, 'select', chartEvent)
+    google.visualization.events.addListener(chart, 'onmouseover', chartEvent)
     var data = new google.visualization.DataTable();
 
-    function chartEvent (e) {
-      var getSelectedData = chart.getSelection();
-      var latLng = JSON.parse(data.getValue(getSelectedData[0].row, getSelectedData[0].column + 1));
+    function chartEvent (point) {
+      google.visualization.events.addListener(chart, 'onmouseout', removeMarker)
+      var latLng = JSON.parse(data.getValue(point.row, 1));
       mapFactory.panTo({lat: latLng.k, lng: latLng.D}); 
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(latLng.k, latLng.D),
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 10
+        },
+        map: mapFactory
+      });
+      function removeMarker () {
+        marker.setVisible(false);
+      }
+
+
     }
     
     data.addColumn('number', 'Elevation');
