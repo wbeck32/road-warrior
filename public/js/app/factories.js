@@ -200,8 +200,25 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     center: currentPosition,
     styles: mapStyles
   };
+  
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  var locateMe = document.createElement('img');
+  locateMe.style.margin = "-3px";
+  locateMe.src = "http://maps.google.com/mapfiles/kml/pal4/icon57.png";
+  locateMe.style.cursor = "pointer";
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locateMe);
+
+  google.maps.event.addDomListener(locateMe, 'click', function(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+    	function locationAllowed(position) {
+    	  map.panTo({lat: position.coords.latitude, lng: position.coords.longitude});
+    	});
+    } 
+  });
+  
+  return map;
 
 }]);
 

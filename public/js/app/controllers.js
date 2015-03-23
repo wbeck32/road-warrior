@@ -90,16 +90,3 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   };
 
 }]);
-
-angular.module('roadWarrior').controller('geolocationController', function(mapFactory){
-
-  this.getLocation = function(){
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-    	function locationAllowed(position) {
-    	  mapFactory.panTo({lat: position.coords.latitude, lng: position.coords.longitude});
-    	});
-    } 
-  };
-  this.getLocation();
-});
