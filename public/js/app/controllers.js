@@ -67,6 +67,14 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     this.showEditName = !this.showEditName;
   };
 
+  this.trekSearch = function(query) {
+    for (var i = 0; i < trekService.allTreks.length; i++){
+      if (trekService.allTreks[i].name.indexOf(query) > -1){
+        console.log(trekService.allTreks[i].name);
+      }
+    }
+  }
+
 }]);
 
 angular.module('roadWarrior').controller('geolocationController', function(mapFactory){
