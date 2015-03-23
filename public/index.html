@@ -31,8 +31,10 @@
 
     <div class="sidebarSection" id="trekList">
       <div class="myTreks">My Treks</div>
-      <div ng-repeat="trek in Trek.treks track by $index" ng-cloak>
-        <span class="slider" ng-click="Trek.renderTrek($index)">{{trek.name}}</span>
+      <div ng-repeat="trek in Trek.treks" ng-cloak class="trek">
+        <span class="slider" ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
+
+	<span class="buttonBlock"><button ng-click="Trek.deleteTrek(trek)">delete trek</button></span>
       </div>
     </div>
 
@@ -41,6 +43,7 @@
       <div>
         <span ng-click="Trek.editName()" ng-hide="Trek.showEditName" class="slider">{{Trek.name}}</span>
         <span class="buttonBlock"><button ng-click="Trek.saveTrek()">save trek</button></span>
+        <span class="buttonBlock"><button ng-click="Trek.clearTrek()">clear trek</button></span>
       </div>
 
       <form ng-show="Trek.showEditName">

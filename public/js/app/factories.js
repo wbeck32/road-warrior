@@ -12,10 +12,12 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
   this.unRenderAll = function(){
     markerFactory.markerIndex = 65;
+    if (trekOrigin) {
+      trekOrigin.setMap(null);
+    }
     trekOrigin = null;
     this.name = "new trek";
     if (this.legs.length > 0){
-      this.legs[0].origin.setMap(null);
       this.legs.forEach(function(leg){
       leg.dest.setMap(null);
       leg.rend.setMap(null);
