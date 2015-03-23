@@ -76,7 +76,6 @@ html, body{
   animation:0.5s;
   transition: .3s linear all;
   height: 15%;
-
 }
 
 .chart-slide.ng-hide-add.ng-hide-add-active {
@@ -84,13 +83,11 @@ html, body{
   animation:0.5s;
   transition: .3s linear all;
   height: 5%;
-
 }
 
 .chart-slide{
 	height: 15%;
 	width: 100%;
-  border: 5px solid black;
 }
 
 .chart-slide.ng-hide {
@@ -101,32 +98,36 @@ html, body{
 #elevation-chart {
 	width: 90%;
 	height: 100%;
-  border: 2px solid orange;
+  opacity: 1;
 }
 
 #elevation-cover {
-  width: 90%;
+  width: 100%;
   height: 100%;
-  border: 2px solid green;
+  opacity: 1;
+  background-color: grey;
+  text-align: center;
+}
+
+#elevation-cover h3 {
+  margin: 0;
+}
+
+#elevation-cover.ng-hide {
+  opacity: 0;
+  background-color: grey;
+  display: block!important;
 }
 
 #elevation-cover.ng-hide-add.ng-hide-add-active {
-  -webkit-animation:0.5s slide-up;
-  animation:0.5s slide-up;
-  transition: .3s linear all;
-  height: 100%;
-
+  -webkit-transition:0.5s;
+  transition: .5s linear all;
 }
 
 #elevation-cover.ng-hide-remove.ng-hide-remove-active {
-  -webkit-animation:0.5s slide-down;
-  animation:0.5s slide-down;
-  transition: .3s linear all;
-  height: 0%;
-
+  -webkit-transition:0.5s;
+  transition: .5s linear all;
 }
-
-#elevat
 
 #logo {
 	height:65px;
