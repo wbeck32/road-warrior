@@ -15,21 +15,21 @@ html, body{
 	padding: 1%;
 }
 
-.slider {
+.slideLink {
 	position:relative;
 	color:#000;
 	text-decoration: none;
 }
 
-.slider:hover {
+.slideLink:hover {
 	color:#000;
 }
 
-.slider:before {
+.slideLink:before {
 	content: "";
 	position:absolute;
 	width:100%;
-	height:2px;
+	height:1px;
 	bottom: 0;
 	left: 0;
 	background-color: #acbcc9;
@@ -40,8 +40,21 @@ html, body{
   	transition: all 0.2s ease-in-out 0s;
 }
 
-.slider:hover:before {
+.slideLink:hover:before {
+	font-size:8px;
+	content:"edit";
 	visibility: visible;
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+}
+
+.slideLink.noHint:hover:before {
+	content:"";
+}
+
+.slideLink.retrieve:hover:before {
+	font-size:8px;
+	content:"retrieve";
 	-webkit-transform: scaleX(1);
 	transform: scaleX(1);
 }
@@ -69,8 +82,16 @@ html, body{
 	padding: 7px 5px;
 }
 
+.bold {
+	font-weight:bold;
+}
+
 .myTreks {
 	margin: 0 0 12px 0;
+}
+
+.trekList {
+	margin:0 0 7px 0;
 }
 
 #map-canvas {
