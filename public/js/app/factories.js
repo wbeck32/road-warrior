@@ -1,4 +1,4 @@
-// this is factories.js
+  // this is factories.js
 
 angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', 'elevationProfileFactory', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService, elevationProfileFactory){
   
@@ -263,18 +263,25 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
   };
 }]);
 
-angular.module('roadWarrior').factory('elevationProfileFactory', function(){
+angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', function(mapFactory){
   return function (legArray) {
     
 
     chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
-
+    google.visualization.events.addListener(chart, 'select', chartEvent)
     var data = new google.visualization.DataTable();
+
+    function chartEvent (e) {
+      var getSelectedData = chart.getSelection();
+      var latLng = JSON.parse(data.getValue(getSelectedData[0].row, getSelectedData[0].column + 1));
+      mapFactory.panTo({lat: latLng.k, lng: latLng.D}); 
+    }
+    
     data.addColumn('number', 'Elevation');
+    data.addColumn('string', 'Location');
     for (var i = 0; i < legArray.length; i++) {
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-        data.addRow([legArray[i].elevationProfile[j].elevation]);
-
+        data.addRow([legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
       }
     };
     
@@ -282,7 +289,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', function(){
     document.getElementById('elevation-chart').style.display = 'block';
     chart.draw(data, { legend: 'none', forceIFrame: false, chartArea: {width: '100%', height: '98%'} });
   };
-});
+}]);
 
 angular.module('roadWarrior').factory('elevationService', function(){
 
