@@ -12,10 +12,12 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
   this.unRenderAll = function(){
     markerFactory.markerIndex = 65;
+    if (trekOrigin) {
+      trekOrigin.setMap(null);
+    }
     trekOrigin = null;
     this.name = "new trek";
     if (this.legs.length > 0){
-      this.legs[0].origin.setMap(null);
       this.legs.forEach(function(leg){
       leg.dest.setMap(null);
       leg.rend.setMap(null);
@@ -198,8 +200,25 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     center: currentPosition,
     styles: mapStyles
   };
+  
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  var locateMe = document.createElement('img');
+  locateMe.style.margin = "-3px";
+  locateMe.src = "http://maps.google.com/mapfiles/kml/pal4/icon57.png";
+  locateMe.style.cursor = "pointer";
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locateMe);
+
+  google.maps.event.addDomListener(locateMe, 'click', function(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+    	function locationAllowed(position) {
+    	  map.panTo({lat: position.coords.latitude, lng: position.coords.longitude});
+    	});
+    } 
+  });
+  
+  return map;
 
 }]);
 
@@ -215,7 +234,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
 
     for (var i = 0; i < steps.length; i++) {
       for (var j = 0; j < steps[i].path.length; j++) {
-        latLngArray.push(steps[i].path[j])
+        latLngArray.push(steps[i].path[j]);
       }
     }
     
@@ -223,7 +242,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
       var incr = Math.ceil(latLngArray.length/200);
       var newLatLngArray = [];
       for (var i = 0; i < latLngArray.length; i+=incr) {
-        newLatLngArray.push(latLngArray[i])
+        newLatLngArray.push(latLngArray[i]);
       }
       latLngArray = newLatLngArray;
     }

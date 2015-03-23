@@ -15,6 +15,50 @@ html, body{
 	padding: 1%;
 }
 
+.slideLink {
+	position:relative;
+	color:#000;
+	text-decoration: none;
+}
+
+.slideLink:hover {
+	color:#000;
+}
+
+.slideLink:before {
+	content: "";
+	position:absolute;
+	width:100%;
+	height:1px;
+	bottom: 0;
+	left: 0;
+	background-color: #acbcc9;
+	visibility: hidden;
+	-webkit-transform: scaleX(0);
+  	transform: scaleX(0);
+  	-webkit-transition: all 0.2s ease-in-out 0s;
+  	transition: all 0.2s ease-in-out 0s;
+}
+
+.slideLink:hover:before {
+	font-size:8px;
+	content:"edit";
+	visibility: visible;
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+}
+
+.slideLink.noHint:hover:before {
+	content:"";
+}
+
+.slideLink.retrieve:hover:before {
+	font-size:8px;
+	content:"retrieve";
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+}
+
 .leftContent,.sidebarContent {
 	height:100%;
 	padding:0;
@@ -35,7 +79,19 @@ html, body{
 .sidebarSection {
 	border-bottom:1px solid black;
 	width:100%;
-	padding: 5px;
+	padding: 7px 5px;
+}
+
+.bold {
+	font-weight:bold;
+}
+
+.myTreks {
+	margin: 0 0 12px 0;
+}
+
+.trekList {
+	margin:0 0 7px 0;
 }
 
 #map-canvas.ng-hide {
@@ -138,6 +194,7 @@ html, body{
 	width:60px;
 	height:50px;
 	border:1px solid black;
+	margin: 0 10px 0 0;
 }
 
 .buttonBlock {
@@ -158,7 +215,7 @@ button {
     overflow:auto;
 }
 
-.leg {
+.leg, .trek {
 	margin: 20px 0;
 }
 
