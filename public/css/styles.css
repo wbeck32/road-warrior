@@ -38,14 +38,30 @@ html, body{
 	padding: 5px;
 }
 
-#map-canvas {
-	height: 85%;
+#map-canvas.ng-hide {
+	height: 95%;
+  display: block!important;
+}
+
+#map-canvas{
+  height: 85%;
 }
 
 /*Elevation Chart and chart slide*/
+#map-canvas.ng-hide-add,
+#map-canvas.ng-hide-remove,
 .chart-slide.ng-hide-add,
-.chart-slide.ng-hide-remove {
+.chart-slide.ng-hide-remove,
+#elevation-chart.ng-hide-add,
+#elevation-chart.ng-hide-remove {
   display:block!important;
+}
+
+#map-canvas.ng-hide-add.ng-hide-remove-add{
+  -webkit-animation:0.5s slide-down;
+  animation:0.5s slide-down;
+  transition: .3s linear all;
+  height: 95%;
 }
 
 .chart-slide.ng-hide-remove.ng-hide-remove-active {
@@ -81,10 +97,10 @@ html, body{
   border: 2px solid orange;
 }
 
-#elevation-chart.ng-hide-add,
+/*#elevation-chart.ng-hide-add,
 #elevation-chart.ng-hide-remove {
   display:block!important;
-}
+}*/
 
 #elevation-chart.ng-hide-remove.ng-hide-remove-active {
   -webkit-animation:0.5s slide-up;
