@@ -5,12 +5,15 @@
 angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', function(trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory){
 
   this.legs = legService.legs;
+  this.name = legService.name;
+
+  this.treks = trekService.allTreks;
+
   this.showEdit = []; 
   this.showDetails = [];
   this.showEditName = false;
-  this.name = legService.name;
-  this.treks = trekService.allTreks;
-  this.currentTrekIndex = trekService.allTreks.length;
+  
+  var loadedTrek = false;
 
   this.markerName = function(marker){
     if(marker.name){
@@ -20,27 +23,42 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   var self = this;
   
-  this.renderTrek = function(index){
+  this.renderTrek = function(trek){
     legService.unRenderAll();
-    legService.legs = this.treks[index].legs;
-    legService.name = this.treks[index].name;
+    legService.legs = trek.legs;
+    legService.name = trek.name;
     legService.renderAll();
-    this.currentTrekIndex = index;
     this.legs = legService.legs;
     this.name = legService.name;
     this.hideFields();
+    loadedTrek = true;
   };
 
+  this.deleteTrek = function(trek){
+    trekService.delete(trek);
+    if (trek.legs === this.legs) {
+      this.clearTrek();
+    }
+  };
 
-  this.saveTrek = function(){
-    trekService.allTreks[this.currentTrekIndex] = {
-      name: this.name,
-      legs: this.legs
-    };
+  this.clearTrek = function(){
     legService.unRenderAll();
-    this.currentTrekIndex = trekService.allTreks.length;
     this.legs = legService.legs;
     this.name = legService.name;
+    loadedTrek = false;
+  };
+    
+  this.saveTrek = function(){
+    if (!loadedTrek && this.legs.length > 0){
+      trekService.allTreks.push({
+	name: this.name,
+	legs: this.legs
+      });
+    }
+    legService.unRenderAll();
+    this.legs = legService.legs;
+    this.name = legService.name;
+    loadedTrek = false;
   };
 
   this.hideFields = function(){
