@@ -12,9 +12,9 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.showEdit = []; 
   this.showDetails = [];
   this.showEditName = false;
-  
-  var loadedTrek = false;
 
+  var loadedTrek = null;
+  
   this.markerName = function(marker){
     if(marker.name){
       return ": " + marker.name;
@@ -31,7 +31,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     this.legs = legService.legs;
     this.name = legService.name;
     this.hideFields();
-    loadedTrek = true;
+    loadedTrek = trek;
   };
 
   this.deleteTrek = function(trek){
@@ -45,20 +45,24 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     legService.unRenderAll();
     this.legs = legService.legs;
     this.name = legService.name;
-    loadedTrek = false;
+    loadedTrek = null;
   };
     
   this.saveTrek = function(){
-    if (!loadedTrek && this.legs.length > 0){
-      trekService.allTreks.push({
-	name: this.name,
-	legs: this.legs
-      });
+    if (!loadedTrek){
+      if(this.legs.length > 0){
+	trekService.allTreks.push({
+	  name: this.name,
+	  legs: this.legs
+	});
+      }
+    } else {
+      loadedTrek.name = this.name;
     }
     legService.unRenderAll();
     this.legs = legService.legs;
     this.name = legService.name;
-    loadedTrek = false;
+    loadedTrek = null;
   };
 
   this.hideFields = function(){
