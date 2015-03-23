@@ -34,6 +34,7 @@
       <div class="trekList" ng-repeat="trek in Trek.treks track by $index" ng-cloak>
 
         <span class="slideLink retrieve" ng-click="Trek.renderTrek($index)">{{trek.name}}</span>
+
       </div>
     </div>
 
@@ -41,7 +42,9 @@
 
       <div>
         <span ng-click="Trek.editName()" ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
+
         <span class="buttonBlock"><button ng-click="Trek.saveTrek()">save trek</button></span>
+        <span class="buttonBlock"><button ng-click="Trek.clearTrek()">clear trek</button></span>
       </div>
 
       <form ng-show="Trek.showEditName">
