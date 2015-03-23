@@ -103,11 +103,9 @@ html, body{
   height: 85%;
 }
 
-/*Elevation Chart and chart slide*/
+/*Elevation Chart and map slide*/
 #map-canvas.ng-hide-add,
 #map-canvas.ng-hide-remove,
-.chart-slide.ng-hide-add,
-.chart-slide.ng-hide-remove,
 #elevation-chart.ng-hide-add,
 #elevation-chart.ng-hide-remove,
 #elevation-cover.ng-hide-add,
@@ -115,46 +113,43 @@ html, body{
   display:block!important;
 }
 
-#map-canvas.ng-hide-add.ng-hide-add-active {
+#map-canvas.ng-hide-add.ng-hide-add-active,
+#elevation-chart.ng-hide-add.ng-hide-add-active {
   -webkit-animation:0.5s;
   animation:0.5s;
   transition: .3s linear all;
 }
 
-#map-canvas.ng-hide-remove.ng-hide-remove-active {
+#map-canvas.ng-hide-remove.ng-hide-remove-active,
+#elevation-chart.ng-hide-remove.ng-hide-remove-active {
   -webkit-animation:0.5s;
   animation:0.5s;
   transition: .3s linear all;
-}
-
-.chart-slide.ng-hide-remove.ng-hide-remove-active {
-  -webkit-animation:0.5s;
-  animation:0.5s;
-  transition: .3s linear all;
-  height: 15%;
-}
-
-.chart-slide.ng-hide-add.ng-hide-add-active {
-  -webkit-animation:0.5s;
-  animation:0.5s;
-  transition: .3s linear all;
-  height: 5%;
 }
 
 .chart-slide{
 	height: 15%;
-	width: 100%;
+	width: 68%;
+  position: fixed;
 }
 
 .chart-slide.ng-hide {
-  height:5%;
   display:block!important;
+
 }
 
 #elevation-chart {
-	width: 90%;
+  width: 90%;
 	height: 100%;
   opacity: 1;
+  z-index: 1;
+}
+
+#elevation-chart.ng-hide{
+  margin-top: 5vh;
+  height: 15vh;
+  display: block!important;
+  z-index: 0;
 }
 
 #elevation-cover {
@@ -163,6 +158,7 @@ html, body{
   opacity: 1;
   background-color: grey;
   text-align: center;
+  z-index: 1;
 }
 
 #elevation-cover h3 {
@@ -173,6 +169,7 @@ html, body{
   opacity: 0;
   background-color: grey;
   display: block!important;
+  z-index: 0;
 }
 
 #elevation-cover.ng-hide-add.ng-hide-add-active {

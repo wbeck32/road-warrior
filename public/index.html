@@ -12,11 +12,9 @@
 
   <div class="leftContent" data-ng-controller="ElevationProfileController as Elevation" >
     <div id="map-canvas" data-ng-show="Elevation.show"></div>
-    <div class="chart-slide" data-ng-click="Elevation.slide()" data-ng-show="Elevation.show">
+    <div class="chart-slide" data-ng-click="Elevation.slide()">
       <div id="elevation-chart" data-ng-show="Elevation.show" ></div>  
-      <div id="elevation-cover" data-ng-hide="Elevation.show">
-        <h3>Click To Show Elevation Profile</h3>
-      </div>
+      <h3 id="elevation-cover" data-ng-hide="Elevation.show">Click To Show Elevation Profile</h3>
     </div>
   </div>
 
