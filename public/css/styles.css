@@ -153,33 +153,28 @@ html, body{
 }
 
 #elevation-cover {
-  width: 100%;
-  height: 100%;
   opacity: 1;
-  background-color: grey;
   text-align: center;
-  z-index: 1;
 }
 
-#elevation-cover h3 {
+#elevation-cover {
   margin: 0;
 }
 
 #elevation-cover.ng-hide {
+  height: 0;
   opacity: 0;
-  background-color: grey;
   display: block!important;
-  z-index: 0;
 }
 
 #elevation-cover.ng-hide-add.ng-hide-add-active {
-  -webkit-transition:0.5s;
-  transition: .5s linear all;
+  -webkit-transition:0.3s;
+  transition: .3s linear all;
 }
 
 #elevation-cover.ng-hide-remove.ng-hide-remove-active {
-  -webkit-transition:0.5s;
-  transition: .5s linear all;
+  -webkit-transition:0.3s;
+  transition: .3s linear all;
 }
 
 #logo {
