@@ -28,8 +28,8 @@
 </div>
 
 <div class="sidebarSection" id="trekList">
-  <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;<input type="search" data-ng-model="query" placeholder="Search your treks"></div>
-    <div class="trekList trek" data-ng-repeat="trek in Trek.treks" data-ng-cloak>
+  <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;<input type="search" data-ng-model="search.name" placeholder="Search your treks"></div>
+    <div class="trekList trek" data-ng-repeat="trek in Trek.treks | filter:search" data-ng-cloak>
       <span class="slideLink retrieve" data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
       <span class="buttonBlock"><button data-ng-click="Trek.deleteTrek(trek)">delete trek</button></span>
     </div>
