@@ -234,7 +234,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
 
     for (var i = 0; i < steps.length; i++) {
       for (var j = 0; j < steps[i].path.length; j++) {
-        latLngArray.push(steps[i].path[j])
+        latLngArray.push(steps[i].path[j]);
       }
     }
     
@@ -242,7 +242,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
       var incr = Math.ceil(latLngArray.length/200);
       var newLatLngArray = [];
       for (var i = 0; i < latLngArray.length; i+=incr) {
-        newLatLngArray.push(latLngArray[i])
+        newLatLngArray.push(latLngArray[i]);
       }
       latLngArray = newLatLngArray;
     }

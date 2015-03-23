@@ -1,107 +1,104 @@
 <!DOCTYPE html>
-<html ng-app="roadWarrior">
-<head>
-<title>Simple Map</title>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-<meta charset="utf-8">
-<link rel="stylesheet" href="css/styles.css">
-<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<html data-ng-app="roadWarrior">
+  <head>
+    <title>Road Warrior</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+  </head>
 
-</head>
+  <body>
 
-<body>
+    <div class="wrapper">
 
-<div class="wrapper">
-
-  <div class="leftContent">
-    <div id="map-canvas"></div>
-    <div id="elevation-chart"></div>
-  </div>
-
-  <div class="sidebarContent" ng-controller="TrekController as Trek"> 
-    <div class="sidebarSection">
-      <div class="globalHeader">
-        <img id="logo" src="images/logo.png">
-      </div>
-    </div>
-
-    <div class="sidebarSection">
-      <img class="profileimg" src="images/profile.jpg" /> <span class="slider">profile</span>&nbsp;|&nbsp;<span class="slider">sign out</span>
-    </div>
-
-    <div class="sidebarSection" id="trekList">
-      <div class="myTreks">My Treks</div>
-      <div ng-repeat="trek in Trek.treks" ng-cloak class="trek">
-        <span class="slider" ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
-
-	<span class="buttonBlock"><button ng-click="Trek.deleteTrek(trek)">delete trek</button></span>
-      </div>
-    </div>
-
-    <div class="sidebarSection" id="trekDetails" ng-cloak>
-
-      <div ng-show="Trek.legs.length > 0">
-        <span ng-click="Trek.editName()" ng-hide="Trek.showEditName" class="slider">{{Trek.name}}</span>
-        <span class="buttonBlock"><button ng-click="Trek.saveTrek()">save trek</button></span>
-        <span class="buttonBlock"><button ng-click="Trek.clearTrek()">clear trek</button></span>
+      <div class="leftContent">
+	<div id="map-canvas"></div>
+	<div id="elevation-chart"></div>
       </div>
 
-      <form ng-show="Trek.showEditName">
-        <input type="text" ng-model="Trek.name" ng-blur="Trek.editName()"/>
-      </form>
-
-      <div id="legList">
-
-	<div ng-repeat="leg in Trek.legs track by $index" class="leg" >
-
-  <span ng-click="Trek.toggleEdit($index)">
-	    <span class="slider"><b>{{leg.origin.index}}</b>{{Trek.markerName(leg.origin)}} => <b>{{leg.dest.index}}</b>{{Trek.markerName(leg.dest)}}</span>
-	  </span>
-
-          <span class="buttonBlock">
-            <button ng-click="Trek.toggleDetails($index)">details</button>
-            <button ng-click="Trek.removeLeg($index)">delete</button>
-          </span>
-          <div ng-show="Trek.showEdit[$index]" class="legOptions">
-            <form ng-submit="Trek.toggleEdit($index)">
-	      <div><label>origin name: </label><input type="text" ng-model="leg.origin.name" /></div>
-	      <div><label>destination name: </label><input type="text" ng-model="leg.dest.name" /></div>
-	      travel mode: <select ng-model="leg.travelMode" ng-change="leg.getDirections()">
-		<option value="WALKING">Walking</option>
-		<option value="DRIVING">Driving</option>
-		<option value="BICYCLING">Bicycling</option>
-		<option value="TRANSIT">Transit</option>
-	      </select>
-	      <input type="submit" ng-hide="true"/>
-	    </form>
-          </div>
-
-          <div ng-show="Trek.showDetails[$index]" class="legOptions">
-            <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-            <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
-          </div>
-
+      <div class="sidebarContent" data-ng-controller="TrekController as Trek"> 
+	<div class="sidebarSection">
+	  <div class="globalHeader">
+	    <img id="logo" src="images/logo.png" alt="Road warrior logo">
+	  </div>
 	</div>
+
+	<div class="sidebarSection">
+	  <img class="profileimg" src="images/profile.jpg" alt="profile pic" /> <span class="slideLink noHint">profile</span>&nbsp;|&nbsp;<span class="slideLink noHint">sign out</span>
+	</div>
+
+	<div class="sidebarSection" id="trekList">
+	  <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;<input type="search" data-ng-model="search.name" placeholder="Search your treks"></div>
+	  <div class="trekList trek" data-ng-repeat="trek in Trek.treks | filter:search" data-ng-cloak>
+	    <span class="slideLink retrieve" data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
+	    <span class="buttonBlock"><button data-ng-click="Trek.deleteTrek(trek)">delete trek</button></span>
+	  </div>
+	</div>
+
+	<div class="sidebarSection" id="trekDetails" data-ng-cloak>
+	  <div data-ng-show="Trek.legs.length > 0">
+	    <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
+	    <div>
+	      <span class="buttonBlock"><button data-ng-click="Trek.saveTrek()">save trek</button></span>
+	      <span class="buttonBlock"><button data-ng-click="Trek.clearTrek()">clear trek</button></span>
+	    </div>
+
+	    <form data-ng-show="Trek.showEditName">
+	      <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
+	    </form>
+
+	    <div id="legList">
+	      <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" >
+
+		<span data-ng-click="Trek.toggleEdit($index)">
+		  <span class="slideLink"><span class="bold">{{leg.origin.index}}</span>{{Trek.markerName(leg.origin)}} => <span class="bold">{{leg.dest.index}}</span>{{Trek.markerName(leg.dest)}}</span>
+		</span>
+
+		<span class="buttonBlock">
+		  <button data-ng-click="Trek.toggleDetails($index)">details</button>
+		  <button data-ng-click="Trek.removeLeg($index)">delete</button>
+		</span>
+
+		<div data-ng-show="Trek.showEdit[$index]" class="legOptions">
+		  <form data-ng-submit="Trek.toggleEdit($index)">
+		    <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name" /></div>
+		    <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name" /></div>
+		    travel mode: <select data-ng-model="leg.travelMode" data-ng-change="leg.getDirections()">
+		      <option value="WALKING">Walking</option>
+		      <option value="DRIVING">Driving</option>
+		      <option value="BICYCLING">Bicycling</option>
+		      <option value="TRANSIT">Transit</option>
+		    </select>
+		    <input type="submit" data-ng-hide="true"/>
+		  </form>
+		</div>
+
+		<div data-ng-show="Trek.showDetails[$index]" class="legOptions">
+		  <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+		  <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
+		</div>
+
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<span data-ng-cloak>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span>
       </div>
     </div>
-    <span ng-cloak>Total Distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</span> 
+    <!-- Vendor Libs: angular and googlemaps -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>   
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart"></script> 
+    <!-- App Libs -->
+    <script src="js/app/app.js"></script>
+    <script src="js/app/mapStyles.js"></script>
+    <script src="js/app/services.js"></script>
+    <script src="js/app/factories.js"></script>
+    <script src="js/app/controllers.js"></script>
+    <script src="js/app/filters.js"></script>
 
-</div>
-
-</div>
-
-<!-- Vendor Libs: angular and googlemaps -->
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>   
-<script src="https://www.google.com/jsapi"></script>
-<script src="https://www.google.com/uds/?file=visualization&amp;v=1&amp;packages=columnchart"></script> 
-<!-- App Libs -->
-<script src="js/app/app.js"></script>
-<script src="js/app/mapStyles.js"></script>
-<script src="js/app/services.js"></script>
-<script src="js/app/factories.js"></script>
-<script src="js/app/controllers.js"></script>
-<script src="js/app/filters.js"></script>
-
-</body>
+  </body>
 </html>
