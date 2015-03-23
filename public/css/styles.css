@@ -95,7 +95,7 @@ html, body{
 }
 
 #map-canvas.ng-hide {
-	height: 95%;
+	height: 97%;
   display: block!important;
 }
 
@@ -145,7 +145,7 @@ html, body{
   z-index: 1;
 }
 
-#elevation-chart.ng-hide{
+#elevation-chart.ng-hide {
   margin-top: 5vh;
   height: 15vh;
   display: block!important;
