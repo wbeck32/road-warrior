@@ -21,7 +21,7 @@ html, body{
 }
 
 .leftContent {
-        float: left;
+  float: left;
 	width:68%;
 }
 
@@ -53,28 +53,35 @@ html, body{
 .chart-slide.ng-hide-add,
 .chart-slide.ng-hide-remove,
 #elevation-chart.ng-hide-add,
-#elevation-chart.ng-hide-remove {
+#elevation-chart.ng-hide-remove,
+#elevation-cover.ng-hide-add,
+#elevation-cover.ng-hide-remove {
   display:block!important;
 }
 
-#map-canvas.ng-hide-add.ng-hide-remove-add{
-  -webkit-animation:0.5s slide-down;
-  animation:0.5s slide-down;
+#map-canvas.ng-hide-add.ng-hide-add-active {
+  -webkit-animation:0.5s;
+  animation:0.5s;
   transition: .3s linear all;
-  height: 95%;
+}
+
+#map-canvas.ng-hide-remove.ng-hide-remove-active {
+  -webkit-animation:0.5s;
+  animation:0.5s;
+  transition: .3s linear all;
 }
 
 .chart-slide.ng-hide-remove.ng-hide-remove-active {
-  -webkit-animation:0.5s slide-up;
-  animation:0.5s slide-up;
+  -webkit-animation:0.5s;
+  animation:0.5s;
   transition: .3s linear all;
   height: 15%;
 
 }
 
 .chart-slide.ng-hide-add.ng-hide-add-active {
-  -webkit-animation:0.5s slide-down;
-  animation:0.5s slide-down;
+  -webkit-animation:0.5s;
+  animation:0.5s;
   transition: .3s linear all;
   height: 5%;
 
@@ -97,12 +104,13 @@ html, body{
   border: 2px solid orange;
 }
 
-/*#elevation-chart.ng-hide-add,
-#elevation-chart.ng-hide-remove {
-  display:block!important;
-}*/
+#elevation-cover {
+  width: 90%;
+  height: 100%;
+  border: 2px solid green;
+}
 
-#elevation-chart.ng-hide-remove.ng-hide-remove-active {
+#elevation-cover.ng-hide-add.ng-hide-add-active {
   -webkit-animation:0.5s slide-up;
   animation:0.5s slide-up;
   transition: .3s linear all;
@@ -110,7 +118,7 @@ html, body{
 
 }
 
-#elevation-chart.ng-hide-add.ng-hide-add-active {
+#elevation-cover.ng-hide-remove.ng-hide-remove-active {
   -webkit-animation:0.5s slide-down;
   animation:0.5s slide-down;
   transition: .3s linear all;
@@ -118,26 +126,7 @@ html, body{
 
 }
 
-.chart-image.ng-hide-add,
-#elevation-chart.ng-hide-remove {
-  display:block!important;
-}
-
-.chart-image.ng-hide-remove.ng-hide-remove-active {
-  -webkit-animation:0.5s slide-up;
-  animation:0.5s slide-up;
-  transition: .3s linear all;
-  height: 100%;
-
-}
-
-.chart-image.ng-hide-add.ng-hide-add-active {
-  -webkit-animation:0.5s slide-down;
-  animation:0.5s slide-down;
-  transition: .3s linear all;
-  height: 0%;
-
-}
+#elevat
 
 #logo {
 	height:65px;
@@ -185,31 +174,4 @@ button {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
-}
-
-@-webkit-keyframes slide-up
-{
-  0%   {top:80%;}
-  100%  {top:0;}
-}
-
-/* Standard syntax */
-@keyframes slide-up
-{
-  0%   {top:80%;}
-  100%  {top:0;}
-}
-
-/* Chrome, Safari, Opera */
-@-webkit-keyframes slide-down
-{
-  0%  {top:0;}
-  100%   {top:80%;}
-}
-
-/* Standard syntax */
-@keyframes slide-down
-{
-  0%  {top:0;}
-  100%   {top:80%;}
 }
