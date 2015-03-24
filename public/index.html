@@ -36,10 +36,8 @@
 
 	<div class="sidebarSection" id="trekDetails" data-ng-cloak>
 	  <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
-	  <span class="buttonBlock">
-	    <button data-ng-click="Trek.saveTrek()">save trek</button>
-	    <button data-ng-click="Trek.clearTrek()">clear trek</button>
-	  </span>
+	  <span style="float:right"><span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
+      <span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">delete trek</span></span>
 
 	  <form data-ng-show="Trek.showEditName">
 	    <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
@@ -52,9 +50,7 @@
 		<span class="slideLink"><span class="bold">{{leg.origin.index}}</span>{{Trek.markerName(leg.origin)}} => <span class="bold">{{leg.dest.index}}</span>{{Trek.markerName(leg.dest)}}</span>
 	      </span>
 
-	      <span class="buttonBlock">
-		<button data-ng-click="Trek.removeLeg($index)">delete</button>
-	      </span>
+		<span class"slideLink noHint" data-ng-click="Trek.removeLeg($index)">delete</button>
 
 	      <div data-ng-show="Trek.showDetails[$index]" class="legOptions">
 		<form data-ng-submit="Trek.toggleDetails($index)">
