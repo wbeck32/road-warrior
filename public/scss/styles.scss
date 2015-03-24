@@ -57,7 +57,7 @@ html, body{
 
 	&:hover:before {
 		font-size:8px;
-		content:"edit";
+		content:"rename";
 		visibility: visible;
 		transform: scaleX(1);
 	}
@@ -80,7 +80,7 @@ html, body{
 }
 
 .sidebarContent {
-    height:90%;
+    min-height:25%;
     width:28%;
     position: absolute;
     right: 1%;
@@ -91,7 +91,6 @@ html, body{
 }
 
 .sidebarSection {
-	border-bottom:1px solid black;
 	padding: 7px 5px;
 	margin: 0 5px;
 }
@@ -199,7 +198,7 @@ html, body{
 	margin:6px 0;
 }
 
-#totalDistance {
+.totalDistance {
     border-top: 1px solid black;
     padding: 5px;
     margin: 0 5px;
