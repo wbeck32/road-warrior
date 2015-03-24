@@ -1,4 +1,4 @@
-// this is factories.js
+  // this is factories.js
 
 angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', 'elevationProfileFactory', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService, elevationProfileFactory){
   
@@ -200,8 +200,25 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     center: currentPosition,
     styles: mapStyles
   };
+  
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  var locateMe = document.createElement('img');
+  locateMe.style.margin = "-3px";
+  locateMe.src = "http://maps.google.com/mapfiles/kml/pal4/icon57.png";
+  locateMe.style.cursor = "pointer";
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locateMe);
+
+  google.maps.event.addDomListener(locateMe, 'click', function(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+    	function locationAllowed(position) {
+    	  map.panTo({lat: position.coords.latitude, lng: position.coords.longitude});
+    	});
+    } 
+  });
+  
+  return map;
 
 }]);
 
@@ -217,7 +234,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
 
     for (var i = 0; i < steps.length; i++) {
       for (var j = 0; j < steps[i].path.length; j++) {
-        latLngArray.push(steps[i].path[j])
+        latLngArray.push(steps[i].path[j]);
       }
     }
     
@@ -225,7 +242,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
       var incr = Math.ceil(latLngArray.length/200);
       var newLatLngArray = [];
       for (var i = 0; i < latLngArray.length; i+=incr) {
-        newLatLngArray.push(latLngArray[i])
+        newLatLngArray.push(latLngArray[i]);
       }
       latLngArray = newLatLngArray;
     }
@@ -246,18 +263,38 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
   };
 }]);
 
-angular.module('roadWarrior').factory('elevationProfileFactory', function(){
+angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', function(mapFactory){
   return function (legArray) {
     
 
     chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
-
+    google.visualization.events.addListener(chart, 'onmouseover', chartEvent)
     var data = new google.visualization.DataTable();
+
+    function chartEvent (point) {
+      google.visualization.events.addListener(chart, 'onmouseout', removeMarker)
+      var latLng = JSON.parse(data.getValue(point.row, 1));
+      mapFactory.panTo({lat: latLng.k, lng: latLng.D}); 
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(latLng.k, latLng.D),
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 4
+        },
+        map: mapFactory
+      });
+      function removeMarker () {
+        marker.setVisible(false);
+      }
+
+
+    }
+    
     data.addColumn('number', 'Elevation');
+    data.addColumn('string', 'Location');
     for (var i = 0; i < legArray.length; i++) {
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-        data.addRow([legArray[i].elevationProfile[j].elevation]);
-
+        data.addRow([legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
       }
     };
     
@@ -265,7 +302,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', function(){
     document.getElementById('elevation-chart').style.display = 'block';
     chart.draw(data, { legend: 'none', forceIFrame: false, chartArea: {width: '100%', height: '98%'} });
   };
-});
+}]);
 
 angular.module('roadWarrior').factory('elevationService', function(){
 
