@@ -9,7 +9,6 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   this.treks = trekService.allTreks;
 
-  this.showEdit = []; 
   this.showDetails = [];
   this.showEditName = false;
 
@@ -67,7 +66,6 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   this.hideFields = function(){
     for (var i = 0; i < self.legs.length; i++){
-      self.showEdit[i] = false;
       self.showDetails[i] = false;
     }
   };
@@ -77,10 +75,6 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     this.hideFields();
   };
 
-  this.toggleEdit = function(index){
-    this.showEdit[index] = !this.showEdit[index];
-
-  };
   this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
   };
@@ -90,11 +84,3 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   };
 
 }]);
-
-angular.module('roadWarrior').controller('ElevationProfileController', ['elevationProfileFactory', 'legService', function(elevationProfileFactory, legService){
-  this.show = true;
-  this.slide = function(){
-    this.show = !this.show;
-  };
-}]);
-
