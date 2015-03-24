@@ -144,6 +144,14 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     }     
   };
 
+  function totalDistanceUpdater(){
+    this.totalDistance = 0;
+    for (var i = 0; i < this.legs.length; i++){
+      this.totalDistance += this.legs[i].rend.directions.routes[0].legs[0].distance.value;
+    }
+  }
+
+
 }]);
 
 angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
@@ -217,10 +225,8 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     var chart = document.getElementById('elevation-chart');
     if (showChart){
       chart.className = "hideChart";
-      document.getElementById('map-canvas').className = "mapExpand";
     } else {
       chart.className = "showChart";
-      document.getElementById('map-canvas').className = "mapContract";
     }
     showChart = !showChart;
   });
@@ -283,13 +289,13 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
   return function (legArray) {
     
 
-    chart = new google.visualization.AreaChart(document.getElementById('elevation-chart'));
-    google.visualization.events.addListener(chart, 'onmouseover', chartEvent)
+    chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
+    google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
     var data = new google.visualization.DataTable();
 
     function chartEvent (point) {
-      google.visualization.events.addListener(chart, 'onmouseout', removeMarker)
-      var latLng = JSON.parse(data.getValue(point.row, 1));
+      google.visualization.events.addListener(chart, 'onmouseout', removeMarker);
+      var latLng = JSON.parse(data.getValue(point.row, 2));
       mapFactory.panTo({lat: latLng.k, lng: latLng.D}); 
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLng.k, latLng.D),
@@ -305,18 +311,27 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
 
 
     }
-    
+
+    data.addColumn('number', 'Distance');    
     data.addColumn('number', 'Elevation');
-    data.addColumn('string', 'Location');
+    data.addColumn({type: 'string', role: 'annotation'});
+    var totalDistance = 0;
+    var legDistance, legPoints, incr;
     for (var i = 0; i < legArray.length; i++) {
+      legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
+      legPoints = legArray[i].elevationProfile.length;
+      incr = legDistance / legPoints;
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-        data.addRow([legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
+	data.addRow([totalDistance, legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
+	totalDistance += incr;
       }
     };
     
 
     document.getElementById('elevation-chart').style.display = 'block';
-    chart.draw(data, { legend: 'none', forceIFrame: false, chartArea: {width: '100%', height: '98%'} });
+    var view = new google.visualization.DataView(data);
+    view.hideColumns([2]);
+    chart.draw(view, { trigger: 'none', forceIFrame: false, chartArea: {width: '100%', height: '98%'}, hAxis: {title: 'Distance'} });
   };
 }]);
 
