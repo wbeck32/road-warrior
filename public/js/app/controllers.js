@@ -79,10 +79,10 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   this.toggleEdit = function(index){
     this.showEdit[index] = !this.showEdit[index];
-
-  };
-  this.toggleDetails = function(index){
     this.showDetails[index] = !this.showDetails[index];
+  };
+  
+  this.toggleDetails = function(index){
   };
 
   this.editName = function(){

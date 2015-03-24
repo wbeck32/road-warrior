@@ -1,0 +1,139 @@
+/*@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}*/
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  overflow: hidden; }
+
+.container {
+  float: left;
+  width: 100%;
+  height: 100%;
+  padding: 0; }
+
+.slideLink {
+  position: relative;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer; }
+  .slideLink:hover {
+    color: #000; }
+  .slideLink:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #acbcc9;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.2s ease-in-out 0s; }
+  .slideLink:hover:before {
+    font-size: 8px;
+    content: "edit";
+    visibility: visible;
+    transform: scaleX(1); }
+  .slideLink.noHint:hover:before {
+    content: ""; }
+  .slideLink.retrieve:hover:before {
+    font-size: 8px;
+    content: "retrieve";
+    transform: scaleX(1); }
+
+.leftContent {
+  height: 100%;
+  width: 100%; }
+
+.sidebarContent {
+  padding: 10px;
+  max-height: 85%;
+  width: 28%;
+  z-index: 1;
+  position: fixed;
+  top: 25px;
+  right: 20px;
+  background-color: #fff;
+  opacity: .9;
+  border-radius: 5px; }
+
+.sidebarSection {
+  border-bottom: 1px solid black;
+  padding: 7px 5px;
+  min-height: 5%; }
+
+.bold {
+  font-weight: bold; }
+
+.myTreks {
+  margin: 0 0 12px 0; }
+
+#map-canvas {
+  height: 100%; }
+
+#elevation-chart {
+  width: 60%;
+  height: 15%;
+  position: absolute;
+  z-index: 5;
+  left: 20px;
+  bottom: 20px;
+  border-radius: 5px;
+  opacity: 0.9;
+  overflow: hidden;
+  background-color: #fff; }
+
+#logo {
+  height: 65px;
+  display: block; }
+
+.profileimg {
+  width: 60px;
+  height: 50px;
+  border: 1px solid black;
+  margin: 0 10px 0 0; }
+
+.trekList {
+  margin: 0 0 7px 0;
+  max-height: 20%; }
+
+#trekDetails {
+  border: 1px solid red;
+  max-height: 50%;
+  overflow: scroll; }
+
+.legList {
+  max-height: 33.33333%;
+  overflow: scroll;
+  border: 1px solid green; }
+
+.leg, .trek {
+  margin: 20px 0; }
+
+.legOptions {
+  padding: 5px;
+  margin: 10px 5px;
+  border: 1px solid gray;
+  border-radius: 5px; }
+
+.legOptions div {
+  margin: 6px 0; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
