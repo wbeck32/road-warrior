@@ -279,7 +279,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
         position: new google.maps.LatLng(latLng.k, latLng.D),
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 10
+          scale: 4
         },
         map: mapFactory
       });
