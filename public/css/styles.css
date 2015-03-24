@@ -1,5 +1,6 @@
 html, body{
 	height: 100%;
+	width: 100%;
 	margin: 0px;
 	padding: 0px;
 	font-family: 'Open Sans', sans-serif;
@@ -8,11 +9,144 @@ html, body{
 	scroll: none;
 } 
 
-.wrapper {
-	float:left;
-	width:100%;
-	height:100%;
-	padding: 1%;
+#map-canvas {
+    height: 100%;
+    width: 100%;
+}
+
+.sidebarContent {
+    height:90%;
+    width:28%;
+    position: absolute;
+    right: 1%;
+    top: 5%;
+    background-color: #fff;
+    opacity: .9;
+    border-radius: 5px;
+}
+
+.sidebarSection {
+	border-bottom:1px solid black;
+	padding: 7px 5px;
+	margin: 0 5px;
+}
+
+#trekDetails {
+    height: 50%;
+    overflow: auto;
+    border-bottom: none;
+}
+
+#legList {
+    width: 100%;
+}
+
+.bold {
+	font-weight:bold;
+}
+
+.myTreks {
+	margin: 0 0 12px 0;
+}
+
+.trekList {
+	margin:0 0 7px 0;
+}
+
+#elevation-chart {
+    width: 68%;
+    height: 15%;
+    opacity: .9;
+    z-index: 100;
+    position: absolute;
+    bottom: 5%;
+    margin-right: 1%;
+    overflow: hidden;
+    border-radius: 5px;
+    
+}
+
+#elevation-chart.hideChart {
+    margin-left: -100%;
+}
+
+#elevation-chart.showChart {
+    margin-left: 1%;
+}
+
+.hideChart {
+    -webkit-animation-duration: 1s;
+    -webkit-animation-name: slideout;
+}
+
+.showChart {
+    -webkit-animation-duration: 1s;
+    -webkit-animation-name: slidein;
+}
+
+@-webkit-keyframes slideout {
+    from {
+	margin-left: 1%;
+    }
+    to {
+	margin-left: -100%
+    }
+}
+
+@-webkit-keyframes slidein {
+    from {
+	margin-left: -100%;
+    }
+    to {
+	margin-left: 1%;
+    }
+}
+
+#logo {
+	height:65px;
+	display: block;
+}
+
+.profileimg {
+	width:60px;
+	height:50px;
+	margin: 0 10px 0 0;
+	border-radius: 5px;
+}
+
+.buttonBlock {
+    float:right;
+}
+
+button {
+	margin:0 5px;
+}
+
+
+
+.leg, .trek {
+	margin: 20px 0;
+}
+
+.legOptions {
+	padding: 5px;
+	margin: 10px 5px;
+	border: 1px solid gray;
+	border-radius: 5px;
+}
+
+.legOptions div {
+	margin:6px 0;
+}
+
+#totalDistance {
+    border-top: 1px solid black;
+    padding: 5px;
+    margin: 0 5px;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
 
 .slideLink {
@@ -57,179 +191,4 @@ html, body{
 	content:"retrieve";
 	-webkit-transform: scaleX(1);
 	transform: scaleX(1);
-}
-
-.leftContent,.sidebarContent {
-	height:100%;
-	padding:0;
-}
-
-.leftContent {
-  float: left;
-	width:68%;
-}
-
-.sidebarContent {
-	width:28%;
-	float:left;
-	margin: 0 1%;
-
-}
-
-.sidebarSection {
-	border-bottom:1px solid black;
-	width:100%;
-	padding: 7px 5px;
-}
-
-.bold {
-	font-weight:bold;
-}
-
-.myTreks {
-	margin: 0 0 12px 0;
-}
-
-.trekList {
-	margin:0 0 7px 0;
-}
-
-#map-canvas.ng-hide {
-	height: 95%;
-  display: block!important;
-}
-
-#map-canvas{
-  height: 85%;
-}
-
-/*Elevation Chart and chart slide*/
-#map-canvas.ng-hide-add,
-#map-canvas.ng-hide-remove,
-.chart-slide.ng-hide-add,
-.chart-slide.ng-hide-remove,
-#elevation-chart.ng-hide-add,
-#elevation-chart.ng-hide-remove,
-#elevation-cover.ng-hide-add,
-#elevation-cover.ng-hide-remove {
-  display:block!important;
-}
-
-#map-canvas.ng-hide-add.ng-hide-add-active {
-  -webkit-animation:0.5s;
-  animation:0.5s;
-  transition: .3s linear all;
-}
-
-#map-canvas.ng-hide-remove.ng-hide-remove-active {
-  -webkit-animation:0.5s;
-  animation:0.5s;
-  transition: .3s linear all;
-}
-
-.chart-slide.ng-hide-remove.ng-hide-remove-active {
-  -webkit-animation:0.5s;
-  animation:0.5s;
-  transition: .3s linear all;
-  height: 15%;
-}
-
-.chart-slide.ng-hide-add.ng-hide-add-active {
-  -webkit-animation:0.5s;
-  animation:0.5s;
-  transition: .3s linear all;
-  height: 5%;
-}
-
-.chart-slide{
-	height: 15%;
-	width: 100%;
-}
-
-.chart-slide.ng-hide {
-  height:5%;
-  display:block!important;
-}
-
-#elevation-chart {
-	width: 90%;
-	height: 100%;
-  opacity: 1;
-}
-
-#elevation-cover {
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  background-color: grey;
-  text-align: center;
-}
-
-#elevation-cover h3 {
-  margin: 0;
-}
-
-#elevation-cover.ng-hide {
-  opacity: 0;
-  background-color: grey;
-  display: block!important;
-}
-
-#elevation-cover.ng-hide-add.ng-hide-add-active {
-  -webkit-transition:0.5s;
-  transition: .5s linear all;
-}
-
-#elevation-cover.ng-hide-remove.ng-hide-remove-active {
-  -webkit-transition:0.5s;
-  transition: .5s linear all;
-}
-
-#logo {
-	height:65px;
-	display: block;
-}
-
-.profileimg {
-	width:60px;
-	height:50px;
-	border:1px solid black;
-	margin: 0 10px 0 0;
-}
-
-.buttonBlock {
-    float:right;
-}
-
-button {
-	margin:0 5px;
-}
-
-#trekDetails {
-    height: 50%;
-}
-
-#legList {
-    max-height: 95%;
-    width: 100%;
-    overflow:auto;
-}
-
-.leg, .trek {
-	margin: 20px 0;
-}
-
-.legOptions {
-	padding: 5px;
-	margin: 10px 5px;
-	border: 1px solid gray;
-	border-radius: 5px;
-}
-
-.legOptions div {
-	margin:6px 0;
-}
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
 }

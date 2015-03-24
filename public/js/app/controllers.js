@@ -90,11 +90,3 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   };
 
 }]);
-
-angular.module('roadWarrior').controller('ElevationProfileController', function(){
-  this.show = true;
-  this.slide = function(){
-    this.show = !this.show;
-  };
-});
-
