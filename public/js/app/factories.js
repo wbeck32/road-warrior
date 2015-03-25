@@ -318,12 +318,14 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     var totalDistance = 0;
     var legDistance, legPoints, incr;
     for (var i = 0; i < legArray.length; i++) {
-      legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
+      if(legArray[i].rend.directions !== undefined){
+        legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
+      }
       legPoints = legArray[i].elevationProfile.length;
       incr = legDistance / legPoints;
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-	data.addRow([totalDistance, legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
-	totalDistance += incr;
+      	data.addRow([totalDistance, legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
+      	totalDistance += incr;
       }
     };
     
