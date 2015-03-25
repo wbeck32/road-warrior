@@ -314,6 +314,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     data.addColumn('number', 'Distance');    
     data.addColumn('number', 'Elevation');
     data.addColumn({type: 'string', role: 'annotation'});
+    data.addColumn({type: 'string', role: 'tooltip','p': {'html': true}})
     var totalDistance = 0;
     var legDistance, legPoints, incr;
     for (var i = 0; i < legArray.length; i++) {
@@ -321,7 +322,10 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
       legPoints = legArray[i].elevationProfile.length;
       incr = legDistance / legPoints;
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-      	data.addRow([totalDistance, legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
+        var elevation = legArray[i].elevationProfile[j].elevation;
+        var location = JSON.stringify(legArray[i].elevationProfile[j].location);
+        var tooltip = '<div class="tooltip-text"><div><p><b>Distance:</b> ' + Math.round(totalDistance*0.000621371*100)/100 + ' miles</p></div><div><p><b>Elevation:</b> ' + Math.round(legArray[i].elevationProfile[j].elevation*3.28084*100)/100 + ' feet</p></div></div>'
+      	data.addRow([totalDistance, elevation, location, tooltip]);
       	totalDistance += incr;
       }
     };
@@ -341,13 +345,23 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
         title: 'Distance', 
         gridlines: {
           color: 'transparent'
-        }
+        },
+        baselineColor: 'transparent',
+        textPostion: 'in'
       },
       vAxis: {
         gridlines: {
           color: 'transparent'
-        }
-      }
+        },
+        baselineColor: 'transparent',
+        textPostion: 'in'
+      },
+      tooltip: {
+        isHtml: 'true',
+        legend: 'none'
+        },
+      focusTarget: 'category',
+      aggregationTarget: 'series'
     });
   }
 }]);
