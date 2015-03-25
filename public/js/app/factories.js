@@ -92,7 +92,6 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     }
     if (leg){
       this.legs.push(leg);
-      elevationProfileFactory(this.legs);
     }
     
   };  
@@ -128,7 +127,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       var prevIndex = this.legs.indexOf(neighbors.prevLeg);
       this.legs.splice(prevIndex, 2, newLeg);
     }
-    elevationProfileFactory(this.legs);
+    // elevationProfileFactory(this.legs);
   };
   
   this.removeLeg = function(index) {
@@ -322,8 +321,8 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
       legPoints = legArray[i].elevationProfile.length;
       incr = legDistance / legPoints;
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-	data.addRow([totalDistance, legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
-	totalDistance += incr;
+      	data.addRow([totalDistance, legArray[i].elevationProfile[j].elevation, JSON.stringify(legArray[i].elevationProfile[j].location)]);
+      	totalDistance += incr;
       }
     };
     
