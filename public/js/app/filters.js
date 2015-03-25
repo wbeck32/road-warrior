@@ -1,7 +1,7 @@
 angular.module('roadWarrior').filter('totalDistance', function(){
   return function(input){
     return input.reduce(function(prev, leg, index, array){
-      if (leg.rend.directions !== undefined){
+      if (leg.rend.directions){
         return prev + leg.rend.directions.routes[0].legs[0].distance.value;
       }
     }, 0);
