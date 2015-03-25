@@ -36,8 +36,10 @@
 
 	<div class="sidebarSection" id="trekDetails" data-ng-cloak>
 	  <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
-	  <span style="float:right"><span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
-      <span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">delete trek</span></span>
+	  <span style="float:right">
+	    <span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
+	    <span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
+	  </span>
 
 	  <form data-ng-show="Trek.showEditName">
 	    <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
@@ -47,10 +49,14 @@
 	    <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" >
 
 	      <span data-ng-click="Trek.toggleDetails($index)">
-		<span class="slideLink"><span class="bold">{{leg.origin.index}}</span>{{Trek.markerName(leg.origin)}} => <span class="bold">{{leg.dest.index}}</span>{{Trek.markerName(leg.dest)}}</span>
+		<span class="slideLink">
+		  <span class="bold">{{leg.origin.index}}</span>{{Trek.markerName(leg.origin)}}
+		  => 
+		  <span class="bold">{{leg.dest.index}}</span>{{Trek.markerName(leg.dest)}}
+		</span>
 	      </span>
 
-		<span class"slideLink noHint" data-ng-click="Trek.removeLeg($index)">delete</button>
+	      <span class"slideLink noHint" data-ng-click="Trek.removeLeg($index)">delete</span>
 
 	      <div data-ng-show="Trek.showDetails[$index]" class="legOptions">
 		<form data-ng-submit="Trek.toggleDetails($index)">
