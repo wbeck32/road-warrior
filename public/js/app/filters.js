@@ -1,7 +1,9 @@
 angular.module('roadWarrior').filter('totalDistance', function(){
   return function(input){
     return input.reduce(function(prev, leg, index, array){
-      return prev + leg.rend.directions.routes[0].legs[0].distance.value;
+      if (leg.rend.directions !== undefined){
+        return prev + leg.rend.directions.routes[0].legs[0].distance.value;
+      }
     }, 0);
   };
 }).filter('metersToMiles', function(){
