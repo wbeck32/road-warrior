@@ -330,8 +330,26 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     document.getElementById('elevation-chart').style.display = 'block';
     var view = new google.visualization.DataView(data);
     view.hideColumns([2]);
-    chart.draw(view, { trigger: 'none', forceIFrame: false, chartArea: {width: '100%', height: '98%'}, hAxis: {title: 'Distance'} });
-  };
+    chart.draw(view, { 
+      trigger: 'none', 
+      forceIFrame: false, 
+      chartArea: {
+        width: '100%', 
+        height: '98%'
+      }, 
+      hAxis: {
+        title: 'Distance', 
+        gridlines: {
+          color: 'transparent'
+        }
+      },
+      vAxis: {
+        gridlines: {
+          color: 'transparent'
+        }
+      }
+    });
+  }
 }]);
 
 angular.module('roadWarrior').factory('elevationService', function(){
