@@ -12,7 +12,6 @@
   "dependencies": {
     "autoprefixer": "^5.1.0",
     "autoprefixer-core": "^5.1.7",
-    "bootstrap": "^3.3.4",
     "express": "^4.12.2",
     "gulp": "^3.8.11",
     "gulp-jshint": "^1.9.4",

@@ -74,26 +74,6 @@ html, body{
 
 }
 
-.leftContent {
-	height:100%;
-	width:100%;
-}
-
-.sidebarContent {
-    min-height:25%;
-    width:28%;
-    position: absolute;
-    right: 1%;
-    top: 5%;
-    background-color: #fff;
-    opacity: .9;
-    border-radius: 5px;
-}
-
-.sidebarSection {
-	padding: 7px 5px;
-	margin: 0 5px;
-}
 
 .bold {
 	font-weight:bold;
@@ -101,9 +81,9 @@ html, body{
 
 .myTreks {
 	margin: 0 0 12px 0;
+	border-bottom: 1px solid #000;
+	padding-bottom:10px;
 }
-
-
 
 #elevation-chart {
     width: 68%;
@@ -135,6 +115,69 @@ html, body{
     -webkit-animation-name: slidein;
 }
 
+
+.sidebarContent {
+    right: 0;
+    top: 10%;
+    position:absolute;
+    margin-right:-1000px;
+    width:15%;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+    background-color:#fff;
+}
+
+.tabList {
+	right:0;
+	top: 12%;
+	position: absolute;
+}
+
+.tab {
+	height: 40px;
+	line-height:40px;
+	border-top-left-radius:5px;
+	border-bottom-left-radius: 5px;
+	padding:0 5px;
+	background-color: #fff;
+	border-top:1px solid #337ab7;
+		border-bottom:1px solid #337ab7;  
+	border-left:1px solid #337ab7;  
+  
+    opacity: .9;
+    margin: 2px 0;
+    position:relative;
+    right:0;
+}
+
+.panel {
+	visibility: hidden;
+}
+
+.visible {
+	visibility: visible;
+}
+
+.slideLeft {
+	margin-right:15%;
+}
+
+.sidebarLeft {
+	margin-right:0;
+	border-top:1px solid #3371b7;
+		border-bottom:1px solid #3371b7;
+	border-left:1px solid #3371b7;
+
+}
+
+.blueBack {
+	background-color: #3371b7;
+}
+
+.panelLeft {
+	margin-right:100px;
+}
+
 @-webkit-keyframes slideout {
     from {
 	margin-left: 1%;
@@ -153,14 +196,17 @@ html, body{
     }
 }
 
-#logo {
-	height:65px;
-	display: block;
+.logo { 
+	display:inline;
+	z-index:50;
+	position:absolute;
+	top:4%;
+	margin-left:85px;
 }
 
 .profileimg {
-	width:60px;
-	height:50px;
+	width:30px;
+	height:25px;
 	border:1px solid black;
 	margin: 0 10px 0 0;
 	border-radius: 5px;
@@ -184,8 +230,14 @@ html, body{
 }
 
 .leg, .trek {
-	margin: 20px 0;
+	margin: 10px 0;
+	padding: 0 2px;
 }
+
+.slideLink.legField:nth-child(2) {
+border-left:1px solid red;
+}
+
 
 .legOptions {
 	padding: 5px;
@@ -201,8 +253,38 @@ html, body{
 .totalDistance {
     border-top: 1px solid black;
     padding: 5px;
-    margin: 0 5px;
+    margin:18px 0 0 0;
+    width:100%
 }
+
+.odd {
+	background-color:#CCFFFF;
+	padding:2px 0;
+}
+
+.nav>li>a {
+	padding:10px;
+}
+
+.toggle-popover {
+	background-color: transparent;
+	border:none;
+	height:45px;
+	width:100%;
+}
+
+.headerPop {
+	background-color:#337ab7;
+	border:none;
+	height:45px;
+	width:100%;	
+}
+
+.headerPop:hover {
+visibility: show;
+
+}
+
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
