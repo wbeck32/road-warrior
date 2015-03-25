@@ -220,8 +220,10 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   elevation.style.cursor = "pointer";
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(elevation);
 
-  google.maps.event.addDomListener(elevation, 'click', function(){
-    var chart = document.getElementById('elevation-chart');
+  var elevationButton = document.getElementById('slider-button')
+
+  google.maps.event.addDomListener(elevationButton, 'click', function(){
+    var chart = document.getElementById('elevation-wrapper');
     if (showChart){
       chart.className = "hideChart";
     } else {
@@ -229,6 +231,17 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     }
     showChart = !showChart;
   });
+
+  google.maps.event.addDomListener(elevation, 'click', function(){
+    var chart = document.getElementById('elevation-wrapper');
+    if (showChart){
+      chart.className = "hideChart";
+    } else {
+      chart.className = "showChart";
+    }
+    showChart = !showChart;
+  });
+
 
   google.maps.event.addDomListener(locateMe, 'click', function(){
     if (navigator.geolocation) {

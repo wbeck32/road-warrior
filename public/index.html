@@ -12,8 +12,15 @@
   <body>
 
    <div id="map-canvas"></div>
-    <div id="elevation-chart" class="hideChart"></div>  
-    
+   <div id="elevation-wrapper" class="hideChart">
+   	<div id="nested-elevation-wrapper">
+			<div id="elevation-chart">	
+			</div>	
+		</div>
+		<div id="slider-button">
+		</div>
+
+   </div> 
  
       <div class="sidebarContent" data-ng-controller="TrekController as Trek" role="navigation"> 
 <!--	<div class="sidebarSection">
