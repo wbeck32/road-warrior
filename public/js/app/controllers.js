@@ -48,12 +48,12 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
           var googleLatLng = new google.maps.LatLng(latLng.k, latLng.D);
           var marker = markerFactory.create(googleLatLng, legService);
           legService.addLeg(marker);  
-        })
+        });
     }).error(function(data, status, headers, config){
       console.log('failure');
     });
 
-  }
+  };
 
   this.renderSavedTrek();
 
@@ -77,7 +77,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
         loadedTrek = {
         name: this.name,
         legs: this.legs
-        }
+        };
 	      trekService.allTreks.push(loadedTrek);
       }
     } 

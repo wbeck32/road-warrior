@@ -4,14 +4,13 @@ $elGraphNegMarg: -66%;
 $opacity: .8;
 
 html, body{
-	height: 100%;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	font-family: 'Open Sans', sans-serif;
-	font-size: 12px;
-	overflow: hidden;
-	scroll: none;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    overflow: hidden;
 } 
 
 #map-canvas {
@@ -21,54 +20,59 @@ html, body{
 
 
 .slideLink {
-	position:relative;
+    position:relative;
+    color:#000;
+    text-decoration: none;
+    cursor:pointer;
+
+    &:hover {
 	color:#000;
-	text-decoration: none;
-	cursor:pointer;
+    }
 
-	&:hover {
-		color:#000;
-	}
+    &:before {
+	content: "";
+	position:absolute;
+	width:100%;
+	height:1px;
+	bottom: 0;
+	left: 0;
+	background-color: #acbcc9;
+	visibility: hidden;
+	transform: scaleX(0);
+	transition: all 0.2s ease-in-out 0s;
+    }
 
-	&:before {
-		content: "";
-		position:absolute;
-		width:100%;
-		height:1px;
-		bottom: 0;
-		left: 0;
-		background-color: #acbcc9;
-		visibility: hidden;
-	  	transform: scaleX(0);
-	  	transition: all 0.2s ease-in-out 0s;
-	}
+    &:hover:before {
+	font-size:8px;
+	content:"rename";
+	visibility: visible;
+	transform: scaleX(1);
+    }
 
-	&:hover:before {
-		font-size:8px;
-		content:"rename";
-		visibility: visible;
-		transform: scaleX(1);
-	}
+    &.noHint:hover:before {
+	content:"";
+    }
 
-	&.noHint:hover:before {
-		content:"";
-	}
-
-	&.retrieve:hover:before {
-		font-size:8px;
-		content:"retrieve";
-		transform: scaleX(1);
-	}
+    &.retrieve:hover:before {
+	font-size:8px;
+	content:"retrieve";
+	transform: scaleX(1);
+    }
 }
 
+.slideLink.legField:nth-child(2) {
+    border-left:1px solid red;
+}
+
+
 .bold {
-	font-weight:bold;
+    font-weight:bold;
 }
 
 .myTreks {
-	margin: 0 0 12px 0;
-	border-bottom: 1px solid #000;
-	padding-bottom:10px;
+    margin: 0 0 12px 0;
+    border-bottom: 1px solid #000;
+    padding-bottom:10px;
 }
 
 #elevation-wrapper {
@@ -85,13 +89,12 @@ html, body{
     height: 100%;
     float: left;
     background-color: #fff;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    overflow: hidden;
 }
 
 #elevation-chart {
     height: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 #slider-button {
@@ -139,181 +142,144 @@ html, body{
 }
 
 .google-visualization-tooltip {
-  border: 0px!important;
-  box-shadow: 0px 0px 0px 0px!important;
-  background: transparent!important;
+    border: 0px!important;
+    box-shadow: 0px 0px 0px 0px!important;
+    background: transparent!important;
 }
 
 .google-visualization-tooltip-item-list{
-  margin: 0px;
+    margin: 0px;
 }
 .google-visualization-tooltip-item span{
-  display: none!important;
+    display: none!important;
 }
 
 .google-visualization-tooltip-square {
-  display: none!important;
+    display: none!important;
 }
 
 .google-visualization-tooltip-item {
-  margin: 0!important;
+    margin: 0!important;
 }
 
 .tooltip-text{
-  text-shadow: .5px .5px 1px gray;
+    text-shadow: .5px .5px 1px gray;
+}
+
+.sideMenu {
+    position:absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 24%;
+    min-width: 250px;
 }
 
 .sidebarContent {
-    right: 0;
-    top: 10%;
-    position:absolute;
-    margin-right:-1000px;
-    width:28%;
-    border-bottom-left-radius:5px;
+    width:91%;
     background-color:#fff;
-}
-
-.tabList {
-	right:0;
-	top: 10%;
-	position: absolute;
-}
-
-.tab {
-	height: 40px;
-	line-height:40px;
-	border-top-left-radius:5px;
-	border-bottom-left-radius: 5px;
-	padding:0 5px;
-	background-color: #fff;
-	border-top:1px solid #337ab7;
-		border-bottom:1px solid #337ab7;  
-	border-left:1px solid #337ab7;  
-  
-    opacity: $opacity;
-    margin: 2px 0;
-    position:relative;
-    right:0;
+    height: 100%;
+    float: left;
+    border: 1px solid #337ab7;
+    border-bottom-left-radius: 5px;
+    overflow: hidden;
 }
 
 .panel {
-	visibility: hidden;
+    height: 100%;
+    width: 95%;
+    padding: 5px;
 }
-
-.visible {
-	visibility: visible;
-}
-
-.slideLeft {
-	margin-right:28%;
-}
-
-.sidebarLeft {
-	margin-right:0;
-	border-top:1px solid #3371b7;
-		border-bottom:1px solid #3371b7;
-	border-left:1px solid #3371b7;
-}
-
-.blueBack {
-	background-color: #3371b7;
-}
-
-.panelLeft {
-	margin-right:100px;
-}
-
-
-.logo { 
-	display:inline;
-	z-index:50;
-	position:absolute;
-	top:4%;
-	margin-left:85px;
-}
-
-.profileimg {
-	width:30px;
-	height:25px;
-	border:1px solid black;
-	margin: 0 10px 0 0;
-	border-radius: 5px;
-}
-
 
 .trekList {
-	margin:0 0 7px 0;
-	max-height:20%;
+    margin:0 0 7px 0;
+    max-height:20%;
 }
 
 #trekDetails {
-    height: 50%;
+    height: 90%;
+    width: 100%;
     border-bottom: none;
+
 }
 
-.legList {
-	max-height:$height/3;
-	overflow:scroll;
-	border:1px solid green;
+.trekTitle {
+    height: 10%;
+    border-bottom: 1px solid black;
 }
+
+#legList {
+    width: 100%;
+    height: 90%;
+    overflow-y: scroll;
+}
+
+.tabList {
+    position: relative;
+    right:0;
+    top: 0;
+    width: 8%;
+    float: left;
+    height: 100%;
+}
+
+.tab {
+    height: 30%;
+    border-top-left-radius:10px;
+    border-bottom-left-radius: 10px;
+    background-color: #fff;
+    opacity: $opacity;
+    border: 1px solid #337ab7;
+    overflow:hidden;
+}
+
+.logo { 
+    display:inline;
+    z-index:50;
+    position:absolute;
+    top:4%;
+    margin-left:85px;
+}
+
+.profileimg {
+    width:30px;
+    height:25px;
+    border:1px solid black;
+    margin: 0 10px 0 0;
+    border-radius: 5px;
+}
+
+
 
 .leg, .trek {
-	margin: 10px 0;
-	padding: 0 2px;
-}
-
-.slideLink.legField:nth-child(2) {
-border-left:1px solid red;
+    margin: 10px 0;
+    padding: 0 2px;
 }
 
 
 .legOptions {
-	padding: 5px;
-	margin: 10px 5px;
-	border: 1px solid gray;
-	border-radius: 5px;
+    padding: 5px;
+    margin: 10px 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 
 .legOptions div {
-	margin:6px 0;
+    margin:6px 0;
 }
 
 .totalDistance {
+    height: 10%;
     border-top: 1px solid black;
     padding: 5px;
-    margin:18px 0 0 0;
-    width:100%
+    width:95%;
 }
 
 .odd {
-	background-color:#CCFFFF;
-	padding:2px 0;
+    background-color:#CCFFFF;
+    padding:2px 0;
 }
-
-.nav>li>a {
-	padding:10px;
-}
-
-.toggle-popover {
-	background-color: transparent;
-	border:none;
-	height:45px;
-	width:100%;
-}
-
-.headerPop {
-	background-color:#337ab7;
-	border:none;
-	height:45px;
-	width:100%;	
-}
-
-.headerPop:hover {
-visibility: show;
-
-}
-
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
+    display: none !important;
 }

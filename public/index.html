@@ -22,24 +22,27 @@
     
     <div class="sideMenu">  
       <div class="tabList">
-	<div class="tab trekListTab" aria-controls="trekList">my treks</div>
-	<div class="tab currentTab" aria-controls="trekDetails">current trek</div>
-	<div class="tab directionsTab" aria-controls="directions">directions</div>
+	<div class="tab trekListTab" aria-controls="trekList"><div>my treks</div></div>
+	<div class="tab currentTab" aria-controls="trekDetails"><div>current trek</div></div>
+	<div class="tab directionsTab" aria-controls="directions"><div>directions</div></div>
       </div>
 
       <div class="sidebarContent" data-ng-controller="TrekController as Trek" role="navigation">  
 
 	<div class="panel currentPanel">
 	  <div class="sidebarSection" id="trekDetails" data-ng-cloak>
-	    <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
-	    <span style="float:right">
-	      <span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
-	      <span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
-	    </span>
-	    
-	    <form data-ng-show="Trek.showEditName">
-	      <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
-	    </form>
+
+	    <div class="trekTitle">
+	      <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
+	      <span style="float:right">
+		<span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
+		<span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
+	      </span>
+	      
+	      <form data-ng-show="Trek.showEditName">
+		<input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
+	      </form>
+	    </div>
 
 	    <div id="legList">
 	      <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" data-ng-class-odd="'odd'">
@@ -51,7 +54,7 @@
 		    {{Trek.markerName(leg.dest)}}
 		  </span>
 		</span>
-		<span style="float:right;" class="slideLink noHint" data-ng-click="Trek.removeLeg($index)">delete</span>
+		<span style="float:right; padding-right: 5px;" class="slideLink noHint" data-ng-click="Trek.removeLeg($index)"><b>delete</b></span>
 
 		<div data-ng-show="Trek.showDetails[$index]" class="legOptions">
 		  <form data-ng-submit="Trek.toggleDetails($index)">
@@ -69,9 +72,9 @@
 		  <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
 		</div>
 	      </div>
-	      <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
 	    </div> 
 	  </div>
+	  <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
 	</div>
 
 	<div class="panel trekListPanel">
@@ -111,6 +114,5 @@
     <script src="js/app/factories.js"></script>
     <script src="js/app/controllers.js"></script>
     <script src="js/app/filters.js"></script>
-    <script src="js/app/functions.js"></script>
   </body>
 </html>
