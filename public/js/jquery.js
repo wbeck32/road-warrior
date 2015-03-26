@@ -1,1 +1,1 @@
-$( "tooltip-text" ).siblings().css( "display", "none")
+$( "tooltip-text" ).siblings().css( "display", "none");

@@ -1,19 +1,7 @@
-/*@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
-}
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
-}
-@media (min-width: 1200px) {
-  .container {
-    width: 1170px;
-  }
-}*/
+
 $height: 100%;
+$elGraphNegMarg: -66%;
+$opacity: .8;
 
 html, body{
 	height: 100%;
@@ -71,9 +59,7 @@ html, body{
 		content:"retrieve";
 		transform: scaleX(1);
 	}
-
 }
-
 
 .bold {
 	font-weight:bold;
@@ -85,24 +71,44 @@ html, body{
 	padding-bottom:10px;
 }
 
-#elevation-chart {
+#elevation-wrapper {
     width: 68%;
     height: 15%;
-    opacity: .9;
+    opacity: $opacity;
     z-index: 100;
     position: absolute;
     bottom: 5%;
-    margin-right: 1%;
-    overflow: visible;
-    border-radius: 5px;
 }
 
-#elevation-chart.hideChart {
-    margin-left: -100%;
+#nested-elevation-wrapper {
+    width: 97%;
+    height: 100%;
+    float: left;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow: hidden;
 }
 
-#elevation-chart.showChart {
-    margin-left: 1%;
+#elevation-chart {
+    height: 100%;
+}
+
+#slider-button {
+    width: 3%;
+    height: 100%;
+    float: left;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #337ab7;
+}
+
+#elevation-wrapper.hideChart {
+    margin-left: $elGraphNegMarg;
+}
+
+#elevation-wrapper.showChart {
+    margin-left: 5%;
 }
 
 .hideChart {
@@ -113,6 +119,23 @@ html, body{
 .showChart {
     -webkit-animation-duration: 1s;
     -webkit-animation-name: slidein;
+}
+@-webkit-keyframes slideout {
+    from {
+	margin-left: 5%;
+    }
+    to {
+	margin-left: $elGraphNegMarg;
+    }
+}
+
+@-webkit-keyframes slidein {
+    from {
+	margin-left: $elGraphNegMarg;
+    }
+    to {
+	margin-left: 5%;
+    }
 }
 
 .google-visualization-tooltip {
@@ -145,15 +168,14 @@ html, body{
     top: 10%;
     position:absolute;
     margin-right:-1000px;
-    width:15%;
-    border-top-left-radius:5px;
+    width:28%;
     border-bottom-left-radius:5px;
     background-color:#fff;
 }
 
 .tabList {
 	right:0;
-	top: 12%;
+	top: 10%;
 	position: absolute;
 }
 
@@ -168,7 +190,7 @@ html, body{
 		border-bottom:1px solid #337ab7;  
 	border-left:1px solid #337ab7;  
   
-    opacity: .9;
+    opacity: $opacity;
     margin: 2px 0;
     position:relative;
     right:0;
@@ -183,7 +205,7 @@ html, body{
 }
 
 .slideLeft {
-	margin-right:15%;
+	margin-right:28%;
 }
 
 .sidebarLeft {
@@ -191,7 +213,6 @@ html, body{
 	border-top:1px solid #3371b7;
 		border-bottom:1px solid #3371b7;
 	border-left:1px solid #3371b7;
-
 }
 
 .blueBack {
@@ -202,23 +223,6 @@ html, body{
 	margin-right:100px;
 }
 
-@-webkit-keyframes slideout {
-    from {
-	margin-left: 1%;
-    }
-    to {
-	margin-left: -100%
-    }
-}
-
-@-webkit-keyframes slidein {
-    from {
-	margin-left: -100%;
-    }
-    to {
-	margin-left: 1%;
-    }
-}
 
 .logo { 
 	display:inline;
