@@ -16,12 +16,23 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 app.post('/api/saveatrek', function(req, res){
+  var trek = req.body.trek;
   var db = app.get('mongo');
   var treks = db.collection('treks');
-  console.log(req.body.trek);
-  treks.insert(req.body.trek, function(err, document){
-    if(err) throw err;
-    res.json(document.ops[0]._id);
+  treks.update({_id: ObjectId(trek.id)}, trek, {upsert: true}, function(err, updateRes){
+    if(updateRes.result.upserted){
+      res.end(updateRes.result.upserted[0]._id.toString());
+  } else {
+    res.end();
+  }
+  });
+})
+
+app.delete('/api/deleteatrek/:trekid', function(req, res){
+  var db = app.get('mongo');
+  var treks = db.collection('treks');
+  treks.remove({_id: ObjectId(req.params.trekid)}, {justOne : true}, function(status) {
+    console.log('status: ', status);
   });
 })
 
@@ -31,6 +42,14 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
 	treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
 		res.json(docs);
 	});
+})
+
+app.get('/api/retrievealltreks', function(req, res) {
+  var db = app.get('mongo');
+  var treks = db.collection('treks');
+  treks.find({}).toArray(function(err, docs) {
+    res.json(docs);
+  });
 })
 
 app.listen(3000);

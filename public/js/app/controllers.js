@@ -35,29 +35,51 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     loadedTrek = trek;
   };
 
-  this.renderSavedTrek = function() {
+  this.renderSavedTrek = function(data) {
+    var legs = [];
+    console.log(data);
+    var origGoogleLatLng = new google.maps.LatLng(data.markers[0].k, data.markers[0].D);
+    var currentOrigin = markerFactory.create(origGoogleLatLng, legService, true);
+    currentOrigin.name = data.markers[0].name;
+    for(var i = 1; i < data.markers.length; i++) {
+      console.log(i);
+      var destGoogleLatLng = new google.maps.LatLng(data.markers[i].k, data.markers[i].D);
+      var dest = markerFactory.create(destGoogleLatLng, legService, true);
+      dest.name = data.markers[i].name;
+      var newLeg = legService.createLeg(currentOrigin, dest, true);
+      legs.push(newLeg);
+      currentOrigin = dest; 
+    }; 
+    trekService.allTreks.push({name: data.name, legs: legs, id: data._id}); 
+    markerFactory.markerIndex = 65;
+  };
+
+  this.renderAllSavedTreks = function() {
     $http({
       method: 'GET',
-      url:'/api/retrieveatrek/' + '5511ec05bad818c26b8f3785' 
-    }).
-      success(function(data, status, headers, config){
-        console.log(data);
-        self.name = data[0].name;
-        data[0].markers.forEach(function(latLng) {
-          console.log(typeof latLng.k);
-          var googleLatLng = new google.maps.LatLng(latLng.k, latLng.D);
-          var marker = markerFactory.create(googleLatLng, legService);
-          legService.addLeg(marker);  
+      url:'/api/retrievealltreks'
+    }).success(function(data, status, headers, config){
+        data.forEach(function(trek){
+          self.renderSavedTrek(trek);
         });
     }).error(function(data, status, headers, config){
       console.log('failure');
     });
+  }
 
-  };
-
-  this.renderSavedTrek();
+  this.renderAllSavedTreks();
 
   this.deleteTrek = function(trek){
+    
+    $http({
+      method: 'DELETE',
+      url:'/api/deleteatrek/'+trek.id
+    }).success(function(data, status, headers, config){
+        console.log('delete: ', status);
+    }).error(function(data, status, headers, config){
+      console.log('failure');
+    });
+
     trekService.delete(trek);
     if (trek.legs === this.legs) {
       this.clearTrek();
@@ -75,8 +97,8 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     if (!loadedTrek){
       if(this.legs.length > 0){
         loadedTrek = {
-        name: this.name,
-        legs: this.legs
+          name: this.name,
+          legs: this.legs
         };
 	      trekService.allTreks.push(loadedTrek);
       }
@@ -91,9 +113,10 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
       headers: {'Content-Type': 'application/json'}
     }).
       success(function(data, status, headers, config){
-      loadedTrek.id = data;
-      console.log(loadedTrek);
-      loadedTrek = null;
+        if (data) {
+          loadedTrek.id = data;
+        }
+        loadedTrek = null;
     }).error(function(data, status, headers, config){
       console.log('failure');
       loadedTrek = null;
@@ -104,10 +127,15 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   };
 
   function parseTrek() {
+    var origin, marker;
     var latLngArray = [];
-    latLngArray.push(self.legs[0].origin.getPosition());
+    origin = self.legs[0].origin.getPosition();
+    origin.name = self.legs[0].origin.name;
+    latLngArray.push(origin);
     for (var i = 0; i < self.legs.length; i++) {
-      latLngArray.push(self.legs[i].dest.getPosition());
+      marker = self.legs[i].dest.getPosition();
+      marker.name = self.legs[i].dest.name;
+      latLngArray.push(marker);
     }
     return {markers: latLngArray,
             name: self.name,

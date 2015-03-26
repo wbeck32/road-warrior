@@ -37,13 +37,15 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     elevationProfileFactory(this.legs);
   };
 
-  this.createLeg = function(org, des){
+  this.createLeg = function(org, des, dontRenderNow){
     
     function Leg(origin, dest){
       this.origin = origin;
       this.dest = dest;
       this.rend = new google.maps.DirectionsRenderer(renderOptions);
-      this.rend.setMap(mapFactory);
+      if (!dontRenderNow) {
+        this.rend.setMap(mapFactory);
+      }
       this.elevationProfile = [];
       this.travelMode = "WALKING";
 
@@ -53,7 +55,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
       	    var newMarker = markerFactory.create(thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
       	    var newLeg = self.createLeg(newMarker, thisLeg.dest);
-	    newLeg.travelMode = thisLeg.travelMode;
+            newLeg.travelMode = thisLeg.travelMode;
       	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
       	    thisLeg.dest = newMarker;
       	    thisLeg.getDirections();
@@ -161,24 +163,26 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 
     markerColor : function(){
       if (this.markerIndex === 65){
-	return "|009900|000000";
+	       return "|009900|000000";
       } else return "|ff0000|000000";
     },
 
-    create : function(latLng, thisObj) {
+    create : function(latLng, thisObj, dontRenderNow) {
       var marker = new google.maps.Marker({
       	position: latLng,
-      	map: mapFactory,
+      	map: dontRenderNow ? null : mapFactory,
       	draggable: true,
-	icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + String.fromCharCode(this.markerIndex) + this.markerColor()
+        icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + String.fromCharCode(this.markerIndex) + this.markerColor()
       });
 
       elevationService(latLng, marker);
       marker.index = String.fromCharCode(this.markerIndex);
       this.markerIndex++;
-
-      mapFactory.panTo(latLng);
-
+      
+      if (!dontRenderNow) {
+        mapFactory.panTo(latLng);
+      }
+      
       google.maps.event.addListener(marker, 'click', function(event){
       	$rootScope.$apply(function(){
       	  thisObj.removeMarker(marker);
