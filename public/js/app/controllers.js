@@ -2,7 +2,9 @@
 
 // Trek Controller
 
-angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', function(trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory){
+// 5511ec05bad818c26b8f3784 angels and bunnies id
+
+angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', '$http', function(trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory, $http){
 
   this.legs = legService.legs;
   this.name = legService.name;
@@ -33,6 +35,28 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     loadedTrek = trek;
   };
 
+  this.renderSavedTrek = function() {
+    $http({
+      method: 'GET',
+      url:'/api/retrieveatrek/' + '5511ec05bad818c26b8f3785' 
+    }).
+      success(function(data, status, headers, config){
+        console.log(data);
+        self.name = data[0].name;
+        data[0].markers.forEach(function(latLng) {
+          console.log(typeof latLng.k);
+          var googleLatLng = new google.maps.LatLng(latLng.k, latLng.D);
+          var marker = markerFactory.create(googleLatLng, legService);
+          legService.addLeg(marker);  
+        })
+    }).error(function(data, status, headers, config){
+      console.log('failure');
+    });
+
+  }
+
+  this.renderSavedTrek();
+
   this.deleteTrek = function(trek){
     trekService.delete(trek);
     if (trek.legs === this.legs) {
@@ -50,19 +74,46 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.saveTrek = function(){
     if (!loadedTrek){
       if(this.legs.length > 0){
-	trekService.allTreks.push({
-	  name: this.name,
-	  legs: this.legs
-	});
+        loadedTrek = {
+        name: this.name,
+        legs: this.legs
+        }
+	      trekService.allTreks.push(loadedTrek);
       }
-    } else {
+    } 
+    else {
       loadedTrek.name = this.name;
     }
+    $http({
+      method: 'POST',
+      url:'/api/saveatrek', 
+      data: {trek: parseTrek()},
+      headers: {'Content-Type': 'application/json'}
+    }).
+      success(function(data, status, headers, config){
+      loadedTrek.id = data;
+      console.log(loadedTrek);
+      loadedTrek = null;
+    }).error(function(data, status, headers, config){
+      console.log('failure');
+      loadedTrek = null;
+    });
     legService.unRenderAll();
     this.legs = legService.legs;
     this.name = legService.name;
-    loadedTrek = null;
   };
+
+  function parseTrek() {
+    var latLngArray = [];
+    latLngArray.push(self.legs[0].origin.getPosition());
+    for (var i = 0; i < self.legs.length; i++) {
+      latLngArray.push(self.legs[i].dest.getPosition());
+    }
+    return {markers: latLngArray,
+            name: self.name,
+            id: loadedTrek.id
+    };
+  }
 
   this.hideFields = function(){
     for (var i = 0; i < self.legs.length; i++){
