@@ -135,3 +135,45 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   };
 
 }]);
+
+angular.module('roadWarrior').controller('SideBarController', function(){
+  
+  var sideMenu = document.getElementById('sideMenu');
+  var sidebarContent = document.getElementById('sidebarContent');
+  var currentTab = null;
+
+  var activePanel = [true, false, false];
+
+  this.activePanel = function(index){
+    return activePanel[index];
+  };
+
+  this.tabSwitcher = function(tab){
+    if (!currentTab){
+      sideMenu.className = "showMenu";
+      loadTab(tab);
+    } else if (currentTab === tab){
+      sideMenu.className = "hideMenu";
+      document.getElementById(currentTab + "Tab").className = "tab";
+      currentTab = null;
+    } else {
+      loadTab(tab);
+    }
+  };
+
+  function loadTab(tab){
+    if (tab === 'currentTrek') {
+      activePanel = [true, false, false];
+    } else if (tab === 'trekList') {
+      activePanel = [false, true, false];
+    } else if (tab === 'directions') {
+      activePanel = [false, false, true];
+    }
+    if(currentTab){
+      document.getElementById(currentTab + "Tab").className = "tab";
+    }
+    document.getElementById(tab + "Tab").className = "tab activeTab";
+    currentTab = tab;
+  }
+
+});

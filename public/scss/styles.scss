@@ -64,15 +64,8 @@ html, body{
     border-left:1px solid red;
 }
 
-
 .bold {
     font-weight:bold;
-}
-
-.myTreks {
-    margin: 0 0 12px 0;
-    border-bottom: 1px solid #000;
-    padding-bottom:10px;
 }
 
 #elevation-wrapper {
@@ -123,6 +116,7 @@ html, body{
     -webkit-animation-duration: 1s;
     -webkit-animation-name: slidein;
 }
+
 @-webkit-keyframes slideout {
     from {
 	margin-left: 5%;
@@ -140,6 +134,52 @@ html, body{
 	margin-left: 5%;
     }
 }
+
+
+#sideMenu {
+    height: 80%;
+    width: 24%;
+    position:absolute;
+    top: 10%;
+}
+
+#sideMenu.hideMenu {
+    right: -21%;
+}
+
+#sideMenu.showMenu {
+    right: 0;
+}
+
+.hideMenu {
+    -webkit-animation-duration: 1s;
+    -webkit-animation-name: hideMenu;
+}
+
+.showMenu {
+    -webkit-animation-duration: 1s;
+    -webkit-animation-name: showMenu;
+}
+
+@-webkit-keyframes showMenu {
+    from {
+	right: -21%;
+    }
+    to {
+	right: 0;
+    }
+}
+
+
+@-webkit-keyframes hideMenu {
+    from {
+	right: 0;
+    }
+    to {
+	right: -21%;
+    }
+}
+
 
 .google-visualization-tooltip {
     border: 0px!important;
@@ -166,23 +206,15 @@ html, body{
     text-shadow: .5px .5px 1px gray;
 }
 
-.sideMenu {
-    position:absolute;
-    right: 0;
-    top: 10%;
-    height: 80%;
-    width: 24%;
-    min-width: 250px;
-}
 
-.sidebarContent {
-    width:91%;
+#sidebarContent {
+    width:87%;
     background-color:#fff;
     height: 100%;
     float: left;
-    border: 1px solid #337ab7;
     border-bottom-left-radius: 5px;
     overflow: hidden;
+    opacity: $opacity;
 }
 
 .panel {
@@ -218,19 +250,25 @@ html, body{
     position: relative;
     right:0;
     top: 0;
-    width: 8%;
+    width: 12%;
     float: left;
     height: 100%;
 }
 
 .tab {
-    height: 30%;
-    border-top-left-radius:10px;
-    border-bottom-left-radius: 10px;
-    background-color: #fff;
-    opacity: $opacity;
-    border: 1px solid #337ab7;
+    height: 33.3%;
+    border-top-left-radius:20px;
+    border-bottom-left-radius: 20px;
+    background-color: #337ab7;
+    color: #fff;
     overflow:hidden;
+}
+
+.activeTab {
+    background-color: #fff;
+    color: #000;
+    opacity: $opacity;
+
 }
 
 .logo { 

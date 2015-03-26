@@ -20,16 +20,16 @@
       <div id="slider-button"></div>
     </div> 
     
-    <div class="sideMenu">  
+    <div id="sideMenu" class="hideMenu" ng-controller="SideBarController as SideBar">  
       <div class="tabList">
-	<div class="tab trekListTab" aria-controls="trekList"><div>my treks</div></div>
-	<div class="tab currentTab" aria-controls="trekDetails"><div>current trek</div></div>
-	<div class="tab directionsTab" aria-controls="directions"><div>directions</div></div>
+	<div class="tab" id="trekListTab" aria-controls="trekList" ng-click="SideBar.tabSwitcher('trekList')"><div>my treks</div></div>
+	<div class="tab current" id="currentTrekTab" aria-controls="trekDetails" ng-click="SideBar.tabSwitcher('currentTrek')"><div>current trek</div></div>
+	<div class="tab" id="directionsTab" aria-controls="directions" ng-click="SideBar.tabSwitcher('directions')"><div>directions</div></div>
       </div>
 
-      <div class="sidebarContent" data-ng-controller="TrekController as Trek" role="navigation">  
+      <div id="sidebarContent" class="currentTrek" data-ng-controller="TrekController as Trek" role="navigation">  
 
-	<div class="panel currentPanel">
+	<div class="panel" ng-show="SideBar.activePanel(0)">
 	  <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
 	    <div class="trekTitle">
@@ -77,7 +77,7 @@
 	  <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
 	</div>
 
-	<div class="panel trekListPanel">
+	<div class="panel" ng-show="SideBar.activePanel(1)">
 	  <div class="sidebarSection" id="trekList">
 
 	    <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;
@@ -92,9 +92,11 @@
 	  </div>
 	</div>
 
-	<div class="panel directionsPanel">
+	<div class="panel" ng-show="SideBar.activePanel(2)">
 	  <div class="sidebarSection" id="directions" style="border:1px solid red">
-	    Directions
+	    <div data-ng-repeat="leg in Trek.legs track by $index" id="{{'leg' + $index}}">
+	      hello
+	    </div>
 	  </div>
 	</div>
 
