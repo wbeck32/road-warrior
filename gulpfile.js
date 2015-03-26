@@ -1,9 +1,21 @@
 var gulp = require('gulp'),
 sass = require('gulp-sass'),
-livereload = require('gulp-livereload');
+livereload = require('gulp-livereload'),
+postcss      = require('gulp-postcss'),
+sourcemaps   = require('gulp-sourcemaps'),
+autoprefixer = require('autoprefixer-core');
+
+
+gulp.task('autoprefixer', function () { 
+    return gulp.src('public/css/*.css')
+        .pipe(sourcemaps.init())
+        .pipe(postcss([ autoprefixer({ browsers: ['last 2 version'] }) ]))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('public/css'));
+});
 
 gulp.task('default', function() {
-    gulp.start('watch', 'sass');
+    gulp.start('watch', 'sass', 'autoprefixer');
 });
 
 gulp.task('sass', function () {
