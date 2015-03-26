@@ -93,7 +93,7 @@ html, body{
     position: absolute;
     bottom: 5%;
     margin-right: 1%;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 5px;
 }
 
@@ -115,6 +115,30 @@ html, body{
     -webkit-animation-name: slidein;
 }
 
+.google-visualization-tooltip {
+  border: 0px!important;
+  box-shadow: 0px 0px 0px 0px!important;
+  background: transparent!important;
+}
+
+.google-visualization-tooltip-item-list{
+  margin: 0px;
+}
+.google-visualization-tooltip-item span{
+  display: none!important;
+}
+
+.google-visualization-tooltip-square {
+  display: none!important;
+}
+
+.google-visualization-tooltip-item {
+  margin: 0!important;
+}
+
+.tooltip-text{
+  text-shadow: .5px .5px 1px gray;
+}
 
 .sidebarContent {
     right: 0;
