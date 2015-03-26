@@ -14,7 +14,12 @@
    <div id="map-canvas"></div>
     <div id="elevation-chart" class="hideChart"></div>  
     
- 
+<div id="hidebar"> 
+  <ul id="tabs">
+    <li class="tab active"><div>all treks</div></li>
+    <li class="tab"><div>current treks</div></li>
+  </ul>
+  
       <div class="sidebarContent" data-ng-controller="TrekController as Trek" role="navigation"> 
 <!--	<div class="sidebarSection">
 >>>>>>> sass
@@ -84,7 +89,7 @@
   </div>
       </div>
     </div>
-    
+</div>
     <!-- Vendor Libs: angular and googlemaps -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyBr6dZhzQB3XGxJHYbXR2jGOusupVyas1E"></script>   
