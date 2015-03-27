@@ -278,7 +278,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
     if(latLngArray.length > 200) {
       var incr = Math.ceil(latLngArray.length/200);
       var newLatLngArray = [];
-      for (var i = 0; i < latLngArray.length; i+=incr) {
+      for (var k = 0; k < latLngArray.length; k+=incr) {
         newLatLngArray.push(latLngArray[i]);
       }
       latLngArray = newLatLngArray;
@@ -344,7 +344,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
       	data.addRow([totalDistance, elevation, location, tooltip]);
       	totalDistance += incr;
       }
-    };
+    }
     
     var view = new google.visualization.DataView(data);
     view.hideColumns([2]);

@@ -8,7 +8,7 @@ angular.module('roadWarrior').filter('totalDistance', function(){
   };
 }).filter('metersToMiles', function(){
   return function(input){
-    return (input * .0006214).toFixed(2);
+    return (input * 0.0006214).toFixed(2);
   };
 }).filter('metersToFeet', function(){
   return function(input){

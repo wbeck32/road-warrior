@@ -49,7 +49,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
       var newLeg = legService.createLeg(currentOrigin, dest, true);
       legs.push(newLeg);
       currentOrigin = dest; 
-    }; 
+    }
     trekService.allTreks.push({name: data.name, legs: legs, id: data._id}); 
     markerFactory.markerIndex = 65;
   };
@@ -65,7 +65,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     }).error(function(data, status, headers, config){
       console.log('failure');
     });
-  }
+  };
 
   this.renderAllSavedTreks();
 
