@@ -187,7 +187,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       });
 
       elevationService(latLng, marker);
-      marker.index = this.asciiIndex;
+      marker.index = this.asciiIndex();
       this.markerIndex++;
       
       if (!dontRenderNow) {
