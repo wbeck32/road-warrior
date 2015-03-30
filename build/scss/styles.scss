@@ -180,6 +180,13 @@ html, body{
     }
 }
 
+.user-forms {
+    width: 50%;
+    input {
+        border-radius: 10px;
+        display: block;
+    }
+}
 
 .google-visualization-tooltip {
     border: 0px!important;

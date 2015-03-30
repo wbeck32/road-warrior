@@ -71,7 +71,10 @@ app.post('/api/signup', function(req, res) {
     if (docs.length === 0) {
       users.insert({username: req.body.username, password: req.body.password}, function(err, docs){
         if (err) throw err;
-        res.end(authenticate(req.body.username))
+        res.json({
+          token : authenticate(req.body.username),
+          user: docs[0]
+        });
       });
     } else {
       res.end('User already exists');
@@ -86,7 +89,7 @@ app.post('/api/login', function(req, res){
     if (err) throw err;
     if (docs.length === 1) {
       res.json({
-        usertoken : authenticate(req.body.username),
+        token : authenticate(req.body.username),
         user: docs[0]
       });
     } else {

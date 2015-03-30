@@ -110,26 +110,29 @@
         </div>
         <div class="panel" data-ng-show="SideBar.activePanel(3)">
           <div class="sidebarSection" id="account">
-            <div class="logIn" data-ng-show="SideBar.logIn()">
-              <form>
-                <input type="text" placeholder="User Name"/>
-                <input type="password" placeholder="Password"/>
-                <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">Sign Up</span>
-              </form>  
+            <div class="logIn" data-ng-show="SideBar.showLogIn()">
+              <form class="user-forms" data-ng-submit="SideBar.logIn()">
+                <input type="text" placeholder="User Name" data-ng-model="SideBar.username" />
+                <input type="password" placeholder="Password" data-ng-model="SideBar.password" />
+                <button>Log in</button>
+              </form>
+              <span>Don't have an account yet? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">sign up</span>.</span> 
             </div>
-            <div class="createAccount" data-ng-show="SideBar.createAccount()">
-              <form>
-                <input type="text" placeholder="User Name"/>
-                <input type="password" placeholder="Password"/>
-                <input type="password" placeholder="Type Password AGAIN!"/>
-                <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">Log In</span>
-              </form>  
+            <div class="createAccount" data-ng-show="SideBar.showCreateAccount()">
+              <form class="user-forms" data-ng-submit="SideBar.createAccount()">
+                <input type="text" placeholder="User Name" data-ng-model="SideBar.username"/>
+                <input type="password" placeholder="Password" data-ng-model="SideBar.password" />
+                <input type="password" placeholder="Type Password AGAIN!" data-ng-model="SideBar.verify" />
+                <button>Sign up</button>
+              </form>
+              <span>Already have an account? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">log in</span>.</span>
             </div> 
             <div class="accountInfo" data-ng-show="SideBar.accountInfo()">
               User NAME!
               User STUFF!
               Password CHANGE!
-              PICS, BRAH! 
+              PICS, BRAH!
+              <button ng-click="SideBar.signOut()">Sign out</button> 
             </div>
           </div>
         </div>
