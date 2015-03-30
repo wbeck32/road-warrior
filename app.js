@@ -6,11 +6,14 @@ var mongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://localhost:27017/roadwarrior';
 var bodyParser = require('body-parser');
+var jwt = require('jwt-simple');
+var moment = require('moment');
+var jwtKey = process.env.JWTKEY;
 
 mongoClient.connect(url, function(err, db){
   if (err) throw err;
   app.set('mongo', db); 
-})
+});
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
@@ -27,7 +30,7 @@ app.post('/api/saveatrek', function(req, res){
     res.end();
   }
   });
-})
+});
 
 app.delete('/api/deleteatrek/:trekid', function(req, res){
   var db = app.get('mongo');
@@ -35,7 +38,7 @@ app.delete('/api/deleteatrek/:trekid', function(req, res){
   treks.remove({_id: ObjectId(req.params.trekid)}, {justOne : true}, function(status) {
     console.log('status: ', status);
   });
-})
+});
 
 app.get('/api/retrieveatrek/:trekid', function(req, res) {
 	var db = app.get('mongo');
@@ -43,7 +46,7 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
 	treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
 		res.json(docs);
 	});
-})
+});
 
 app.get('/api/retrievealltreks', function(req, res) {
   var db = app.get('mongo');
@@ -51,24 +54,55 @@ app.get('/api/retrievealltreks', function(req, res) {
   treks.find({}).toArray(function(err, docs) {
     res.json(docs);
   });
-})
+});
 
 app.post('/api/usercheck', function(req, res) {
   var db = app.get('mongo');
   var users = db.collection('users');
   users.find({username: req.body.username}).toArray(function(err, docs) {
     res.json(docs.length);
-  })
-})
+  });
+});
 
 app.post('/api/signup', function(req, res) {
   var db = app.get('mongo');
   var users = db.collection('users');
-  users.insert({username: req.body.username, password: req.body.password}, function(err, a){
+  users.find({username: req.body.username}).toArray(function(err, docs) {
+    if (docs.length === 0) {
+      users.insert({username: req.body.username, password: req.body.password}, function(err, docs){
+        if (err) throw err;
+        res.end(authenticate(req.body.username))
+      });
+    } else {
+      res.end('User already exists');
+    }
+  });
+});
+
+app.post('/api/login', function(req, res){
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  users.find({username: req.body.username, password: req.body.password}, {password: 0}).toArray(function(err, docs){
     if (err) throw err;
-    res.end(a.result.ok.toString())
-  })
-})
+    if (docs.length === 1) {
+      res.json({
+        usertoken : authenticate(req.body.username),
+        user: docs[0]
+      });
+    } else {
+      res.end('no such user');
+    }
+  });
+});
+
+function authenticate (username){
+  var expires = moment().add(7, 'days').valueOf();
+  var token = jwt.encode({
+    iss: username,
+    exp: expires
+  }, jwtKey);
+  return token;
+}
 
 app.listen(3000);
 

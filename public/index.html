@@ -15,91 +15,96 @@
     <div id="map-canvas"></div>
     <div id="elevation-wrapper" class="hideChart">
       <div id="nested-elevation-wrapper">
-	<div id="elevation-chart"></div>	
+        <div id="elevation-chart"></div>  
       </div>
       <div id="slider-button"></div>
     </div> 
     
     <div id="sideMenu" class="hideMenu" ng-controller="SideBarController as SideBar">  
       <div class="tabList">
-	<div class="tab" id="trekListTab" aria-controls="trekList" ng-click="SideBar.tabSwitcher('trekList')"><div>my treks</div></div>
-	<div class="tab current" id="currentTrekTab" aria-controls="trekDetails" ng-click="SideBar.tabSwitcher('currentTrek')"><div>current trek</div></div>
-	<div class="tab" id="directionsTab" aria-controls="directions" ng-click="SideBar.tabSwitcher('directions')"><div>directions</div></div>
+        <div class="tab" id="trekListTab" aria-controls="trekList" ng-click="SideBar.tabSwitcher('trekList')">
+          <div>my treks</div>
+        </div>
+        <div class="tab current" id="currentTrekTab" aria-controls="trekDetails" ng-click="SideBar.tabSwitcher('currentTrek')">
+          <div>current trek</div>
+        </div>
+        <div class="tab" id="directionsTab" aria-controls="directions" ng-click="SideBar.tabSwitcher('directions')">
+          <div>directions</div>
+        </div>
       </div>
 
       <div id="sidebarContent" class="currentTrek" data-ng-controller="TrekController as Trek" role="navigation">  
+        <div class="panel" ng-show="SideBar.activePanel(0)">
+          <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
-	<div class="panel" ng-show="SideBar.activePanel(0)">
-	  <div class="sidebarSection" id="trekDetails" data-ng-cloak>
+            <div class="trekTitle">
+              <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
+              <span style="float:right">
+                <span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
+                <span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
+              </span>
+        
+              <form data-ng-show="Trek.showEditName">
+                <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
+              </form>
+            </div>
 
-	    <div class="trekTitle">
-	      <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
-	      <span style="float:right">
-		<span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
-		<span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
-	      </span>
-	      
-	      <form data-ng-show="Trek.showEditName">
-		<input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
-	      </form>
-	    </div>
+            <div id="legList">
+              <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" data-ng-class-odd="'odd'">
+                <span data-ng-click="Trek.toggleDetails($index)">
+                  <span class="slideLink">
+                    <span class="bold">{{leg.origin.index}}</span>
+                    {{Trek.markerName(leg.origin)}} => 
+                    <span class="bold">{{leg.dest.index}}</span>
+                    {{Trek.markerName(leg.dest)}}
+                  </span>
+                </span>
+                <span style="float:right; padding-right: 5px;" class="slideLink noHint" data-ng-click="Trek.removeLeg($index)"><b>delete</b></span>
 
-	    <div id="legList">
-	      <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" data-ng-class-odd="'odd'">
-		<span data-ng-click="Trek.toggleDetails($index)">
-		  <span class="slideLink">
-		    <span class="bold">{{leg.origin.index}}</span>
-		    {{Trek.markerName(leg.origin)}} => 
-		    <span class="bold">{{leg.dest.index}}</span>
-		    {{Trek.markerName(leg.dest)}}
-		  </span>
-		</span>
-		<span style="float:right; padding-right: 5px;" class="slideLink noHint" data-ng-click="Trek.removeLeg($index)"><b>delete</b></span>
+                <div data-ng-show="Trek.showDetails[$index]" class="legOptions">
+                  <form data-ng-submit="Trek.toggleDetails($index)">
+                    <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name" /></div>
+                    <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name" /></div>
+                    travel mode: 
+                    <select data-ng-model="leg.travelMode" data-ng-change="leg.getDirections()">
+                      <option value="WALKING">Walking</option>
+                      <option value="DRIVING">Driving</option>
+                      <option value="BICYCLING">Bicycling</option>
+                      <option value="TRANSIT">Transit</option>
+                    </select>
+                    <input type="submit" data-ng-hide="true"/>
+                  </form>
+                  <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+                  <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value |  metersToMiles }} miles</div>
+                </div>
+              </div>
+            </div> 
+          </div>
+          <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
+        </div>
 
-		<div data-ng-show="Trek.showDetails[$index]" class="legOptions">
-		  <form data-ng-submit="Trek.toggleDetails($index)">
-		    <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name" /></div>
-		    <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name" /></div>
-		    travel mode: <select data-ng-model="leg.travelMode" data-ng-change="leg.getDirections()">
-		      <option value="WALKING">Walking</option>
-		      <option value="DRIVING">Driving</option>
-		      <option value="BICYCLING">Bicycling</option>
-		      <option value="TRANSIT">Transit</option>
-		    </select>
-		    <input type="submit" data-ng-hide="true"/>
-		  </form>
-		  <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-		  <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value | metersToMiles }} miles</div>
-		</div>
-	      </div>
-	    </div> 
-	  </div>
-	  <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
-	</div>
+        <div class="panel" ng-show="SideBar.activePanel(1)">
+          <div class="sidebarSection" id="trekList">
 
-	<div class="panel" ng-show="SideBar.activePanel(1)">
-	  <div class="sidebarSection" id="trekList">
+            <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;
+              <input type="search" style="font-weight:normal" data-ng-model="search.name" placeholder="Search your treks" />
+            </div>
 
-	    <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;
-	      <input type="search" style="font-weight:normal" data-ng-model="search.name" placeholder="Search your treks" />
-	    </div>
+            <div class="trekList trek" data-ng-repeat="trek in Trek.treks | filter:search" data-ng-cloak>
+              <span class="slideLink retrieve" data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
+              <span class="slideLink noHint" data-ng-click="Trek.deleteTrek(trek)" style="float:right">delete trek</span>
+            </div>
 
-	    <div class="trekList trek" data-ng-repeat="trek in Trek.treks | filter:search" data-ng-cloak>
-	      <span class="slideLink retrieve" data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
-	      <span class="slideLink noHint" data-ng-click="Trek.deleteTrek(trek)" style="float:right">delete trek</span>
-	    </div>
+          </div>
+        </div>
 
-	  </div>
-	</div>
-
-	<div class="panel" ng-show="SideBar.activePanel(2)">
-	  <div class="sidebarSection" id="directions" style="border:1px solid red">
-	    <div data-ng-repeat="leg in Trek.legs track by $index" id="{{'leg' + $index}}">
-	      hello
-	    </div>
-	  </div>
-	</div>
-
+        <div class="panel" ng-show="SideBar.activePanel(2)">
+          <div class="sidebarSection" id="directions" style="border:1px solid red">
+            <div data-ng-repeat="leg in Trek.legs track by $index" id="{{'leg' + $index}}">
+              hello
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
