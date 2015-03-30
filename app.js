@@ -14,6 +14,7 @@ mongoClient.connect(url, function(err, db){
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.post('/api/saveatrek', function(req, res){
   var trek = req.body.trek;
@@ -50,6 +51,21 @@ app.get('/api/retrievealltreks', function(req, res) {
   treks.find({}).toArray(function(err, docs) {
     res.json(docs);
   });
+})
+
+app.post('/api/usercheck', function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  console.log(req.body);
+  users.find({username: req.body.username}).toArray(function(err, docs) {
+    res.json(docs.length);
+  })
+})
+
+app.post('/api/signup', function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  users.insert({username: req.body.username, password: req.body.password})
 })
 
 app.listen(3000);
