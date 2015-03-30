@@ -56,7 +56,6 @@ app.get('/api/retrievealltreks', function(req, res) {
 app.post('/api/usercheck', function(req, res) {
   var db = app.get('mongo');
   var users = db.collection('users');
-  console.log(req.body);
   users.find({username: req.body.username}).toArray(function(err, docs) {
     res.json(docs.length);
   })
@@ -65,7 +64,10 @@ app.post('/api/usercheck', function(req, res) {
 app.post('/api/signup', function(req, res) {
   var db = app.get('mongo');
   var users = db.collection('users');
-  users.insert({username: req.body.username, password: req.body.password})
+  users.insert({username: req.body.username, password: req.body.password}, function(err, a){
+    if (err) throw err;
+    res.end(a.result.ok.toString())
+  })
 })
 
 app.listen(3000);
