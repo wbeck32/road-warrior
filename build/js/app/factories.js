@@ -186,7 +186,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
         icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + this.asciiIndex() + this.markerColor()
       });
 
-      elevationService(latLng, marker);
+
       marker.index = this.asciiIndex();
       this.markerIndex++;
       
@@ -290,7 +290,7 @@ angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'el
       var incr = Math.ceil(latLngArray.length/200);
       var newLatLngArray = [];
       for (var k = 0; k < latLngArray.length; k+=incr) {
-        newLatLngArray.push(latLngArray[i]);
+        newLatLngArray.push(latLngArray[k]);
       }
       latLngArray = newLatLngArray;
     }
