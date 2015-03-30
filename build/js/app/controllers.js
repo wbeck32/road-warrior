@@ -51,7 +51,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
       currentOrigin = dest; 
     }
     trekService.allTreks.push({name: data.name, legs: legs, id: data._id}); 
-    markerFactory.markerIndex = 65;
+    markerFactory.resetIndex();
   };
 
   this.renderAllSavedTreks = function() {

@@ -11,7 +11,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
   var self = this;
 
   this.unRenderAll = function(){
-    markerFactory.markerIndex = 65;
+    markerFactory.resetIndex();
     if (trekOrigin) {
       trekOrigin.setMap(null);
     }
@@ -114,7 +114,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     var neighbors = neighborsService(marker, this.legs);
     if (!neighbors.prevLeg && !neighbors.nextLeg) {
       trekOrigin = null;
-      markerFactory.markerIndex = 65;
+      markerFactory.resetIndex();
     } else if (!neighbors.prevLeg && neighbors.nextLeg) {
       trekOrigin = neighbors.nextLeg.dest;
       trekOrigin.setIcon("https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + trekOrigin.index + "|009900|000000");
@@ -136,7 +136,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.legs[0].origin.setMap(null);
       this.removeMarker(this.legs[0].dest);
       trekOrigin = null;
-      markerFactory.markerIndex = 65;
+      markerFactory.resetIndex();
     } else if (index === 0){
       this.removeMarker(this.legs[0].origin);
     } else {
@@ -159,24 +159,35 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 
   return {
     
-    markerIndex : 65,
+    markerIndex : 0,
+
+    resetIndex : function() {
+      this.markerIndex = 0;
+    },
 
     markerColor : function(){
-      if (this.markerIndex === 65){
+      if (this.markerIndex === 0){
 	       return "|009900|000000";
       } else return "|ff0000|000000";
     },
 
+    asciiIndex : function(){
+      if (this.markerIndex > 25) {
+	return String.fromCharCode(this.markerIndex + 71);
+      } else return String.fromCharCode(this.markerIndex + 65);
+    },
+
     create : function(latLng, thisObj, dontRenderNow) {
+
       var marker = new google.maps.Marker({
       	position: latLng,
       	map: dontRenderNow ? null : mapFactory,
       	draggable: true,
-        icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + String.fromCharCode(this.markerIndex) + this.markerColor()
+        icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + this.asciiIndex() + this.markerColor()
       });
 
       elevationService(latLng, marker);
-      marker.index = String.fromCharCode(this.markerIndex);
+      marker.index = this.asciiIndex;
       this.markerIndex++;
       
       if (!dontRenderNow) {

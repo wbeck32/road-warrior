@@ -12,7 +12,7 @@ autoprefixer = require('autoprefixer-core');
 
 
 gulp.task('default', function() {
-    gulp.start('watch', 'minifyJs', 'sass', 'start');
+    gulp.start('buildJs', 'sass', 'watch', 'start');
 });
 
 
@@ -28,7 +28,7 @@ gulp.task('sass', function () {
 });
 
 
-gulp.task('minifyJs', function(){
+gulp.task('buildJs', function(){
     return gulp.src('build/js/app/*.js')
         .pipe(sourcemaps.init())
         .pipe(jshint('.jshintrc'))
@@ -42,13 +42,13 @@ gulp.task('minifyJs', function(){
 gulp.task('start', function () {
   nodemon({
     script: 'app.js',
-    ext: 'js html',
     env: { 'NODE_ENV': 'development' }
   })
 })
 
 
 gulp.task('watch',function(){
-    gulp.watch('public/scss/*.scss', ['sass']);
+    gulp.watch('build/scss/*.scss', ['sass']);
+    gulp.watch('build/js/app/*.js', ['buildJs']);
     livereload.listen();
 });
