@@ -20,21 +20,24 @@
       <div id="slider-button"></div>
     </div> 
     
-    <div id="sideMenu" class="hideMenu" ng-controller="SideBarController as SideBar">  
+    <div id="sideMenu" class="hideMenu" data-ng-controller="SideBarController as SideBar">  
       <div class="tabList">
-        <div class="tab" id="trekListTab" aria-controls="trekList" ng-click="SideBar.tabSwitcher('trekList')">
+        <div class="tab" id="trekListTab" aria-controls="trekList" data-ng-click="SideBar.tabSwitcher('trekList')">
           <div>my treks</div>
         </div>
-        <div class="tab current" id="currentTrekTab" aria-controls="trekDetails" ng-click="SideBar.tabSwitcher('currentTrek')">
+        <div class="tab current" id="currentTrekTab" aria-controls="trekDetails" data-ng-click="SideBar.tabSwitcher('currentTrek')">
           <div>current trek</div>
         </div>
-        <div class="tab" id="directionsTab" aria-controls="directions" ng-click="SideBar.tabSwitcher('directions')">
+        <div class="tab" id="directionsTab" aria-controls="directions" data-ng-click="SideBar.tabSwitcher('directions')">
           <div>directions</div>
+        </div>
+        <div class="tab" id="accountTab" aria-controls="account" data-ng-click="SideBar.tabSwitcher('account')">
+          <div>account</div>
         </div>
       </div>
 
       <div id="sidebarContent" class="currentTrek" data-ng-controller="TrekController as Trek" role="navigation">  
-        <div class="panel" ng-show="SideBar.activePanel(0)">
+        <div class="panel" data-ng-show="SideBar.activePanel(0)">
           <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
             <div class="trekTitle">
@@ -83,7 +86,7 @@
           <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
         </div>
 
-        <div class="panel" ng-show="SideBar.activePanel(1)">
+        <div class="panel" data-ng-show="SideBar.activePanel(1)">
           <div class="sidebarSection" id="trekList">
 
             <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;
@@ -98,10 +101,35 @@
           </div>
         </div>
 
-        <div class="panel" ng-show="SideBar.activePanel(2)">
+        <div class="panel" data-ng-show="SideBar.activePanel(2)">
           <div class="sidebarSection" id="directions" style="border:1px solid red">
             <div data-ng-repeat="leg in Trek.legs track by $index" id="{{'leg' + $index}}">
               hello
+            </div>
+          </div>
+        </div>
+        <div class="panel" data-ng-show="SideBar.activePanel(3)">
+          <div class="sidebarSection" id="account">
+            <div class="logIn" data-ng-show="SideBar.logIn()">
+              <form>
+                <input type="text" placeholder="User Name"/>
+                <input type="password" placeholder="Password"/>
+                <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">Sign Up</span>
+              </form>  
+            </div>
+            <div class="createAccount" data-ng-show="SideBar.createAccount()">
+              <form>
+                <input type="text" placeholder="User Name"/>
+                <input type="password" placeholder="Password"/>
+                <input type="password" placeholder="Type Password AGAIN!"/>
+                <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">Log In</span>
+              </form>  
+            </div> 
+            <div class="accountInfo" data-ng-show="SideBar.accountInfo()">
+              User NAME!
+              User STUFF!
+              Password CHANGE!
+              PICS, BRAH! 
             </div>
           </div>
         </div>
