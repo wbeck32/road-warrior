@@ -104,7 +104,6 @@
         <div class="panel" data-ng-show="SideBar.activePanel(2)">
           <div class="sidebarSection" id="directions" style="border:1px solid red">
             <div data-ng-repeat="leg in Trek.legs track by $index" id="{{'leg' + $index}}">
-              hello
             </div>
           </div>
         </div>
@@ -132,7 +131,7 @@
               User STUFF!
               Password CHANGE!
               PICS, BRAH!
-              <button ng-click="SideBar.signOut()">Sign out</button> 
+              <button ng-click="Trek.signOut()">Sign out</button> 
             </div>
           </div>
         </div>

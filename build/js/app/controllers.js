@@ -15,6 +15,13 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.showEditName = false;
 
   var loadedTrek = null;
+
+  this.signOut = function(){
+    window.localStorage.removeItem("token");
+    this.clearTrek();
+    trekService.allTreks = [];
+    this.treks = trekService.allTreks;
+  };
   
   this.markerName = function(marker){
     if(marker.name){
@@ -248,11 +255,6 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
     }
   };
 
-  this.signOut = function(){
-    window.localStorage.removeItem("token");
-    legService.unRenderAll();
-    trekService.allTreks = [];
-  };
 
   function loadTab(tab){
     if (tab === 'currentTrek') {

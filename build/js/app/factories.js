@@ -10,6 +10,11 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
   var self = this;
 
+  function unRenderLeg(leg) {
+    leg.rend.setMap(null);
+    leg.rend.setPanel(null);
+  }
+
   this.unRenderAll = function(){
     markerFactory.resetIndex();
     if (trekOrigin) {
@@ -20,7 +25,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     if (this.legs.length > 0){
       this.legs.forEach(function(leg){
 	leg.dest.setMap(null);
-	leg.rend.setMap(null);
+        unRenderLeg(leg);
       });
       this.legs = [];
     }
@@ -33,6 +38,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     this.legs.forEach(function(leg){
       leg.dest.setMap(mapFactory);
       leg.rend.setMap(mapFactory);
+      leg.rend.setPanel(document.getElementById('directions'));
     });
     elevationProfileFactory(this.legs);
   };
@@ -45,6 +51,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       this.rend = new google.maps.DirectionsRenderer(renderOptions);
       if (!dontRenderNow) {
         this.rend.setMap(mapFactory);
+        this.rend.setPanel(document.getElementById('directions'));
       }
       this.elevationProfile = [];
       this.travelMode = "WALKING";
@@ -118,13 +125,12 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     } else if (!neighbors.prevLeg && neighbors.nextLeg) {
       trekOrigin = neighbors.nextLeg.dest;
       trekOrigin.setIcon("https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + trekOrigin.index + "|009900|000000");
-      this.legs.shift().rend.setMap(null);
-
+      unRenderLeg(this.legs.shift());
     } else if (neighbors.prevLeg && !neighbors.nextLeg) {
-      this.legs.pop().rend.setMap(null);
+      unRenderLeg(this.legs.pop());
     } else {
-      neighbors.prevLeg.rend.setMap(null);
-      neighbors.nextLeg.rend.setMap(null);
+      unRenderLeg(neighbors.prevLeg);
+      unRenderLeg(neighbors.nextLeg);
       var newLeg = this.createLeg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
       var prevIndex = this.legs.indexOf(neighbors.prevLeg);
       this.legs.splice(prevIndex, 2, newLeg);

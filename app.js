@@ -26,9 +26,9 @@ app.post('/api/saveatrek', function(req, res){
   treks.update({_id: ObjectId(trek.id)}, trek, {upsert: true}, function(err, updateRes){
     if(updateRes.result.upserted){
       res.end(updateRes.result.upserted[0]._id.toString());
-  } else {
-    res.end();
-  }
+    } else {
+      res.end();
+    }
   });
 });
 
@@ -89,8 +89,8 @@ app.post('/api/login', function(req, res){
     if (err) throw err;
     if (docs.length === 1) {
       res.json({
-        token : authenticate(req.body.username),
-        user: docs[0]
+        token : authenticate(req.body.username),
+        user: docs[0]
       });
     } else {
       res.end('no such user');
