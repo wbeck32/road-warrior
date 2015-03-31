@@ -8,8 +8,11 @@ var url = 'mongodb://localhost:27017/roadwarrior';
 var bodyParser = require('body-parser');
 var jwt = require('jwt-simple');
 var moment = require('moment');
+var bcrypt = require('bcrypt');
+
 var jwtKey = process.env.JWTKEY;
-   
+
+
 mongoClient.connect(url, function(err, db){
   if (err) throw err;
   app.set('mongo', db); 
@@ -70,13 +73,17 @@ app.post('/api/signup', function(req, res) {
   var users = db.collection('users');
   users.find({username: req.body.username}).toArray(function(err, docs) {
     if (docs.length === 0) {
-      users.insert({username: req.body.username, password: req.body.password}, function(err, docs){
-        if (err) throw err;
-        res.json({
-          token : authenticate(req.body.username),
-          user: {username: docs.ops[0].username, _id: docs.ops[0]._id }
+      
+      bcrypt.hash(req.body.password, 10, function(err, hash){
+        users.insert({username: req.body.username, password: hash}, function(err, docs){
+          if (err) throw err;
+          res.json({
+            token : authenticate(req.body.username),
+            user: {username: docs.ops[0].username, _id: docs.ops[0]._id }
+          });
         });
       });
+
     } else {
       res.end('User already exists');
     }
@@ -86,15 +93,22 @@ app.post('/api/signup', function(req, res) {
 app.post('/api/login', function(req, res){
   var db = app.get('mongo');
   var users = db.collection('users');
-  users.find({username: req.body.username, password: req.body.password}, {password: 0}).toArray(function(err, docs){
+  users.find({username: req.body.username}).toArray(function(err, docs){
     if (err) throw err;
     if (docs.length === 1) {
-      res.json({
-        token : authenticate(req.body.username),
-        user: docs[0]
+      bcrypt.compare(req.body.password, docs[0].password, function(err, validpass) {
+        if (err) console.log('password hash error');
+        else if (validpass === true) {
+          res.json({
+            token : authenticate(req.body.username),
+            user: docs[0]
+          });
+        } else {
+          res.end('invalid username/password combo');
+        }
       });
     } else {
-      res.end('no such user');
+      res.end('invalid username/password combo');
     }
   });
 });

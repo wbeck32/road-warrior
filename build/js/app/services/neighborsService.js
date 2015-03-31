@@ -1,4 +1,4 @@
-// this is services.js
+// this is neighborsService.js
 
 angular.module('roadWarrior').factory('neighborsService', function(){
   return function(marker, legs) {
@@ -20,14 +20,4 @@ angular.module('roadWarrior').factory('neighborsService', function(){
     }
     return {prevLeg: prevLeg, nextLeg: nextLeg};
   };
-});
-
-angular.module('roadWarrior').service('trekService', function(){
-
-  this.allTreks = [];
-
-  this.delete = function(trek){
-    this.allTreks.splice(this.allTreks.indexOf(trek), 1);
-  };
-
 });
