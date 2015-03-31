@@ -115,16 +115,23 @@
                 <input type="password" placeholder="Password" data-ng-model="Trek.password" />
                 <button>Log in</button>
               </form>
-              <span>Don't have an account yet? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()"><strong>sign up</strong></span>.</span> 
+              <span>Don't have an account yet? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">
+              <span class="bold">sign up</span></span>.</span> 
             </div>
-            <div class="createAccount" data-ng-show="SideBar.showCreateAccount()">
-              <form class="user-forms" data-ng-submit="SideBar.createAccount()">
-                <input type="text" placeholder="User Name" data-ng-model="SideBar.username"/>
-                <input type="password" placeholder="Password" data-ng-model="SideBar.password" />
-                <input type="password" placeholder="Type Password AGAIN!" data-ng-model="SideBar.verify" />
+            <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
+              <form name="createAccountForm" class="user-forms" novalidate data-ng-submit="SideBar.createAccount()">
+                <input required type="text" name="username" placeholder="User Name" data-ng-blur="SideBar.checkUsername()" data-ng-model="SideBar.username"/>
+                <span class="errMsg" ng-show="SideBar.dupeUsername">User name is already in use.</span>
+                <span class="errMsg" ng-show="createAccountForm.username.$error.required">User name is required.</span>
+                <input required type="password" placeholder="Enter password" name="password" data-ng-model="SideBar.password" />
+                <span class="errMsg" ng-show="createAccountForm.password.$error.required">Password is required.</span>     
+                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="SideBar.verify" data-ng-blur="SideBar.verifyPassword()"/>
+                <span class="errMsg" ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
+                <span class="errMsg" ng-show="SideBar.verifyPasswordFail">Passwords must match.</span>
                 <button>Sign up</button>
               </form>
-              <span>Already have an account? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()"><strong>log in</strong></span>.</span>
+              <span>Already have an account? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">
+              <span class="bold">log in</span></span>.</span>
             </div> 
             <div class="accountInfo" data-ng-show="SideBar.accountInfo()">
               User NAME!

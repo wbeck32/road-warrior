@@ -17,7 +17,13 @@ html, body{
     height: 100%;
     width: 100%;
 }
+.errMsg {
+    color:red;
+}
 
+.user-forms input.ng-untouched ~ .errMsg {
+    display:none;
+}
 
 .slideLink {
     position:relative;

@@ -20,6 +20,8 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('user');
     window.localStorage.removeItem('userid');
+    this.username = null;
+    this.password = null;
     this.clearTrek();
     trekService.allTreks = [];
     this.treks = trekService.allTreks;
@@ -137,8 +139,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
       url:'/api/saveatrek', 
       data: {trek: parseTrek()},
       headers: {'Content-Type': 'application/json'}
-    }).
-      success(function(data, status, headers, config){
+    }).success(function(data, status, headers, config){
         if (data) {
           loadedTrek.id = data;
         }
@@ -198,6 +199,9 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
   var currentTab = null;
   var noAccount = false;
   var activePanel = [true, false, false, false];
+  this.dupeUsername = false;
+  this.verifyPasswordFail = false;
+  var self = this;
 
   this.showLogIn = function () {
     if (window.localStorage.getItem("token") || noAccount) {
@@ -208,7 +212,32 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
   };
 
   this.showCreateAccount = function() {
-    return noAccount;
+    if (window.localStorage.getItem("token")) {
+      return false;
+    } else {
+      return noAccount;
+    }
+  };
+
+
+  this.checkUsername = function() {
+    if(this.username) {
+      $http({
+        method: 'POST',
+        url: 'api/usercheck',
+        data: {username: this.username},
+        headers: {'Content-Type':'application/json'}
+      }).success(function(data, status, headers, config){
+        var result = parseInt(data);
+        if(result > 0){
+          self.dupeUsername = true;          
+        } else {
+          self.dupeUsername = false;
+        }
+      }).error(function(data, status, headers, config){
+        console.log('Failure.');
+      })
+    } 
   };
 
   this.createAccount = function () {
@@ -226,8 +255,17 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
           loadTab('currentTrek');
         }
     }).error(function(data, status, headers, config){
-      console.log('failure');
+      console.log('Give up now.');
     });
+  };
+
+  this.verifyPassword = function() {
+    if (this.password !== this.verify) {
+        this.verifyPasswordFail = true;
+    }
+    else {
+      this.verifyPasswordFail = false;
+    }
   };
 
   this.accountInfo = function(){
