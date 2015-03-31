@@ -17,12 +17,16 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   var loadedTrek = null;
 
   this.signOut = function(){
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user');
+    window.localStorage.removeItem('userid');
     this.clearTrek();
     trekService.allTreks = [];
     this.treks = trekService.allTreks;
   };
-  
+
+
+
   this.markerName = function(marker){
     if(marker.name){
       return ": " + marker.name;
@@ -44,12 +48,10 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   this.renderSavedTrek = function(data) {
     var legs = [];
-    console.log(data);
     var origGoogleLatLng = new google.maps.LatLng(data.markers[0].k, data.markers[0].D);
     var currentOrigin = markerFactory.create(origGoogleLatLng, legService, true);
     currentOrigin.name = data.markers[0].name;
     for(var i = 1; i < data.markers.length; i++) {
-      console.log(i);
       var destGoogleLatLng = new google.maps.LatLng(data.markers[i].k, data.markers[i].D);
       var dest = markerFactory.create(destGoogleLatLng, legService, true);
       dest.name = data.markers[i].name;
@@ -64,7 +66,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.renderAllSavedTreks = function() {
     $http({
       method: 'GET',
-      url:'/api/retrievealltreks'
+      url:'/api/retrievealltreks/' + window.localStorage.getItem('userid')
     }).success(function(data, status, headers, config){
         data.forEach(function(trek){
           self.renderSavedTrek(trek);
@@ -74,10 +76,28 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     });
   };
 
-  this.renderAllSavedTreks();
+  this.logIn = function () {
+    $http({
+      method: 'POST',
+      url:'/api/login', 
+      data: {username: this.username, password: this.password},
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+        if (data.token) {
+          window.localStorage.setItem("token", data.token);
+          window.localStorage.setItem("user", data.user.username);
+          window.localStorage.setItem("userid", data.user._id);
+          //loadTab('trekList');
+          self.renderAllSavedTreks();
+        } else {
+          alert("No such user!");
+        }
+    }).error(function(data, status, headers, config){
+      console.log('failure');
+    });
+  };
 
-  this.deleteTrek = function(trek){
-    
+  this.deleteTrek = function(trek){   
     $http({
       method: 'DELETE',
       url:'/api/deleteatrek/'+trek.id
@@ -86,7 +106,6 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     }).error(function(data, status, headers, config){
       console.log('failure');
     });
-
     trekService.delete(trek);
     if (trek.legs === this.legs) {
       this.clearTrek();
@@ -146,7 +165,8 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     }
     return {markers: latLngArray,
             name: self.name,
-            id: loadedTrek.id
+            id: loadedTrek.id,
+            userid: window.localStorage.getItem('userid')
     };
   }
 
@@ -187,24 +207,6 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
     }
   };
 
-  this.logIn = function () {
-    $http({
-      method: 'POST',
-      url:'/api/login', 
-      data: {username: this.username, password: this.password},
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-        if (data.token) {
-          window.localStorage.setItem("token", data.token);
-          loadTab('trekList');
-        } else {
-          alert("No such user!");
-        }
-    }).error(function(data, status, headers, config){
-      console.log('failure');
-    });
-  };
-
   this.showCreateAccount = function() {
     return noAccount;
   };
@@ -219,6 +221,8 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
     }).success(function(data, status, headers, config){
         if (data) {
           window.localStorage.setItem("token", data.token);
+          window.localStorage.setItem("user", data.user.username);
+          window.localStorage.setItem('userid', data.user._id);
           loadTab('currentTrek');
         }
     }).error(function(data, status, headers, config){

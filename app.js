@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var jwtKey = process.env.JWTKEY;
-
+   
 mongoClient.connect(url, function(err, db){
   if (err) throw err;
   app.set('mongo', db); 
@@ -48,10 +48,11 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
 	});
 });
 
-app.get('/api/retrievealltreks', function(req, res) {
+app.get('/api/retrievealltreks/:userid', function(req, res) {
   var db = app.get('mongo');
   var treks = db.collection('treks');
-  treks.find({}).toArray(function(err, docs) {
+  treks.find({userid: req.params.userid}).toArray(function(err, docs) {
+    console.log(docs);
     res.json(docs);
   });
 });
@@ -73,7 +74,7 @@ app.post('/api/signup', function(req, res) {
         if (err) throw err;
         res.json({
           token : authenticate(req.body.username),
-          user: docs[0]
+          user: {username: docs.ops[0].username, _id: docs.ops[0]._id }
         });
       });
     } else {

@@ -110,9 +110,9 @@
         <div class="panel" data-ng-show="SideBar.activePanel(3)">
           <div class="sidebarSection" id="account">
             <div class="logIn" data-ng-show="SideBar.showLogIn()">
-              <form class="user-forms" data-ng-submit="SideBar.logIn()">
-                <input type="text" placeholder="User Name" data-ng-model="SideBar.username" />
-                <input type="password" placeholder="Password" data-ng-model="SideBar.password" />
+              <form class="user-forms" data-ng-submit="Trek.logIn()">
+                <input type="text" placeholder="User Name" data-ng-model="Trek.username" />
+                <input type="password" placeholder="Password" data-ng-model="Trek.password" />
                 <button>Log in</button>
               </form>
               <span>Don't have an account yet? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()"><strong>sign up</strong></span>.</span> 
