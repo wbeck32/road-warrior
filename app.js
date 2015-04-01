@@ -133,6 +133,26 @@ app.post('/api/login', function(req, res){
   });
 });
 
+app.post('/api/passwordchange', [jwtAuth], function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  if (req.user) {
+    console.log(req.body.oldpassword);
+    users.find({_id: req.user._id}).toArray(function(err, docs){
+      bcrypt.compare(req.body.oldpassword, docs[0].password, function(err, validpass) {
+        if (err) console.log('password hash error');
+        else if (validpass === true) {
+          users.update({_id: req.user._id}, {password: req.body.newPassword}, function(err, updateRes){
+            res.json(updateRes);
+          }) 
+        } else {
+          res.end('invalid username/password combo');
+        }
+      })
+    })
+  }
+});
+
 function authenticate (userid){
   var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode({

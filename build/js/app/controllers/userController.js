@@ -6,10 +6,12 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.password = null;
   this.dupeUsername = false;
   this.verifyPasswordFail = false;
+  this.showPasswordChange = false;
   var self = this;
 
   if (window.localStorage.getItem('token')) {
     trekService.renderAllSavedTreks();
+    this.username = window.localStorage.getItem('user');
   }
 
   this.signOut = function(){
@@ -85,6 +87,32 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     else {
       this.verifyPasswordFail = false;
     }
+  };
+
+  this.passwordChange = function() {
+    $http({
+      method: 'POST',
+      url: '/api/passwordchange',
+      data: {
+        oldpassword: this.oldPassword,
+        newpassword: this.newPassword,
+        username: this.username,
+        access_token: window.localStorage.getItem('token')
+      },
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+      if(data.nModified === 0) {
+        alert("Sorry, there was an error processing your request");
+      } else {
+        alert("Password Changed!");
+      }
+    }).error(function(data, status, headers, config){
+      console.log('password change error');
+    });
+  };
+
+  this.togglePasswordChange = function() {
+    this.showPasswordChange = !this.showPasswordChange;
   };
 
   this.accountInfo = function(){
