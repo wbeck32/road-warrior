@@ -1,6 +1,6 @@
 // this is userController.js
 
-angular.module('roadWarrior').controller('UserController', ['$http', 'trekService', function($http, trekService){
+angular.module('roadWarrior').controller('UserController', ['$scope', '$http', 'trekService', function($scope, $http, trekService){
 
   this.username = null;
   this.password = null;
@@ -16,6 +16,9 @@ angular.module('roadWarrior').controller('UserController', ['$http', 'trekServic
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('user');
     window.localStorage.removeItem('userid');
+    this.username = null;
+    this.password = null;
+    this.verify = null;
   };
 
   this.logIn = function () {
