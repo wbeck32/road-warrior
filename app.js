@@ -12,6 +12,7 @@ var bcrypt = require('bcrypt');
 
 var jwtKey = process.env.JWTKEY;
 
+app.set('jwtKey', jwtKey);
 
 mongoClient.connect(url, function(err, db){
   if (err) throw err;

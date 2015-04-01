@@ -7,8 +7,6 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
   var currentTab = null;
   var noAccount = false;
   var activePanel = [true, false, false, false];
-  this.dupeUsername = false;
-  this.verifyPasswordFail = false;
   var self = this;
 
   this.showLogIn = function () {
@@ -24,63 +22,6 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
       return false;
     } else {
       return noAccount;
-    }
-  };
-
-
-  this.checkUsername = function() {
-    if(this.username) {
-      $http({
-        method: 'POST',
-        url: 'api/usercheck',
-        data: {username: this.username},
-        headers: {'Content-Type':'application/json'}
-      }).success(function(data, status, headers, config){
-        var result = parseInt(data);
-        if(result > 0){
-          self.dupeUsername = true;          
-        } else {
-          self.dupeUsername = false;
-        }
-      }).error(function(data, status, headers, config){
-        console.log('Failure.');
-      });
-    } 
-  };
-
-  this.createAccount = function () {
-    // TODO: verify that password = verified password 
-    $http({
-      method: 'POST',
-      url:'/api/signup', 
-      data: {username: this.username, password: this.password},
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-        if (data) {
-          window.localStorage.setItem("token", data.token);
-          window.localStorage.setItem("user", data.user.username);
-          window.localStorage.setItem('userid', data.user._id);
-          loadTab('currentTrek');
-        }
-    }).error(function(data, status, headers, config){
-      console.log('Give up now.');
-    });
-  };
-
-  this.verifyPassword = function() {
-    if (this.password !== this.verify) {
-        this.verifyPasswordFail = true;
-    }
-    else {
-      this.verifyPasswordFail = false;
-    }
-  };
-
-  this.accountInfo = function(){
-    if (window.localStorage.getItem("token")) {
-      return true;
-    } else {
-      return false;
     }
   };
 
@@ -104,7 +45,6 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
       loadTab(tab);
     }
   };
-
 
   function loadTab(tab){
     if (tab === 'currentTrek') {

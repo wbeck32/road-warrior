@@ -3,7 +3,6 @@
 angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory', 'markerFactory', 'neighborsService', 'pathElevationService', 'elevationProfileFactory', function($rootScope, mapFactory, markerFactory, neighborsService, pathElevationService, elevationProfileFactory){
   
   this.legs = [];
-  this.name = "new trek";
   var trekOrigin = null;
   var renderOptions = {suppressMarkers: true, preserveViewport: true, draggable: true};
   var directionsService = new google.maps.DirectionsService();
@@ -21,7 +20,6 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       trekOrigin.setMap(null);
     }
     trekOrigin = null;
-    this.name = "new trek";
     if (this.legs.length > 0){
       this.legs.forEach(function(leg){
 	leg.dest.setMap(null);
