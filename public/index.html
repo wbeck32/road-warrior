@@ -153,7 +153,7 @@
               User STUFF!
               Password CHANGE!
               PICS, BRAH!
-              <button ng-click="Trek.signOut(); User.signOut()">Sign out</button> 
+              <button ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Sign out</button> 
             </div>
           </div>
         </div>
