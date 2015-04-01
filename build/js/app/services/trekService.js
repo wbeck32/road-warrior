@@ -8,10 +8,11 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
 
   this.delete = function(trek){
     $http({
-      method: 'DELETE',
-      url:'/api/deleteatrek/'+trek.id
+      method: 'POST',
+      url:'/api/deleteatrek/',
+      data: {trekid: trek.id, access_token: window.localStorage.getItem('token')}
     }).success(function(data, status, headers, config){
-      console.log('delete: ', status);
+      console.log('delete: ', status, data);
       self.allTreks.splice(self.allTreks.indexOf(trek), 1);
     }).error(function(data, status, headers, config){
       console.log('failure');
@@ -40,7 +41,7 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
     $http({
       method: 'POST',
       url:'/api/saveatrek', 
-      data: {trek: parseTrek(loadedTrek)},
+      data: {trek: parseTrek(loadedTrek), access_token: window.localStorage.getItem('token')},
       headers: {'Content-Type': 'application/json'}
     }).success(function(data, status, headers, config){
         if (data) {
@@ -64,9 +65,7 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
       legs.push(newLeg);
       currentOrigin = dest; 
     }
-    console.log(trek.name);
     this.allTreks.push({name: trek.name, legs: legs, id: trek._id}); 
-    console.log(this.allTreks[0]);
     markerFactory.resetIndex();
   };
 

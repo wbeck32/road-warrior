@@ -63,7 +63,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     else {
       loadedTrek.name = this.name;
     }
-
+    trekService.saveTrek(loadedTrek);
     loadedTrek = null;
     legService.unRenderAll();
     this.legs = legService.legs;
