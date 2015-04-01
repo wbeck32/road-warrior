@@ -32,6 +32,7 @@ app.get('/mapsAPICode', function(req, res){
       console.log(err);
     }).on('end', function(err){
       if(err) throw err;
+      res.set('Content-Type', 'text/javascript');
       res.end(maptosend);
     })
 
