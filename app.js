@@ -25,14 +25,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.get('/mapsAPICode', function(req, res){
   var URL = 'https://maps.googleapis.com/maps/api/js?v=3&amp;key='+process.env.GOOGLEAPIKEY;
   https.get(URL, function(response){
-    response.on('data', function(data){
-      res.set('Content-type','text/javascript');
-      res.end(data);
-    }).on('error', function(err){
-      console.log(err);
-    })
+    res.set('Content-Type','text/javascript');
+    response.pipe(res);
   })
-
 });
 
 app.post('/api/saveatrek', [jwtAuth], function(req, res){
