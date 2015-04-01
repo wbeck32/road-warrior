@@ -51,7 +51,7 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
       activePanel = [true, false, false, false];
     } else if (tab === 'trekList') {
       activePanel = [false, true, false, false];
-    } else if (tab === 'directions') {
+    } else if (tab === 'about') {
       activePanel = [false, false, true, false];
     } else if (tab === 'account') {
       activePanel = [false, false, false, true];
