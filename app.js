@@ -12,6 +12,7 @@ var bcrypt = require('bcrypt');
 
 var jwtKey = process.env.JWTKEY;
 
+app.set('jwtKey', jwtKey);
 
 mongoClient.connect(url, function(err, db){
   if (err) throw err;
@@ -22,24 +23,35 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.post('/api/saveatrek', function(req, res){
+app.post('/api/saveatrek', [jwtAuth], function(req, res){
   var trek = req.body.trek;
-  var db = app.get('mongo');
-  var treks = db.collection('treks');
-  treks.update({_id: ObjectId(trek.id)}, trek, {upsert: true}, function(err, updateRes){
-    if(updateRes.result.upserted){
-      res.end(updateRes.result.upserted[0]._id.toString());
-    } else {
-      res.end();
-    }
-  });
+  if (req.user && (req.user._id.toString() === trek.userid)) {
+    var db = app.get('mongo');
+    var treks = db.collection('treks');
+    treks.update({_id: ObjectId(trek.id)}, trek, {upsert: true}, function(err, updateRes){
+      if(updateRes.result.upserted){
+        res.end(updateRes.result.upserted[0]._id.toString());
+      } else {
+        res.end("trek updated");
+      }
+    });
+  } else {
+    res.end("not authorized");
+  }
 });
 
-app.delete('/api/deleteatrek/:trekid', function(req, res){
+app.post('/api/deleteatrek/', [jwtAuth], function(req, res){
   var db = app.get('mongo');
   var treks = db.collection('treks');
-  treks.remove({_id: ObjectId(req.params.trekid)}, {justOne : true}, function(status) {
-    console.log('status: ', status);
+  treks.find({_id: ObjectId(req.body.trekid)}).toArray(function(err, docs){
+    if (docs[0].userid === req.user._id.toString()) {
+      treks.remove({_id: ObjectId(req.body.trekid)}, {justOne : true}, function(status) {
+        console.log('status: ', status);
+        res.end('deleted');
+      });
+    } else {
+      res.end('unauthorized');
+    }
   });
 });
 
@@ -51,13 +63,14 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
 	});
 });
 
-app.get('/api/retrievealltreks/:userid', function(req, res) {
+app.post('/api/retrievealltreks/', [jwtAuth], function(req, res) {
+  if (req.user){
   var db = app.get('mongo');
   var treks = db.collection('treks');
-  treks.find({userid: req.params.userid}).toArray(function(err, docs) {
-    console.log(docs);
+  treks.find({userid: req.user._id.toString()}).toArray(function(err, docs) {
     res.json(docs);
   });
+} else res.end("unauthorized");
 });
 
 app.post('/api/usercheck', function(req, res) {
@@ -78,7 +91,7 @@ app.post('/api/signup', function(req, res) {
         users.insert({username: req.body.username, password: hash}, function(err, docs){
           if (err) throw err;
           res.json({
-            token : authenticate(req.body.username),
+            token : authenticate(docs.ops[0]._id),
             user: {username: docs.ops[0].username, _id: docs.ops[0]._id }
           });
         });
@@ -100,7 +113,7 @@ app.post('/api/login', function(req, res){
         if (err) console.log('password hash error');
         else if (validpass === true) {
           res.json({
-            token : authenticate(req.body.username),
+            token : authenticate(docs[0]._id),
             user: docs[0]
           });
         } else {
@@ -113,14 +126,40 @@ app.post('/api/login', function(req, res){
   });
 });
 
-function authenticate (username){
+function authenticate (userid){
   var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode({
-    iss: username,
+    iss: userid,
     exp: expires
   }, jwtKey);
   return token;
 }
+
+function jwtAuth (req, res, next){
+
+  var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
+
+  if (token) {
+    try {
+      var decoded = jwt.decode(token, jwtKey);
+      if (decoded.exp <= Date.now()){
+        res.end('Access token expired', 400);
+      }
+      var db = app.get('mongo');
+      var users = db.collection('users');
+      users.find({_id: ObjectId(decoded.iss)}, {password: 0}).toArray(function(err, docs) {
+        req.user = docs[0];
+        next();
+      });
+    } catch (err) {
+      return next();
+    }
+  } else {
+    next();
+  }
+
+};
+
 
 app.listen(3000);
 

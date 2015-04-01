@@ -121,38 +121,38 @@
                 <div>The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>.</div>
           </div>
         </div>
-        <div class="panel" data-ng-show="SideBar.activePanel(3)">
+        <div class="panel" data-ng-show="SideBar.activePanel(3)" data-ng-controller="UserController as User">
           <div class="sidebarSection" id="account">
             <div class="logIn" data-ng-show="SideBar.showLogIn()">
-              <form class="user-forms" data-ng-submit="Trek.logIn()">
-                <input type="text" placeholder="User Name" data-ng-model="Trek.username" />
-                <input type="password" placeholder="Password" data-ng-model="Trek.password" />
+              <form class="user-forms" data-ng-submit="User.logIn()">
+                <input type="text" placeholder="User Name" data-ng-model="User.username" />
+                <input type="password" placeholder="Password" data-ng-model="User.password" />
                 <button>Log in</button>
               </form>
               <span>Don't have an account yet? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">
               <span class="bold">sign up</span></span>.</span> 
             </div>
             <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
-              <form name="createAccountForm" class="user-forms" novalidate data-ng-submit="SideBar.createAccount()">
-                <input required type="text" name="username" placeholder="User Name" data-ng-blur="SideBar.checkUsername()" data-ng-model="SideBar.username"/>
-                <span class="errMsg" ng-show="SideBar.dupeUsername">User name is already in use.</span>
+              <form name="createAccountForm" class="user-forms" novalidate data-ng-submit="User.createAccount()">
+                <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username"/>
+                <span class="errMsg" ng-show="User.dupeUsername">User name is already in use.</span>
                 <span class="errMsg" ng-show="createAccountForm.username.$error.required">User name is required.</span>
-                <input required type="password" placeholder="Enter password" name="password" data-ng-model="SideBar.password" />
+                <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password" />
                 <span class="errMsg" ng-show="createAccountForm.password.$error.required">Password is required.</span>     
-                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="SideBar.verify" data-ng-blur="SideBar.verifyPassword()"/>
+                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword()"/>
                 <span class="errMsg" ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
-                <span class="errMsg" ng-show="SideBar.verifyPasswordFail">Passwords must match.</span>
+                <span class="errMsg" ng-show="User.verifyPasswordFail">Passwords must match.</span>
                 <button>Sign up</button>
               </form>
               <span>Already have an account? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">
               <span class="bold">log in</span></span>.</span>
             </div> 
-            <div class="accountInfo" data-ng-show="SideBar.accountInfo()">
+            <div class="accountInfo" data-ng-show="User.accountInfo()">
               User NAME!
               User STUFF!
               Password CHANGE!
               PICS, BRAH!
-              <button ng-click="Trek.signOut()">Sign out</button> 
+              <button ng-click="Trek.signOut(); User.signOut()">Sign out</button> 
             </div>
           </div>
         </div>
