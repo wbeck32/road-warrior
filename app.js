@@ -139,12 +139,16 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
   if (req.user) {
     console.log(req.body.oldpassword);
     users.find({_id: req.user._id}).toArray(function(err, docs){
+      console.log(docs[0])
       bcrypt.compare(req.body.oldpassword, docs[0].password, function(err, validpass) {
         if (err) console.log('password hash error');
         else if (validpass === true) {
-          users.update({_id: req.user._id}, {password: req.body.newPassword}, function(err, updateRes){
+          bcrypt.hash(req.body.newpassword, 10, function(err, hash){
+          users.insert({username: req.body.username, password: hash}, function(err, updateRes){
+            if(err) throw err;
             res.json(updateRes);
           }) 
+        });
         } else {
           res.end('invalid username/password combo');
         }

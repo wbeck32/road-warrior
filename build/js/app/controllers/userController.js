@@ -80,8 +80,9 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     } 
   };
 
-  this.verifyPassword = function() {
-    if (this.password !== this.verify) {
+  this.verifyPassword = function(password, verify) {
+
+    if (password !== verify) {
         this.verifyPasswordFail = true;
     }
     else {
@@ -105,10 +106,15 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
         alert("Sorry, there was an error processing your request");
       } else {
         alert("Password Changed!");
+        self.oldPassword = null;
+        self.newPassword = null;
+        self.verifyNewPassword = null;
+        self.togglePasswordChange();
       }
     }).error(function(data, status, headers, config){
       console.log('password change error');
     });
+
   };
 
   this.togglePasswordChange = function() {
