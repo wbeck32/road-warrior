@@ -71,8 +71,9 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
 
   this.renderAllSavedTreks = function() {
     $http({
-      method: 'GET',
-      url:'/api/retrievealltreks/' + window.localStorage.getItem('userid')
+      method: 'POST',
+      url:'/api/retrievealltreks/',
+      data: {access_token: window.localStorage.getItem('token')}
     }).success(function(data, status, headers, config){
         data.forEach(function(trek){
           self.renderSavedTrek(trek);

@@ -8,6 +8,10 @@ angular.module('roadWarrior').controller('UserController', ['$http', 'trekServic
   this.verifyPasswordFail = false;
   var self = this;
 
+  if (window.localStorage.getItem('token')) {
+    trekService.renderAllSavedTreks();
+  }
+
   this.signOut = function(){
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('user');

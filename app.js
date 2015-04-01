@@ -63,12 +63,14 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
 	});
 });
 
-app.get('/api/retrievealltreks/:userid', function(req, res) {
+app.post('/api/retrievealltreks/', [jwtAuth], function(req, res) {
+  if (req.user){
   var db = app.get('mongo');
   var treks = db.collection('treks');
-  treks.find({userid: req.params.userid}).toArray(function(err, docs) {
+  treks.find({userid: req.user._id.toString()}).toArray(function(err, docs) {
     res.json(docs);
   });
+} else res.end("unauthorized");
 });
 
 app.post('/api/usercheck', function(req, res) {
