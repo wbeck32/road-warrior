@@ -7,10 +7,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "visibility": "on"
-        },
-        {
-          "lightness": 33
+          "visibility": "off"
         }
       ]
     },
@@ -19,7 +16,10 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "color": "#f2e5d4"
+          "color": "#ffebcd"
+        },
+        {
+          "lightness": 20 
         }
       ]
     },
@@ -28,7 +28,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#c5dac6"
+          "color": "#ffe4c4"
         }
       ]
     },
@@ -49,7 +49,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "lightness": 20
+          "lightness": 5
         }
       ]
     },
@@ -88,7 +88,7 @@ angular.module('roadWarrior').value('mapStyles',
           "visibility": "on"
         },
         {
-          "color": "#acbcc9"
+          "color": "#f0f8ff"
         }
       ]
     }
