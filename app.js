@@ -9,10 +9,9 @@ var bodyParser = require('body-parser');
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var bcrypt = require('bcrypt');
+var https = require('https');
 
 var jwtKey = process.env.JWTKEY;
-
-app.set('jwtKey', jwtKey);
 
 mongoClient.connect(url, function(err, db){
   if (err) throw err;
@@ -22,6 +21,19 @@ mongoClient.connect(url, function(err, db){
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+app.get('/mapsAPICode', function(req, res){
+  var URL = 'https://maps.googleapis.com/maps/api/js?v=3&amp;key='+process.env.GOOGLEAPIKEY;
+  https.get(URL, function(response){
+    response.on('data', function(data){
+      res.set('Content-type','text/javascript');
+      res.end(data);
+    }).on('error', function(err){
+      console.log(err);
+    })
+  })
+
+});
 
 app.post('/api/saveatrek', [jwtAuth], function(req, res){
   var trek = req.body.trek;
@@ -159,6 +171,7 @@ function jwtAuth (req, res, next){
   }
 
 };
+
 
 
 app.listen(3000);
