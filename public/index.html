@@ -11,7 +11,10 @@
 
   <body>
 
-    <div class="logo"> <img src="images/logo-transparent-35px.png" alt="Road warrior logo" /></div>   
+    <div class="logo"> 
+      <img src="images/logo-transparent-35px.png" alt="Road warrior logo" />    
+    </div> 
+
     <div id="map-canvas"></div>
     <div id="elevation-wrapper" class="hideChart">
       <div id="nested-elevation-wrapper">
@@ -19,21 +22,22 @@
       </div>
       <div id="slider-button"></div>
     </div> 
-    
+
     <div id="sideMenu" class="hideMenu" data-ng-controller="SideBarController as SideBar">  
       <div class="tabList">
-        <div class="tab" id="trekListTab" aria-controls="trekList" data-ng-click="SideBar.tabSwitcher('trekList')">
-          <div>my treks</div>
-        </div>
-        <div class="tab current" id="currentTrekTab" aria-controls="trekDetails" data-ng-click="SideBar.tabSwitcher('currentTrek')">
-          <div>current trek</div>
-        </div>
-        <div class="tab" id="directionsTab" aria-controls="directions" data-ng-click="SideBar.tabSwitcher('directions')">
-          <div>directions</div>
-        </div>
-        <div class="tab" id="accountTab" aria-controls="account" data-ng-click="SideBar.tabSwitcher('account')">
-          <div>account</div>
-        </div>
+      <div class="tab" id="accountTab" aria-controls="account" data-ng-click="SideBar.tabSwitcher('account')">
+        <div>account</div>
+      </div>
+      <div class="tab" id="trekListTab" aria-controls="trekList" data-ng-click="SideBar.tabSwitcher('trekList')">
+        <div>my treks</div>
+      </div>
+      <div class="tab current" id="currentTrekTab" aria-controls="trekDetails" data-ng-click="SideBar.tabSwitcher('currentTrek')">
+        <div>current trek</div>
+      </div>
+      <div class="tab" id="aboutTab" aria-controls="about" data-ng-click="SideBar.tabSwitcher('about')">
+        <div>about</div>
+      </div>
+        
       </div>
 
       <div id="sidebarContent" class="currentTrek" data-ng-controller="TrekController as Trek" role="navigation">  
@@ -102,9 +106,19 @@
         </div>
 
         <div class="panel" data-ng-show="SideBar.activePanel(2)">
-          <div class="sidebarSection" id="directions" style="border:1px solid red">
-            <div data-ng-repeat="leg in Trek.legs track by $index" id="{{'leg' + $index}}">
-            </div>
+          <div class="sidebarSection" id="about">
+           
+                <div class="aboutLink">
+                <div class="bold">About</div>
+                <div>TrekSmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&rsquo;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
+                </div>
+                <div>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save them to and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportaion modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</div>
+                <div class="bold">The team</div>
+                <div><a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>&nbsp;<a href="http://www.linkedin.com/wendybeck" target="_blank">LinkedIn</a></div>
+                <div><a href="" target="_blank">Mike Burnett</a>&nbsp;<a href="http://www.linkedin.com/" target="_blank">LinkedIn</a></div>
+                <div><a href="" target="_blank">Russ DuBrock</a>&nbsp;<a href="http://www.linkedin.com/" target="_blank">LinkedIn</a></div>
+                <div><a href="" target="_blank">Bryce Johnson</a>&nbsp;<a href="http://www.linkedin.com/" target="_blank">LinkedIn</a></div>
+                <div>The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>.</div>
           </div>
         </div>
         <div class="panel" data-ng-show="SideBar.activePanel(3)">

@@ -253,7 +253,7 @@ html, body{
     border-bottom: 1px solid black;
 }
 
-#legList {
+#legList, #about {
     width: 100%;
     height: 90%;
     overflow-y: scroll;
@@ -304,6 +304,18 @@ html, body{
 .leg, .trek {
     margin: 10px 0;
     padding: 0 2px;
+}
+
+.aboutLink {
+    padding:10px;
+
+    & div {
+        margin-bottom:4px;
+    }
+
+    & a {
+        text-decoration:none;
+    }
 }
 
 
