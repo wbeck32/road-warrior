@@ -51,24 +51,30 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
     
   this.saveTrek = function(){
-    if (!loadedTrek){
-      if(this.legs.length > 0){
-        loadedTrek = {
-          name: this.name,
-          legs: this.legs
-        };
-	trekService.allTreks.push(loadedTrek);
+    if (window.localStorage.getItem('token')){
+      if (!loadedTrek){
+        if(this.legs.length > 0){
+          loadedTrek = {
+            name: this.name,
+            legs: this.legs
+          };
+          trekService.allTreks.push(loadedTrek);
+        }
+      } 
+      else {
+        loadedTrek.name = this.name;
       }
-    } 
-    else {
-      loadedTrek.name = this.name;
+      trekService.saveTrek(loadedTrek);
+      loadedTrek = null;
+      legService.unRenderAll();
+      this.legs = legService.legs;
+      this.name = "new trek";
+    } else {
+      alert('You must sign in to save a trek');
     }
-    trekService.saveTrek(loadedTrek);
-    loadedTrek = null;
-    legService.unRenderAll();
-    this.legs = legService.legs;
-    this.name = "new trek";
+    
   };
+
 
   this.hideFields = function(){
     for (var i = 0; i < self.legs.length; i++){

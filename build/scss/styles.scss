@@ -5,6 +5,7 @@ $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00bfff;
 
+
 html, body{
     height: 100%;
     width: 100%;
@@ -72,6 +73,7 @@ html, body{
                 font-size: 2vmin;
             }
     }
+
 }
 
 #elevation-wrapper.hideChart {
@@ -148,6 +150,7 @@ svg{
             color: #000;
             overflow:hidden;
             cursor: pointer;
+            opacity: 0.8;
             div {
                 margin-top: .4vmin;
                 text-align: center;

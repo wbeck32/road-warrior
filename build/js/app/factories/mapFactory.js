@@ -28,9 +28,11 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   google.maps.event.addDomListener(elevationButton, 'click', function(){
     var chart = document.getElementById('elevation-wrapper');
     if (showChart){
-      chart.className = "hideChart";
+      chart.className = 'hideChart';
+      elevationButton.style.backgroundColor='#00bfff';
     } else {
-      chart.className = "showChart";
+      chart.className = 'showChart';
+      elevationButton.style.backgroundColor='#00ffff';
     }
     showChart = !showChart;
   });
