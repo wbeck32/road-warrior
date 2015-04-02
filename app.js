@@ -137,19 +137,20 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
   var db = app.get('mongo');
   var users = db.collection('users');
   if (req.user) {
-    console.log(req.body.oldpassword);
     users.find({_id: req.user._id}).toArray(function(err, docs){
-      console.log(docs[0])
       bcrypt.compare(req.body.oldpassword, docs[0].password, function(err, validpass) {
         if (err) console.log('password hash error');
         else if (validpass === true) {
+          console.log(req.body.newpassword);
           bcrypt.hash(req.body.newpassword, 10, function(err, hash){
-          users.insert({username: req.body.username, password: hash}, function(err, updateRes){
-            if(err) throw err;
-            res.json(updateRes);
+          users.update({_id: req.user._id}, {username: req.user.username, password: hash}, function(err, updateRes){
+            if(err) console.log('Could not insert');
+            console.log(updateRes.result.n);
+            res.end(updateRes.result.n.toString());
           }) 
         });
         } else {
+          console.log('not a password match')
           res.end('invalid username/password combo');
         }
       })

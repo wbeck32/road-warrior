@@ -153,16 +153,16 @@
               <div>
                 <span class="slideLink noHint" data-ng-click="User.togglePasswordChange()">Change Password</span>
                 <div class="passwordChange" data-ng-show="User.showPasswordChange">
-                  <form name="passwordChangeForm" data-ng-submit="User.passwordChange()" class="user-forms" novalidate>
+                  <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" class="user-forms" novalidate>
                     <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword"/>
                     <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
                     <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword"/>
                     <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
                     <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)"/>
                     <span class="errMsg" data-ng-show="passwordChangeForm.verifyNewPassword.$error.required">Verify new password is required.</span>
-                    <span class="errMsg" ng-show="User.verifyPasswordFail">Passwords must match.</span>
-                    <button type="submit" data-ng-click="User.togglePasswordChange; passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
-                    <button type="button" data-ng-click= "User.togglePasswordChange">Cancel</button>
+                    <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
+                    <button type="submit" data-ng-click="passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
+                    <button type="button" data-ng-click= "User.togglePasswordChange()">Cancel</button>
                   </form>
                 </div>
               </div>

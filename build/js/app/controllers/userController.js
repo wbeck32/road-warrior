@@ -91,6 +91,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   };
 
   this.passwordChange = function() {
+    console.log(this.oldPassword +',   ' + this.newPassword)
     $http({
       method: 'POST',
       url: '/api/passwordchange',
@@ -102,14 +103,14 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
       },
       headers: {'Content-Type': 'application/json'}
     }).success(function(data, status, headers, config){
-      if(data.nModified === 0) {
-        alert("Sorry, there was an error processing your request");
-      } else {
+      if(data === '1') {
         alert("Password Changed!");
         self.oldPassword = null;
         self.newPassword = null;
         self.verifyNewPassword = null;
         self.togglePasswordChange();
+      } else {
+        alert("Sorry, there was an error processing your request");
       }
     }).error(function(data, status, headers, config){
       console.log('password change error');
