@@ -2,7 +2,7 @@
 
 angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', function(mapFactory){
   return function (legArray) {
-
+    console.log(legArray);
     var chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
     google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
     var data = new google.visualization.DataTable();
@@ -28,6 +28,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     data.addColumn('number', 'Elevation');
     data.addColumn({type: 'string', role: 'annotation'});
     data.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+    data.addColumn({type:'string', role: 'annotation'}, 'Marker');
 
     var totalDistance = 0;
     var legDistance, legPoints, incr;
@@ -37,10 +38,17 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
       legPoints = legArray[i].elevationProfile.length;
       incr = legDistance / legPoints;
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
+        var marker = '';
+        if (j === 0) {
+          marker = legArray[i].origin.index;
+        } else if (i === legArray.length - 1 && j === legArray[i].elevationProfile.length - 1) {
+          marker = legArray[i].dest.index;
+        }
+
         var elevation = legArray[i].elevationProfile[j].elevation;
         var location = JSON.stringify(legArray[i].elevationProfile[j].location);
         var tooltip = '<div class="tooltip-text"><div><p><b>Distance:</b> ' + Math.round(totalDistance*0.0621371)/100 + ' miles</p></div><div><p><b>Elevation:</b> ' + Math.round(legArray[i].elevationProfile[j].elevation*328.084)/100 + ' feet</p></div></div>';
-      	data.addRow([totalDistance, elevation, location, tooltip]);
+      	data.addRow([totalDistance, elevation, location, tooltip, marker]);
       	totalDistance += incr;
       }
     }
@@ -50,8 +58,8 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     chart.draw(view, { 
       trigger: 'none', 
       chartArea: {
-	left: 0,
-	top: 0,
+	      left: 0,
+	      top: 0,
         width: '100%', 
         height: '98%'
       }, 
