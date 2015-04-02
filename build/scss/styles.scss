@@ -5,7 +5,6 @@ $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00bfff;
 
-
 html, body{
     height: 100%;
     width: 100%;
@@ -20,6 +19,7 @@ html, body{
     height: 100%;
     width: 100%;
 }
+
 .errMsg {
     color:red;
 }
@@ -202,8 +202,6 @@ svg{
     }
 }
 
-
-
 .google-visualization-tooltip {
     border: 0px!important;
     box-shadow: 0px 0px 0px 0px!important;
@@ -228,8 +226,6 @@ svg{
 .tooltip-text{
     text-shadow: .5px .5px 1px gray;
 }
-
-
 
 .panel {
     height: 100%;
