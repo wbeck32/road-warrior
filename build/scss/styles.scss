@@ -1,17 +1,15 @@
 $height: 100%;
-$elGraphNegMarg: -66%;
+$elGraphNegMarg: -62.52%;
 $elGraphPosMarg: 0;
 $opacity: .8;
-$activeTabColor: #00ffff;
 $tabColor: #00bfff;
-
-
+$activeTabColor: #00bfff;
 
 html, body{
     height: 100%;
     width: 100%;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     font-family: 'Open Sans', sans-serif;
     font-size: 1vw;
     overflow: hidden;
@@ -21,57 +19,13 @@ html, body{
     height: 100%;
     width: 100%;
 }
+
 .errMsg {
     color:red;
 }
 
 .user-forms input.ng-untouched ~ .errMsg {
     display:none;
-}
-
-.slideLink {
-    position:relative;
-    color:#000;
-    text-decoration: none;
-    cursor:pointer;
-
-    &:hover {
-	color:#000;
-    }
-
-    &:before {
-	content: "";
-	position:absolute;
-	width:100%;
-	height:1px;
-	bottom: 0;
-	left: 0;
-	background-color: #acbcc9;
-	visibility: hidden;
-	transform: scaleX(0);
-	transition: all 0.2s ease-in-out 0s;
-    }
-
-    &:hover:before {
-	font-size:.75vw;
-	content:"rename";
-	visibility: visible;
-	transform: scaleX(1);
-    }
-
-    &.noHint:hover:before {
-	content:"";
-    }
-
-    &.retrieve:hover:before {
-	font-size:.75vw;
-	content:"retrieve";
-	transform: scaleX(1);
-    }
-}
-
-.slideLink.legField:nth-child(2) {
-    border-left:1px solid red;
 }
 
 .bold {
@@ -85,30 +39,41 @@ html, body{
     z-index: 100;
     position: absolute;
     bottom: 5%;
-}
 
-#nested-elevation-wrapper {
-    width: 97%;
-    height: 100%;
-    float: left;
-    background-color: #fff;
-}
+    #nested-elevation-wrapper {
+        width: 92%;
+        height: 100%;
+        float: left;
+        background-color: #fff;
 
-#elevation-chart {
-    height: 100%;
-    padding: 0 1%;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
+            #elevation-chart {
+                height: 100%;
+                padding: 0 1%;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+    }
+   
+    #slider-button {
+        float:left;
+        position: relative;
+        width: 15vh;
+        height: 40%;
+        left: 0;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        background-color: $tabColor;
+        cursor: pointer;
+        top: -40%;
+        transform: rotate(90deg);
+        transform-origin: bottom left;
+            div {
+                margin-top: .4vmin;
+                text-align: center;
+                font-size: 2vmin;
+            }
+    }
 
-#slider-button {
-    width: 3%;
-    height: 100%;
-    float: left;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    background-color: $tabColor;
-    cursor: pointer;
 }
 
 #elevation-wrapper.hideChart {
@@ -150,10 +115,10 @@ svg{
     }
 }
 
+
 #sideMenu {
     height: 80vh;
     width: 24vw;
-
     position:absolute;
     top: 5%;
 
@@ -237,14 +202,6 @@ svg{
     }
 }
 
-.user-forms {
-    width: 50%;
-    input {
-        border-radius: 10px;
-        display: block;
-    }
-}
-
 .google-visualization-tooltip {
     border: 0px!important;
     box-shadow: 0px 0px 0px 0px!important;
@@ -270,16 +227,14 @@ svg{
     text-shadow: .5px .5px 1px gray;
 }
 
-
-
 .panel {
     height: 100%;
     width: 95%;
-    padding: 5px;
+    padding: 1%;
 }
 
 .trekList {
-    margin:0 0 7px 0;
+    margin:0 0 1% 0;
     max-height:20%;
 }
 
@@ -315,55 +270,60 @@ svg{
 
 }
 
-.profileimg {
-    width:30px;
-    height:25px;
-    border:1px solid black;
-    margin: 0 10px 0 0;
-    border-radius: 5px;
-}
-
-
-
 .leg, .trek {
-    margin: 10px 0;
-    padding: 0 2px;
+    margin: 2% 0;
+    padding: 0 1%;
 }
 
 .aboutLink {
-    padding:10px;
+    padding:2%;
 
     & div {
-        margin-bottom:4px;
+        margin-bottom:1%;
     }
 
-    & a {
-        text-decoration:none;
-    }
 }
 
 
 .legOptions {
-    padding: 5px;
-    margin: 10px 5px;
-    border: 1px solid gray;
+    padding: 1%;
+    margin: 2% 1%;
+    border: 1px solid #000;
     border-radius: 5px;
 }
 
 .legOptions div {
-    margin:6px 0;
+    margin:1% 0;
 }
 
 .totalDistance {
     height: 10%;
-    border-top: 1px solid black;
-    padding: 5px;
+    border-top: 1px solid #000;
+    padding: 1%;
     width:95%;
 }
 
 .odd {
-    background-color:#CCFFFF;
-    padding:2px 0;
+    background-color: $tabColor;
+    padding:1% 0;
+}
+
+.user-forms {
+    width: 50%;
+    padding:6%
+
+}
+
+.input, input {
+    display: block;
+    margin: 1% 0;
+    width: 50%;
+    font-size:1.5vh;
+}
+
+a, .link {
+    text-decoration:underline;
+    color: #000;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
