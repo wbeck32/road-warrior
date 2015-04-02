@@ -91,13 +91,28 @@ angular.module('roadWarrior').value('mapStyles',
     },
     {
       "featureType": "water",
-      "elementType": "all",
+      "elementType": "geometry",
       "stylers": [
         {
-          "visibility": "on"
-        },
-        {
           "color": "#acbcc9"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { 
+          "color": "#ffffff"
+        }
+      ]
+    },
+    { 
+      "featureType": "water",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        { 
+          "color": "#555555"
         }
       ]
     }
