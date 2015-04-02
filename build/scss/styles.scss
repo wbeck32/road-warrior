@@ -120,16 +120,16 @@ svg{
 }
 
 .hideChart {
-    -webkit-animation-duration: 1s;
-    -webkit-animation-name: slideout;
+    animation-duration: 1s;
+    animation-name: slideout;
 }
 
 .showChart {
-    -webkit-animation-duration: 1s;
-    -webkit-animation-name: slidein;
+    animation-duration: 1s;
+    animation-name: slidein;
 }
 
-@-webkit-keyframes slideout {
+@keyframes slideout {
     from {
 	margin-left: $elGraphPosMarg;
     }
@@ -138,7 +138,7 @@ svg{
     }
 }
 
-@-webkit-keyframes slidein {
+@keyframes slidein {
     from {
 	margin-left: $elGraphNegMarg;
     }
@@ -160,14 +160,14 @@ svg{
         background-color:#fff;
         overflow: hidden;
         opacity: $opacity;
-        margin-left: -3px;
+        margin-left: -1px;
     }
 
     .tabList {
         position: relative;
         height: 2vw;
         min-height: 15px;
-        right: 80vh;
+        right: 79.8vh;
         width: 79.8vh;
         transform: rotate(-90deg);
         transform-origin: bottom right;
@@ -197,7 +197,7 @@ svg{
 }
 
 #sideMenu.hideMenu {
-    right: -24%;
+    right: -24vw;
 }
 
 #sideMenu.showMenu {
@@ -205,18 +205,18 @@ svg{
 }
 
 .hideMenu {
-    -webkit-animation-duration: 1s;
-    -webkit-animation-name: hideMenu;
+    animation-duration: 1s;
+    animation-name: hideMenu;
 }
 
 .showMenu {
-    -webkit-animation-duration: 1s;
-    -webkit-animation-name: showMenu;
+    animation-duration: 1s;
+    animation-name: showMenu;
 }
 
-@-webkit-keyframes showMenu {
+@keyframes showMenu {
     from {
-	right: -21%;
+	right: -24vw;
     }
     to {
 	right: 0;
@@ -224,12 +224,12 @@ svg{
 }
 
 
-@-webkit-keyframes hideMenu {
+@keyframes hideMenu {
     from {
 	right: 0;
     }
     to {
-	right: -21%;
+	right: -24vw;
     }
 }
 
