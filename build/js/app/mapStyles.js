@@ -99,10 +99,6 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-<<<<<<< HEAD
-
-=======
->>>>>>> style
           "color": "#acbcc9"
         }
       ]

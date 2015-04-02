@@ -1,9 +1,11 @@
 $height: 100%;
-$elGraphNegMarg: -62.52%;
+$elGraphNegMarg: -66%;
 $elGraphPosMarg: 0;
 $opacity: .8;
 $tabColor: #00bfff;
-$activeTabColor: #00bfff;
+$activeTabColor: #00ffff;
+$white: #fff;
+$black: #000;
 
 html, body{
     height: 100%;
@@ -41,10 +43,10 @@ html, body{
     bottom: 5%;
 
     #nested-elevation-wrapper {
-        width: 92%;
+        width: 97%;
         height: 100%;
         float: left;
-        background-color: #fff;
+        background-color: $white;
 
             #elevation-chart {
                 height: 100%;
@@ -56,22 +58,24 @@ html, body{
    
     #slider-button {
         float:left;
-        position: relative;
-        width: 15vh;
-        height: 40%;
-        left: 0;
-        border-top-left-radius: 20px;
+        width: 3%;
+        height: 100%;
         border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
         background-color: $tabColor;
         cursor: pointer;
-        top: -40%;
-        transform: rotate(90deg);
-        transform-origin: bottom left;
-            div {
-                margin-top: .4vmin;
-                text-align: center;
-                font-size: 2vmin;
-            }
+
+    span {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+    .eleImg {
+        max-width:80%;
+        vertical-align: middle;
+        margin: 0 8%;
+    }
+
     }
 
 }
@@ -125,7 +129,7 @@ svg{
     #sidebarContent {
         width:100%;
         height: 100%;
-        background-color:#fff;
+        background-color:$white;
         overflow: hidden;
         opacity: $opacity;
         margin-left: -1px;
@@ -147,7 +151,7 @@ svg{
             border-top-left-radius: 1.5vw;
             border-top-right-radius: 1.5vw;
             background-color: $tabColor;
-            color: #000;
+            color: $black;
             overflow:hidden;
             cursor: pointer;
             opacity: 0.8;
@@ -158,7 +162,7 @@ svg{
             }
         }
         .activeTab {
-            color: #000;
+            color: $black;
             opacity: $opacity;
             background-color: $activeTabColor;
         }
@@ -288,7 +292,7 @@ svg{
 .legOptions {
     padding: 1%;
     margin: 2% 1%;
-    border: 1px solid #000;
+    border: 1px solid $black;
     border-radius: 5px;
 }
 
@@ -298,7 +302,7 @@ svg{
 
 .totalDistance {
     height: 10%;
-    border-top: 1px solid #000;
+    border-top: 1px solid $black;
     padding: 1%;
     width:95%;
 }
@@ -323,7 +327,7 @@ svg{
 
 a, .link {
     text-decoration:underline;
-    color: #000;
+    color: $black;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
