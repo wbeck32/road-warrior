@@ -16,7 +16,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "color": "#ffebcd"
+          "color": "#faf0e6"
         },
         {
           "lightness": 20 
@@ -24,11 +24,19 @@ angular.module('roadWarrior').value('mapStyles',
       ]
     },
     {
+      "featureType": "landscape.natural.terrain",
+      "stylers": [
+        { "color": "#808080" },
+        { "hue": "#00ffe6" },
+        { "lightness": 42 }
+      ]
+    },
+    {
       "featureType": "poi.park",
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#ffe4c4"
+          "color": "#ffefd5"
         }
       ]
     },
