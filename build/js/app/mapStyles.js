@@ -66,7 +66,16 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#999999"
+          "color": "#ffa500"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway.controlled_access",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#ff8c00"
         }
       ]
     },
@@ -96,7 +105,7 @@ angular.module('roadWarrior').value('mapStyles',
           "visibility": "on"
         },
         {
-          "color": "#87ceeb"
+          "color": "#6699cc"
         }
       ]
     }
