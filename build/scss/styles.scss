@@ -2,8 +2,10 @@ $height: 100%;
 $elGraphNegMarg: -66%;
 $elGraphPosMarg: 0;
 $opacity: .8;
-$activeTabColor: #00bfff;
-$tabColor: #b0c4de;
+$activeTabColor: #00ffff;
+$tabColor: #00bfff;
+
+
 
 html, body{
     height: 100%;
@@ -191,7 +193,7 @@ svg{
             }
         }
         .activeTab {
-            color: #fff;
+            color: #000;
             opacity: $opacity;
             background-color: $activeTabColor;
         }
