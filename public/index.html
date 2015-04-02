@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Road Warrior</title>
+    <title>Treksmith ~ Trek yourself before you wreck yourself!</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
@@ -20,7 +20,7 @@
       <div id="nested-elevation-wrapper">
         <div id="elevation-chart"></div>  
       </div>
-      <div id="slider-button"></div>
+      <div id="slider-button"><div>elevation</div></div>
     </div> 
 
     <div id="sideMenu" class="hideMenu" data-ng-controller="SideBarController as SideBar">  
@@ -45,10 +45,10 @@
           <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
             <div class="trekTitle">
-              <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="slideLink">{{Trek.name}}</span>
+              <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="link input">{{Trek.name}}</span>
               <span style="float:right">
-                <span class="slideLink noHint" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
-                <span class="slideLink noHint" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
+                <span class="link" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
+                <span class="link" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
               </span>
         
               <form data-ng-show="Trek.showEditName">
@@ -59,14 +59,14 @@
             <div id="legList">
               <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" data-ng-class-odd="'odd'">
                 <span data-ng-click="Trek.toggleDetails($index)">
-                  <span class="slideLink">
+                  <span class="link">
                     <span class="bold">{{leg.origin.index}}</span>
                     {{Trek.markerName(leg.origin)}} => 
                     <span class="bold">{{leg.dest.index}}</span>
                     {{Trek.markerName(leg.dest)}}
                   </span>
                 </span>
-                <span style="float:right; padding-right: 5px;" class="slideLink noHint" data-ng-click="Trek.removeLeg($index)"><b>delete</b></span>
+                <span style="float:right; padding-right: 5px;" class="link" data-ng-click="Trek.removeLeg($index)"><b>delete</b></span>
 
                 <div data-ng-show="Trek.showDetails[$index]" class="legOptions">
                   <form data-ng-submit="Trek.toggleDetails($index)">
@@ -81,8 +81,8 @@
                     </select>
                     <input type="submit" data-ng-hide="true"/>
                   </form>
-                  <div>Net Elevation Gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-                  <div>Distance: {{ leg.rend.directions.routes[0].legs[0].distance.value |  metersToMiles }} miles</div>
+                  <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+                  <div>distance: {{ leg.rend.directions.routes[0].legs[0].distance.value |  metersToMiles }} miles</div>
                 </div>
               </div>
             </div> 
@@ -93,13 +93,13 @@
         <div class="panel" data-ng-show="SideBar.activePanel(1)">
           <div class="sidebarSection" id="trekList">
 
-            <div class="myTreks bold">My Treks&nbsp;&nbsp;&nbsp;
-              <input type="search" style="font-weight:normal" data-ng-model="search.name" placeholder="Search your treks" />
+            <div class="myTreks bold">My Treks</div>
+              <div><input type="search" data-ng-model="search.name" placeholder="Search your treks" />
             </div>
 
             <div class="trekList trek" data-ng-repeat="trek in Trek.treks | filter:search" data-ng-cloak>
-              <span class="slideLink retrieve" data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
-              <span class="slideLink noHint" data-ng-click="Trek.deleteTrek(trek)" style="float:right">delete trek</span>
+              <span class="link" data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</span>
+              <span class="link" data-ng-click="Trek.deleteTrek(trek)" style="float:right">delete trek</span>
             </div>
 
           </div>
@@ -114,10 +114,10 @@
                 </div>
                 <div>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportaion modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</div>
                 <div class="bold">The team</div>
-                <div><a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>&nbsp;<a href="http://www.linkedin.com/wendybeck" target="_blank">LinkedIn</a></div>
-                <div><a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>&nbsp;<a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a></div>
-                <div><a href="" target="_blank">Russ DuBrock</a>&nbsp;<a href="http://www.linkedin.com/" target="_blank">LinkedIn</a></div>
-                <div><a href="" target="_blank">Bryce Johnson</a>&nbsp;<a href="http://www.linkedin.com/" target="_blank">LinkedIn</a></div>
+                <div><a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>&nbsp;||&nbsp;<a href="http://www.linkedin.com/in/wendybeck/en" target="_blank">LinkedIn</a></div>
+                <div><a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>&nbsp;||&nbsp;<a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a></div>
+                <div><a href="http://www.russelldubrock.com" target="_blank">Russ DuBrock</a>&nbsp;||&nbsp;<a href="https://www.linkedin.com/pub/russell-dubrock/2b/354/140" target="_blank">LinkedIn</a></div>
+                <div><a href="http://www.brycewjohnson.com" target="_blank">Bryce Johnson</a>&nbsp;||&nbsp;<a href="http://www.linkedin.com/" target="_blank">LinkedIn</a></div>
                 <div>The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>.</div>
           </div>
         </div>
@@ -130,7 +130,7 @@
                 <input type="password" placeholder="Password" data-ng-model="User.password" />
                 <button>Log in</button>
               </form>
-              <span>Don't have an account yet? Then <span class="slideLink noHint" data-ng-click="SideBar.toggleAccountActions()">
+              <span>Don&rsquo;t have an account yet? Then <span class="link" data-ng-click="SideBar.toggleAccountActions()">
               <span class="bold">sign up</span></span>.</span> 
             </div>
             <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
@@ -141,17 +141,17 @@
                 <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password" />
                 <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
                 <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)"/>
-                <span class="errMsg" ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
-                <span class="errMsg" ng-show="User.verifyPasswordFail">Passwords must match.</span>
+                <span class="errMsg" data-ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
+                <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
                 <button>Sign up</button>
               </form>
-              <span>Already have an account? Then <span class="slideLink noHint" data-ng-click="SideBar.toggleAccountActions()">
+              <span>Already have an account? Then <span class="link" data-ng-click="SideBar.toggleAccountActions()">
               <span class="bold">log in</span></span>.</span>
             </div> 
             <div class="accountInfo" data-ng-show="User.accountInfo()">
               <h3>Welcome, {{User.username}}!</h3>
               <div>
-                <span class="slideLink noHint" data-ng-click="User.togglePasswordChange()">Change Password</span>
+                <span class="link" data-ng-click="User.togglePasswordChange()">Change password</span>
                 <div class="passwordChange" data-ng-show="User.showPasswordChange">
                   <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" class="user-forms" novalidate>
                     <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword"/>
@@ -167,15 +167,15 @@
                 </div>
               </div>
               <div>
-                <span class="slideLink noHint" data-ng-click= "User.toggleDeleteAccount()">Delete Account</span>
+                <span class="link" data-ng-click= "User.toggleDeleteAccount()">Delete account</span>
                 <div data-ng-show="User.showDeleteAccount">
                   <span>Are you sure?</span>
-                  <div><span class="slideLink noHint" data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()"">Yup</span></div>
-                  <div><span class="slideLink noHint" data-ng-click="User.toggleDeleteAccount()">Nope</span></div>
+                  <div><span class="link" data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Yup</span></div>
+                  <div><span class="link" data-ng-click="User.toggleDeleteAccount()">Nope</span></div>
                 </div>
 
               </div>
-              <button ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Sign out</button> 
+              <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Sign out</button> 
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="/mapsAPICode"></script>   
     <script src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
+    <script src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
