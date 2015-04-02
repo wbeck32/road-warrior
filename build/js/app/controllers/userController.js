@@ -6,10 +6,13 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.password = null;
   this.dupeUsername = false;
   this.verifyPasswordFail = false;
+  this.showPasswordChange = false;
+  this.showDeleteAccount = false;
   var self = this;
 
   if (window.localStorage.getItem('token')) {
     trekService.renderAllSavedTreks();
+    this.username = window.localStorage.getItem('user');
   }
 
   this.signOut = function(){
@@ -78,13 +81,72 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     } 
   };
 
-  this.verifyPassword = function() {
-    if (this.password !== this.verify) {
+  this.verifyPassword = function(password, verify) {
+
+    if (password !== verify) {
         this.verifyPasswordFail = true;
     }
     else {
       this.verifyPasswordFail = false;
     }
+  };
+
+  this.passwordChange = function() {
+    $http({
+      method: 'POST',
+      url: '/api/passwordchange',
+      data: {
+        oldpassword: this.oldPassword,
+        newpassword: this.newPassword,
+        username: this.username,
+        access_token: window.localStorage.getItem('token')
+      },
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+      if(data === '1') {
+        alert("Password Changed!");
+        self.oldPassword = null;
+        self.newPassword = null;
+        self.verifyNewPassword = null;
+        self.togglePasswordChange();
+      } else {
+        alert("Sorry, there was an error processing your request");
+      }
+    }).error(function(data, status, headers, config){
+      console.log('password change error');
+    });
+  };
+
+  this.deleteAccount = function() {
+    $http({
+      method: 'POST',
+      url: '/api/deleteaccount',
+      data: {
+        username: window.localStorage.getItem('username'),
+        access_token: window.localStorage.getItem('token')
+      },
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+      console.log(data);
+      self.signOut();
+    }).error(function(data, status, headers, config){
+      console.log(data);
+    });
+  };
+
+  this.cancelPasswordChange = function () {
+    this.oldPassword = null;
+    this.newPassword = null;
+    this.verifyNewPassword = null;
+    this.togglePasswordChange();
+  };
+
+  this.togglePasswordChange = function() {
+    this.showPasswordChange = !this.showPasswordChange;
+  };
+
+  this.toggleDeleteAccount = function() {
+    this.showDeleteAccount = !this.showDeleteAccount;
   };
 
   this.accountInfo = function(){

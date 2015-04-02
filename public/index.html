@@ -136,11 +136,11 @@
             <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
               <form name="createAccountForm" class="user-forms" novalidate data-ng-submit="User.createAccount()">
                 <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username"/>
-                <span class="errMsg" ng-show="User.dupeUsername">User name is already in use.</span>
-                <span class="errMsg" ng-show="createAccountForm.username.$error.required">User name is required.</span>
+                <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
+                <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
                 <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password" />
-                <span class="errMsg" ng-show="createAccountForm.password.$error.required">Password is required.</span> 
-                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword()"/>
+                <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
+                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)"/>
                 <span class="errMsg" ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
                 <span class="errMsg" ng-show="User.verifyPasswordFail">Passwords must match.</span>
                 <button>Sign up</button>
@@ -149,10 +149,32 @@
               <span class="bold">log in</span></span>.</span>
             </div> 
             <div class="accountInfo" data-ng-show="User.accountInfo()">
-              User NAME!
-              User STUFF!
-              Password CHANGE!
-              PICS, BRAH!
+              <h3>Welcome, {{User.username}}!</h3>
+              <div>
+                <span class="slideLink noHint" data-ng-click="User.togglePasswordChange()">Change Password</span>
+                <div class="passwordChange" data-ng-show="User.showPasswordChange">
+                  <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" class="user-forms" novalidate>
+                    <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword"/>
+                    <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
+                    <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword"/>
+                    <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
+                    <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)"/>
+                    <span class="errMsg" data-ng-show="passwordChangeForm.verifyNewPassword.$error.required">Verify new password is required.</span>
+                    <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
+                    <button type="submit" data-ng-click="passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
+                    <button type="button" data-ng-click= "User.cancelPasswordChange(); passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Cancel</button>
+                  </form>
+                </div>
+              </div>
+              <div>
+                <span class="slideLink noHint" data-ng-click= "User.toggleDeleteAccount()">Delete Account</span>
+                <div data-ng-show="User.showDeleteAccount">
+                  <span>Are you sure?</span>
+                  <div><span class="slideLink noHint" data-ng-click="User.deleteAccount()">Yup</span></div>
+                  <div><span class="slideLink noHint" data-ng-click="User.toggleDeleteAccount()">Nope</span></div>
+                </div>
+
+              </div>
               <button ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Sign out</button> 
             </div>
           </div>

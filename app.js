@@ -133,6 +133,42 @@ app.post('/api/login', function(req, res){
   });
 });
 
+app.post('/api/passwordchange', [jwtAuth], function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  if (req.user) {
+    users.find({_id: req.user._id}).toArray(function(err, docs){
+      bcrypt.compare(req.body.oldpassword, docs[0].password, function(err, validpass) {
+        if (err) console.log('password hash error');
+        else if (validpass === true) {
+          console.log(req.body.newpassword);
+          bcrypt.hash(req.body.newpassword, 10, function(err, hash){
+          users.update({_id: req.user._id}, {username: req.user.username, password: hash}, function(err, updateRes){
+            if(err) console.log('Could not insert');
+            console.log(updateRes.result.n);
+            res.end(updateRes.result.n.toString());
+          }) 
+        });
+        } else {
+          console.log('not a password match')
+          res.end('invalid username/password combo');
+        }
+      })
+    })
+  }
+});
+
+app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  if (req.user) {
+    users.remove({_id: req.user._id}, {justOne: true}, function(err, response) {
+      res.json(response);
+    })
+  }
+
+})
+
 function authenticate (userid){
   var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode({
