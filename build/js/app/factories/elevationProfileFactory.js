@@ -2,7 +2,6 @@
 
 angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', function(mapFactory){
   return function (legArray) {
-    console.log(legArray);
     var chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
     google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
     var data = new google.visualization.DataTable();

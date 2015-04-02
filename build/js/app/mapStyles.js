@@ -16,10 +16,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "color": "#faf0e6"
-        },
-        {
-          "lightness": 20 
+          "color": "#f0e6d5"
         }
       ]
     },
@@ -71,11 +68,20 @@ angular.module('roadWarrior').value('mapStyles',
       ]
     },
     {
+      "featureType": "road.highway.controlled_access",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#b0b1b1"
+        }
+      ]
+    },
+    {
       "featureType": "road.arterial",
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#e4d7c6"
+          "color": "#d5d6d6"
         }
       ]
     },
@@ -90,13 +96,29 @@ angular.module('roadWarrior').value('mapStyles',
     },
     {
       "featureType": "water",
-      "elementType": "all",
+      "elementType": "geometry",
       "stylers": [
         {
-          "visibility": "on"
-        },
-        {
-          "color": "#f0f8ff"
+
+          "color": "#acbcc9"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { 
+          "color": "#ffffff"
+        }
+      ]
+    },
+    { 
+      "featureType": "water",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        { 
+          "color": "#555555"
         }
       ]
     }

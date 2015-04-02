@@ -2,6 +2,9 @@ $height: 100%;
 $elGraphNegMarg: -66%;
 $elGraphPosMarg: 0;
 $opacity: .8;
+$activeTabColor: #00ffff;
+$tabColor: #00bfff;
+
 
 
 html, body{
@@ -104,7 +107,7 @@ html, body{
     float: left;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    background-color: #40e0d0;
+    background-color: $tabColor;
     cursor: pointer;
 }
 
@@ -178,10 +181,11 @@ svg{
             float: left;
             border-top-left-radius: 1.5vw;
             border-top-right-radius: 1.5vw;
-            background-color: #40e0d0;
+            background-color: $tabColor;
             color: #000;
             overflow:hidden;
             cursor: pointer;
+            opacity: 0.8;
             div {
                 margin-top: .4vmin;
                 text-align: center;
@@ -189,9 +193,9 @@ svg{
             }
         }
         .activeTab {
-            color: #fff;
+            color: #000;
             opacity: $opacity;
-            background-color: #337ab7;
+            background-color: $activeTabColor;
         }
     }
 }
