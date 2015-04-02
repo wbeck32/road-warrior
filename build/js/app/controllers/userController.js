@@ -7,6 +7,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.dupeUsername = false;
   this.verifyPasswordFail = false;
   this.showPasswordChange = false;
+  this.showDeleteAccount = false;
   var self = this;
 
   if (window.localStorage.getItem('token')) {
@@ -91,7 +92,6 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   };
 
   this.passwordChange = function() {
-    console.log(this.oldPassword +',   ' + this.newPassword)
     $http({
       method: 'POST',
       url: '/api/passwordchange',
@@ -115,11 +115,38 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     }).error(function(data, status, headers, config){
       console.log('password change error');
     });
+  };
 
+  this.deleteAccount = function() {
+    $http({
+      method: 'POST',
+      url: '/api/deleteaccount',
+      data: {
+        username: window.localStorage.getItem('username'),
+        access_token: window.localStorage.getItem('token')
+      },
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+      console.log(data);
+      self.signOut();
+    }).error(function(data, status, headers, config){
+      console.log(data);
+    });
+  };
+
+  this.cancelPasswordChange = function () {
+    this.oldPassword = null;
+    this.newPassword = null;
+    this.verifyNewPassword = null;
+    this.togglePasswordChange();
   };
 
   this.togglePasswordChange = function() {
     this.showPasswordChange = !this.showPasswordChange;
+  };
+
+  this.toggleDeleteAccount = function() {
+    this.showDeleteAccount = !this.showDeleteAccount;
   };
 
   this.accountInfo = function(){

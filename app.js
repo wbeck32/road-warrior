@@ -158,6 +158,17 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
   }
 });
 
+app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  if (req.user) {
+    users.remove({_id: req.user._id}, {justOne: true}, function(err, response) {
+      res.json(response);
+    })
+  }
+
+})
+
 function authenticate (userid){
   var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode({
