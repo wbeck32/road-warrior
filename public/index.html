@@ -130,7 +130,7 @@
                 <input type="password" placeholder="Password" data-ng-model="User.password" />
                 <button>Log in</button>
               </form>
-              <span>Don't have an account yet? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">
+              <span>Don't have an account yet? Then <span class="slideLink noHint" data-ng-click="SideBar.toggleAccountActions()">
               <span class="bold">sign up</span></span>.</span> 
             </div>
             <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
@@ -145,7 +145,7 @@
                 <span class="errMsg" ng-show="User.verifyPasswordFail">Passwords must match.</span>
                 <button>Sign up</button>
               </form>
-              <span>Already have an account? Then <span class="slideLink" data-ng-click="SideBar.toggleAccountActions()">
+              <span>Already have an account? Then <span class="slideLink noHint" data-ng-click="SideBar.toggleAccountActions()">
               <span class="bold">log in</span></span>.</span>
             </div> 
             <div class="accountInfo" data-ng-show="User.accountInfo()">
