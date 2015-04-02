@@ -328,6 +328,7 @@ svg{
 a, .link {
     text-decoration:underline;
     color: $black;
+    cursor: pointer;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
