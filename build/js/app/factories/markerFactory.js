@@ -13,8 +13,8 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 
     markerColor : function(){
       if (this.markerIndex === 0){
-	       return "|009900|000000";
-      } else return "|ff0000|000000";
+	       return "|8fbc8f|000000";
+      } else return "|ff4500|000000";
     },
 
     asciiIndex : function(){
