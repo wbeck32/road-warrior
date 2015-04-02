@@ -16,7 +16,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "color": "#faf0e6"
+          "color": "#faf0f6"
         },
         {
           "lightness": 20 
@@ -26,7 +26,7 @@ angular.module('roadWarrior').value('mapStyles',
     {
       "featureType": "landscape.natural.terrain",
       "stylers": [
-        { "color": "#808080" },
+        { "color": "#b0b0b0" },
         { "hue": "#00ffe6" },
         { "lightness": 42 }
       ]
@@ -36,7 +36,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#ffefd5"
+          "color": "#d1gge1"
         }
       ]
     },
@@ -57,7 +57,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "all",
       "stylers": [
         {
-          "lightness": 5
+          "lightness": 1
         }
       ]
     },
@@ -66,7 +66,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#c5c6c6"
+          "color": "#999999"
         }
       ]
     },
@@ -75,7 +75,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#e4d7c6"
+          "color": "#b1b2b2"
         }
       ]
     },
@@ -84,7 +84,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#fbfaf7"
+          "color": "#d4d3d3"
         }
       ]
     },
@@ -96,7 +96,7 @@ angular.module('roadWarrior').value('mapStyles',
           "visibility": "on"
         },
         {
-          "color": "#f0f8ff"
+          "color": "#87ceeb"
         }
       ]
     }

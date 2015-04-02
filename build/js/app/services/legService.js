@@ -9,7 +9,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     suppressMarkers: true, 
     preserveViewport: true, 
     draggable: true,
-    polylineOptions: { strokeColor: '#40e0d0', strokeWeight: 8, strokeOpacity: .8 }
+    polylineOptions: { strokeColor: '#00bfff', strokeWeight: 8, strokeOpacity: 0.8 }
   };
   
   var directionsService = new google.maps.DirectionsService();
