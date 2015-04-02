@@ -115,6 +115,9 @@ html, body{
 #elevation-wrapper.showChart {
     margin-left: $elGraphPosMarg;
 }
+svg{
+    overflow: visible!important;
+}
 
 .hideChart {
     animation-duration: 1s;

@@ -19,7 +19,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 
     asciiIndex : function(){
       if (this.markerIndex > 25) {
-	return String.fromCharCode(this.markerIndex + 71);
+	      return String.fromCharCode(this.markerIndex + 71);
       } else return String.fromCharCode(this.markerIndex + 65);
     },
 
