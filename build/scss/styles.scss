@@ -1,5 +1,6 @@
 $height: 100%;
 $elGraphNegMarg: -66%;
+$elGraphPosMarg: 0;
 $opacity: .8;
 
 
@@ -9,7 +10,7 @@ html, body{
     margin: 0px;
     padding: 0px;
     font-family: 'Open Sans', sans-serif;
-    font-size: 12px;
+    font-size: 1vw;
     overflow: hidden;
 } 
 
@@ -49,7 +50,7 @@ html, body{
     }
 
     &:hover:before {
-	font-size:8px;
+	font-size:.75vw;
 	content:"rename";
 	visibility: visible;
 	transform: scaleX(1);
@@ -60,7 +61,7 @@ html, body{
     }
 
     &.retrieve:hover:before {
-	font-size:8px;
+	font-size:.75vw;
 	content:"retrieve";
 	transform: scaleX(1);
     }
@@ -92,6 +93,7 @@ html, body{
 
 #elevation-chart {
     height: 100%;
+    padding: 0 1%;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
@@ -102,7 +104,8 @@ html, body{
     float: left;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    background-color: #337ab7;
+    background-color: #40e0d0;
+    cursor: pointer;
 }
 
 #elevation-wrapper.hideChart {
@@ -110,7 +113,7 @@ html, body{
 }
 
 #elevation-wrapper.showChart {
-    margin-left: 5%;
+    margin-left: $elGraphPosMarg;
 }
 
 .hideChart {
@@ -125,7 +128,7 @@ html, body{
 
 @-webkit-keyframes slideout {
     from {
-	margin-left: 5%;
+	margin-left: $elGraphPosMarg;
     }
     to {
 	margin-left: $elGraphNegMarg;
@@ -137,20 +140,61 @@ html, body{
 	margin-left: $elGraphNegMarg;
     }
     to {
-	margin-left: 5%;
+	margin-left: $elGraphPosMarg;
     }
 }
 
-
 #sideMenu {
-    height: 80%;
-    width: 24%;
+    height: 80vh;
+    width: 24vw;
+
     position:absolute;
-    top: 10%;
+    top: 5%;
+
+    #sidebarContent {
+        width:100%;
+        height: 100%;
+        background-color:#fff;
+        overflow: hidden;
+        opacity: $opacity;
+        margin-left: -3px;
+    }
+
+    .tabList {
+        position: relative;
+        height: 2vw;
+        min-height: 15px;
+        right: 80vh;
+        width: 79.8vh;
+        transform: rotate(-90deg);
+        transform-origin: bottom right;
+
+        .tab {
+            height: 100%;
+            width: 25%;
+            float: left;
+            border-top-left-radius: 1.5vw;
+            border-top-right-radius: 1.5vw;
+            background-color: #40e0d0;
+            color: #000;
+            overflow:hidden;
+            cursor: pointer;
+            div {
+                margin-top: .4vmin;
+                text-align: center;
+                font-size: 2vmin;
+            }
+        }
+        .activeTab {
+            color: #fff;
+            opacity: $opacity;
+            background-color: #337ab7;
+        }
+    }
 }
 
 #sideMenu.hideMenu {
-    right: -21%;
+    right: -24%;
 }
 
 #sideMenu.showMenu {
@@ -220,15 +264,6 @@ html, body{
 }
 
 
-#sidebarContent {
-    width:87%;
-    background-color:#fff;
-    height: 100%;
-    float: left;
-    border-bottom-left-radius: 5px;
-    overflow: hidden;
-    opacity: $opacity;
-}
 
 .panel {
     height: 100%;
@@ -259,36 +294,19 @@ html, body{
     overflow-y: scroll !important;
 }
 
-.tabList {
-    position: relative;
-    right:0;
-    top: 0;
-    width: 12%;
-    float: left;
-    height: 100%;
-}
-
-.tab {
-    height: 25%;
-    border-top-left-radius:20px;
-    border-bottom-left-radius: 20px;
-    background-color: #fff;
-    color: #000;
-    overflow:hidden;
-}
-
-.activeTab {
-    color: #fff;
-    opacity: $opacity;
-    background-color: #337ab7;
-}
 
 .logo { 
     display:inline;
     z-index:50;
     position:absolute;
     top:3%;
-    margin-left:100px;
+    margin-left: 7%;
+    max-width: 25vw;
+
+    img {
+        max-width: 25vw;
+    }
+
 }
 
 .profileimg {
