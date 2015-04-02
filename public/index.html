@@ -170,7 +170,7 @@
                 <span class="slideLink noHint" data-ng-click= "User.toggleDeleteAccount()">Delete Account</span>
                 <div data-ng-show="User.showDeleteAccount">
                   <span>Are you sure?</span>
-                  <div><span class="slideLink noHint" data-ng-click="User.deleteAccount()">Yup</span></div>
+                  <div><span class="slideLink noHint" data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()"">Yup</span></div>
                   <div><span class="slideLink noHint" data-ng-click="User.toggleDeleteAccount()">Nope</span></div>
                 </div>
 
