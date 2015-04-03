@@ -9,7 +9,10 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     draggableCursor: 'crosshair',
     center: currentPosition,
     styles: mapStyles,
-    panControl: false
+    panControl: false,
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.LEFT_CENTER
+    }
   };
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
