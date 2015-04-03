@@ -8,7 +8,8 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     zoom: 16,
     draggableCursor: 'crosshair',
     center: currentPosition,
-    styles: mapStyles
+    styles: mapStyles,
+    panControl: false
   };
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
