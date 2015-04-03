@@ -4,20 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-
-<meta property="og:url" content="http://www.treksmith.com" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Treksmith is a turn-by-turn trip planning application." />
-<meta property="og:description" content="Use Treksmith to plan, create and save customizable routes." />
-<meta property="og:image" content="http://treksmith.com/images/treksmith_fb.png" />
-
+    <meta property="og:url" content="http://www.treksmith.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Treksmith is a turn-by-turn trip planning application." />
+    <meta property="og:description" content="Use Treksmith to plan, create and save customizable routes." />
+    <meta property="og:image" content="http://treksmith.com/images/treksmith_fb.png" />
     <title>Treksmith - Customize and save your treks.</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
 
   <body>
-
+    <input id="pac-input"></input>
     <div class="logo"> 
       <a href="http://www.treksmith.com"><img src="images/treksmith-logo.png" alt="Treksmith logo" /></a>    
     </div> 
@@ -194,5 +192,6 @@
     <script src="https://www.google.com/jsapi"></script>
     <script src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
     <script src="js/main.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&sensor=false"></script>
   </body>
 </html>
