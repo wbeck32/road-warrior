@@ -53,6 +53,7 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
   };
 
   this.renderSavedTrek = function(trek) {
+    markerFactory.resetIndex();
     var legs = [];
     var origGoogleLatLng = new google.maps.LatLng(trek.markers[0].k, trek.markers[0].D);
     var currentOrigin = markerFactory.create(origGoogleLatLng, legService, true);

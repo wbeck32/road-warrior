@@ -13,7 +13,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
 
     markerColor : function(){
       if (this.markerIndex === 0){
-	       return "|8fbc8f|000000";
+	return "|8fbc8f|000000";
       } else return "|ff4500|000000";
     },
 
@@ -21,6 +21,12 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       if (this.markerIndex > 25) {
 	      return String.fromCharCode(this.markerIndex + 71);
       } else return String.fromCharCode(this.markerIndex + 65);
+    },
+
+    reverseAsciiIndex : function(charCode) {
+      if (charCode < 91) {
+        return charCode - 64;
+      } else return charCode - 70;
     },
 
     create : function(latLng, thisObj, dontRenderNow) {
@@ -31,7 +37,6 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       	draggable: true,
         icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + this.asciiIndex() + this.markerColor()
       });
-
 
       marker.index = this.asciiIndex();
       this.markerIndex++;
