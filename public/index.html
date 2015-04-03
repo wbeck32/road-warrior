@@ -52,13 +52,13 @@
           <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
             <div class="trekTitle">
-              <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" class="link input">{{Trek.name}}</span>
+              <span data-ng-click="Trek.editName()" data-ng-hide="Trek.showEditName" id="trekName" class="link">{{Trek.name}}</span>
               <span style="float:right">
                 <span class="link" data-ng-click="Trek.saveTrek()" style="float:left">save trek</span>&nbsp;|&nbsp;
                 <span class="link" data-ng-click="Trek.clearTrek()" style="float:right">clear trek</span>
               </span>
         
-              <form data-ng-show="Trek.showEditName">
+              <form id="renameTrekForm" data-ng-show="Trek.showEditName">
                 <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
               </form>
             </div>
@@ -121,10 +121,10 @@
                 </div>
                 <div>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportaion modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</div>
                 <div class="bold">The team</div>
-                <div><a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>&nbsp;&sect;&nbsp;<a href="http://www.linkedin.com/in/wendybeck/en" target="_blank">LinkedIn</a></div>
-                <div><a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>&nbsp;&sect;&nbsp;<a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a></div>
-                <div><a href="http://www.russelldubrock.com" target="_blank">Russ DuBrock</a>&nbsp;&sect;&nbsp;<a href="https://www.linkedin.com/pub/russell-dubrock/2b/354/140" target="_blank">LinkedIn</a></div>
-                <div><a href="http://www.brycewjohnson.com" target="_blank">Bryce Johnson</a>&nbsp;&sect;&nbsp;<a href="https://www.linkedin.com/in/brycewjohnson" target="_blank">LinkedIn</a></div>
+                <div class="teamMember"><a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>&nbsp;&sect;&nbsp;<a href="http://www.linkedin.com/in/wendybeck/en" target="_blank">LinkedIn</a></div>
+                <div class="teamMember"><a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>&nbsp;&sect;&nbsp;<a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a></div>
+                <div class="teamMember"><a href="http://www.russelldubrock.com" target="_blank">Russ DuBrock</a>&nbsp;&sect;&nbsp;<a href="https://www.linkedin.com/pub/russell-dubrock/2b/354/140" target="_blank">LinkedIn</a></div>
+                <div class="teamMember"><a href="http://www.brycewjohnson.com" target="_blank">Bryce Johnson</a>&nbsp;&sect;&nbsp;<a href="https://www.linkedin.com/in/brycewjohnson" target="_blank">LinkedIn</a></div>
                 <div>The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>.</div>
           </div>
         </div>
@@ -137,8 +137,10 @@
                 <input type="password" placeholder="Password" data-ng-model="User.password" />
                 <button>Log in</button>
               </form>
-              <span>Don&rsquo;t have an account yet? Then <span class="link" data-ng-click="SideBar.toggleAccountActions()">
-              <span class="bold">sign up</span></span>.</span> 
+              <span>Don&rsquo;t have an account yet?</span>
+              <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions()">
+                <span class="bold">sign up</span>
+              </span>
             </div>
             <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
               <form name="createAccountForm" class="user-forms" novalidate data-ng-submit="User.createAccount()">
@@ -152,8 +154,10 @@
                 <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
                 <button>Sign up</button>
               </form>
-              <span>Already have an account? Then <span class="link" data-ng-click="SideBar.toggleAccountActions()">
-              <span class="bold">log in</span></span>.</span>
+              <span>Already have an account?</span>
+              <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions()">
+                <span class="bold">log in</span>
+              </span>
             </div> 
             <div class="accountInfo" data-ng-show="User.accountInfo()">
               <h3>Welcome, {{User.username}}!</h3>
