@@ -33,6 +33,14 @@ html, body{
     width: 100%;
 }
 
+#pac-input {
+    width: 25%;
+    height: 4vh;
+    float: center;
+    font-size: 1.5em;
+    margin-top: 4vh;
+}
+
 .errMsg {
     color:red;
 }
