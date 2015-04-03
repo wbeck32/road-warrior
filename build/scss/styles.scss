@@ -1,19 +1,30 @@
 $height: 100%;
+
 $elGraphNegMarg: -66%;
+$elevationGraphWidth: 68%;
 $elGraphPosMarg: 0;
+$medGraphWidth: 52%;
+$medGraphNegMarg: -50%;
+$sliderButtonWidth: 3%;
+
 $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00ffff;
 $white: #fff;
 $black: #000;
 
+$sidebarWidth: 28vw;
+$smallSidebarWidth: 60vw;
+$mediumSidebarWidth: 40vw;
+$sidebarHeight: 80vh;
+
 html, body{
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
+
     font-family: 'Open Sans', sans-serif;
-    font-size: 1vw;
     overflow: hidden;
 } 
 
@@ -35,7 +46,10 @@ html, body{
 }
 
 #elevation-wrapper {
-    width: 68%;
+    width: $elevationGraphWidth;
+    @media screen and (min-width: 481px) and (max-width: 1000px) {
+        width: $medGraphWidth;
+    }
     height: 15%;
     opacity: $opacity;
     z-index: 100;
@@ -43,10 +57,11 @@ html, body{
     bottom: 5%;
 
     #nested-elevation-wrapper {
-        width: 97%;
         height: 100%;
+        width: (100% - $sliderButtonWidth);
         float: left;
         background-color: $white;
+        overflow: hidden;
 
             #elevation-chart {
                 height: 100%;
@@ -58,7 +73,7 @@ html, body{
    
     #slider-button {
         float:left;
-        width: 3%;
+        width: $sliderButtonWidth;
         height: 100%;
         border-top-right-radius: 20px;
         border-bottom-right-radius: 20px;
@@ -82,6 +97,9 @@ html, body{
 
 #elevation-wrapper.hideChart {
     margin-left: $elGraphNegMarg;
+    @media screen and (min-width: 481px) and (max-width: 1000px) {
+        margin-left: $medGraphNegMarg;
+    }
 }
 
 #elevation-wrapper.showChart {
@@ -102,27 +120,35 @@ svg{
 }
 
 @keyframes slideout {
-    from {
-	margin-left: $elGraphPosMarg;
-    }
-    to {
-	margin-left: $elGraphNegMarg;
-    }
+    from { margin-left: $elGraphPosMarg; }
+    to { margin-left: $elGraphNegMarg; }
 }
-
 @keyframes slidein {
-    from {
-	margin-left: $elGraphNegMarg;
-    }
-    to {
-	margin-left: $elGraphPosMarg;
-    }
+    from { margin-left: $elGraphNegMarg; }
+    to { margin-left: $elGraphPosMarg; }
 }
 
+@media screen and (min-width: 481px) and (max-width: 1000px) {
+    @keyframes slideout {
+        from { margin-left: $elGraphPosMarg; }
+        to { margin-left: $medGraphNegMarg; }
+    }
+    @keyframes slidein {
+        from { margin-left: $medGraphNegMarg; }
+        to { margin-left: $elGraphPosMarg; }
+    }
+}
 
 #sideMenu {
-    height: 80vh;
-    width: 24vw;
+    height: $sidebarHeight;
+    width: $sidebarWidth;
+    @media screen and (max-width: 480px) {
+        width: $smallSidebarWidth; 
+        height: $sidebarHeight * .8;
+    }
+    @media screen and (min-width: 481px) and (max-width: 1000px) {
+        width: $mediumSidebarWidth; 
+    }
     position:absolute;
     top: 5%;
 
@@ -138,9 +164,16 @@ svg{
     .tabList {
         position: relative;
         height: 2vw;
-        min-height: 15px;
-        right: 79.8vh;
-        width: 79.8vh;
+        @media screen and (max-width: 768px) {
+            height: 4vw;
+        }
+        min-height: 25px;
+        right: $sidebarHeight;
+        width: $sidebarHeight;
+        @media screen and (max-width: 480px) {
+            right: $sidebarHeight * .8;
+            width: $sidebarHeight * .8;
+        }
         transform: rotate(-90deg);
         transform-origin: bottom right;
 
@@ -170,7 +203,13 @@ svg{
 }
 
 #sideMenu.hideMenu {
-    right: -24vw;
+    right: -$sidebarWidth;
+    @media screen and (max-width: 480px) {
+        right: -$smallSidebarWidth;
+    }
+    @media screen and (min-width: 481px) and (max-width: 1000px) {
+        right: -$mediumSidebarWidth;
+    }
 }
 
 #sideMenu.showMenu {
@@ -187,22 +226,34 @@ svg{
     animation-name: showMenu;
 }
 
-@keyframes showMenu {
-    from {
-	right: -24vw;
+@media screen and (min-width: 1001px) {
+    @keyframes showMenu {
+        from { right: -$sidebarWidth; }
+        to { right: 0; }
     }
-    to {
-	right: 0;
+    @keyframes hideMenu {
+        from { right: 0; }
+        to { right: -$sidebarWidth; }
     }
 }
-
-
-@keyframes hideMenu {
-    from {
-	right: 0;
+@media screen and (max-width: 480px) {
+    @keyframes showMenu {
+        from { right: -$smallSidebarWidth; }
+        to { right: 0; }
     }
-    to {
-	right: -24vw;
+    @keyframes hideMenu {
+        from { right: 0; }
+        to { right: -$smallSidebarWidth; }
+    }
+}
+    @media screen and (min-width: 481px) and (max-width: 1000px) {
+    @keyframes showMenu {
+        from { right: -$mediumSidebarWidth; }
+        to { right: 0; }
+    }
+    @keyframes hideMenu {
+        from { right: 0; }
+        to { right: -$mediumSidebarWidth; }
     }
 }
 
@@ -246,11 +297,11 @@ svg{
     height: 90%;
     width: 100%;
     border-bottom: none;
-
 }
 
 .trekTitle {
     height: 10%;
+    width: 100%;
     border-bottom: 1px solid black;
 }
 
@@ -266,17 +317,31 @@ svg{
     position:absolute;
     top:3%;
     margin-left: 2%;
-    max-width: 25vw;
-
     img {
-        max-width: 25vw;
+        max-width: 30vw;
     }
-
 }
 
 .leg, .trek {
-    margin: 2% 0;
+    width: 95%;
+    margin: 2% auto;
     padding: 0 1%;
+}
+
+.leg {
+    div {
+        text-align: center;
+        form {
+            text-align: center;
+            select {
+                display: block;
+                margin: 0 auto;
+            }
+            input {
+                margin: 0 auto;
+            }
+        }
+    }
 }
 
 .aboutLink {
@@ -287,7 +352,6 @@ svg{
     }
 
 }
-
 
 .legOptions {
     padding: 1%;
@@ -303,8 +367,9 @@ svg{
 .totalDistance {
     height: 10%;
     border-top: 1px solid $black;
-    padding: 1%;
+    padding: 2%;
     width:95%;
+    text-align: center;
 }
 
 .odd {
@@ -313,16 +378,70 @@ svg{
 }
 
 .user-forms {
-    width: 50%;
-    padding:6%
-
+    width: 90%;
+    padding: 6%;
+    input {
+        margin: 5% auto;
+    }
+    button {
+        display: block;
+        margin: 0 auto;
+        width: 30%;
+    }
 }
 
-.input, input {
+input {
     display: block;
     margin: 1% 0;
-    width: 50%;
-    font-size:1.5vh;
+}
+
+#trekName {
+    max-width: 50%;
+    overflow: hidden;
+}
+
+#renameTrekForm {
+    input {
+        width: 40%;
+        margin: 0;
+        position: relative !important;
+        top:0;
+        left:0;
+    }
+}
+
+#trekList {
+    input {
+        margin: 5% auto;
+    }
+    .myTreks {
+        margin-top: 5%;
+        text-align: center;
+    }
+}
+
+#about {
+    div.bold {
+        text-align: center;
+    }
+    .teamMember {
+        text-align: center;
+        margin: 2% 0;
+    }
+}
+
+#account {
+    text-align: center;
+    button {
+        margin: 5% 0;
+    }
+    form > button {
+        margin: 5% auto;
+    }
+}
+
+.formSwitch {
+    display: block;
 }
 
 a, .link {
