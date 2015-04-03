@@ -302,7 +302,8 @@ svg{
 .trekTitle {
     height: 10%;
     width: 100%;
-    border-bottom: 1px solid black;
+    padding-bottom:5%;
+    border-bottom: 1px solid $black;
 }
 
 #legList, #about {
@@ -367,8 +368,8 @@ svg{
 .totalDistance {
     height: 10%;
     border-top: 1px solid $black;
-    padding: 2%;
-    width:95%;
+    padding: 2% 0;
+    width:99%;
     text-align: center;
 }
 
