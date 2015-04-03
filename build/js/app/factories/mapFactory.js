@@ -11,6 +11,10 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     styles: mapStyles,
     panControl: false,
     zoomControlOptions: {
+      position: google.maps.ControlPosition.LEFT_CENTER,
+      style: google.maps.ZoomControlStyle.SMALL
+    },
+    streetViewControlOptions: {
       position: google.maps.ControlPosition.LEFT_CENTER
     }
   };
