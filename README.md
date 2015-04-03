@@ -6,7 +6,7 @@ Our goal was to build a web app that would allow a user to create a route (or tr
 
 The team
 --------
-[Wendy Beck](http://www.wendybeck.io)&nbsp;&sect;&nbsp;[LinkedIn](http://www.linkedin.com/in/wendybeck/en")
+[Wendy Beck](http://www.wendybeck.io)&nbsp;&sect;&nbsp;[LinkedIn](http://www.linkedin.com/in/wendybeck/en)
 
 [Mike Burnett](http://www.describetheruckus.com)&nbsp;&sect;&nbsp;[LinkedIn](http://www.linkedin.com/in/mtburnett/en) 
 
