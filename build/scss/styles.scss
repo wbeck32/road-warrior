@@ -189,9 +189,14 @@ svg{
             cursor: pointer;
             opacity: 0.8;
             div {
-                margin-top: .4vmin;
+                span {
+                    display: inline-block;
+                    height: 100%;
+                    vertical-align: middle;
+                }
+                vertical-align: middle;
                 text-align: center;
-                font-size: 2vmin;
+                font-size: .8em;
             }
         }
         .activeTab {

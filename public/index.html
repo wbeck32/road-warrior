@@ -33,16 +33,20 @@
     <div id="sideMenu" class="hideMenu" data-ng-controller="SideBarController as SideBar">  
       <div class="tabList">
       <div class="tab" id="accountTab" aria-controls="account" data-ng-click="SideBar.tabSwitcher('account')">
-        <div>account</div>
+
+        <div>        <span></span>account</div>
       </div>
       <div class="tab" id="trekListTab" aria-controls="trekList" data-ng-click="SideBar.tabSwitcher('trekList')">
-        <div>my treks</div>
+        <span></span>
+        <div>        <span></span>my treks</div>
       </div>
       <div class="tab current" id="currentTrekTab" aria-controls="trekDetails" data-ng-click="SideBar.tabSwitcher('currentTrek')">
-        <div>current trek</div>
+        <span></span>
+        <div>        <span></span>current trek</div>
       </div>
       <div class="tab" id="aboutTab" aria-controls="about" data-ng-click="SideBar.tabSwitcher('about')">
-        <div>about</div>
+        <span></span>
+        <div>        <span></span>about</div>
       </div>
         
       </div>
