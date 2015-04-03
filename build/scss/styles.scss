@@ -306,6 +306,13 @@ svg{
     max-height:20%;
 }
 
+#trekOptions {
+
+    @media screen and (max-width: 750px){
+        font-size: 2vw;
+    }
+}
+
 #trekDetails {
     height: 90%;
     width: 100%;
@@ -317,6 +324,7 @@ svg{
     width: 100%;
     padding-bottom:5%;
     border-bottom: 1px solid $black;
+    text-align: center;
 }
 
 #legList, #about {
@@ -410,8 +418,8 @@ input {
 }
 
 #trekName {
-    max-width: 50%;
-    overflow: hidden;
+    width: 100%;
+    text-align: center;
 }
 
 #renameTrekForm {
