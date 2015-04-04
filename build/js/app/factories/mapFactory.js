@@ -29,8 +29,6 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   autocomplete.bindTo('bounds', map);
 
   google.maps.event.addListener(autocomplete, 'place_changed', function(){
-    // infowindow.close();
-    // marker.setVisible(false);
     var place = autocomplete.getPlace();
     if (!place.geometry) {
       return;
