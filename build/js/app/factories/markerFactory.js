@@ -38,6 +38,8 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
         icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + this.asciiIndex() + this.markerColor()
       });
 
+      elevationService(latLng, marker);
+
       marker.index = this.asciiIndex();
       this.markerIndex++;
       
