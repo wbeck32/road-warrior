@@ -22,10 +22,12 @@
 
     <div id="map-canvas"></div>
     <div id="elevation-wrapper" class="hideChart">
+
+      <div id="slider-button"><img src="/images/elevation_icon.png" class="eleImg"/></div>
       <div id="nested-elevation-wrapper">
         <div id="elevation-chart"></div>  
       </div>
-      <div id="slider-button"><span></span><img src="/images/elevation_icon.png" class="eleImg"/></div>
+
     </div> 
 
     <div id="sideMenu" class="hideMenu" data-ng-controller="SideBarController as SideBar">  
@@ -50,6 +52,7 @@
       </div>
 
       <div id="sidebarContent" class="currentTrek" data-ng-controller="TrekController as Trek" role="navigation">  
+
         <div class="panel" data-ng-show="SideBar.activePanel(0)">
           <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
@@ -96,8 +99,8 @@
                 </div>
               </div>
             </div> 
+            <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
           </div>
-          <div class="bold totalDistance" data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
         </div>
 
         <div class="panel" data-ng-show="SideBar.activePanel(1)">

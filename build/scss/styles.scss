@@ -1,18 +1,16 @@
 $height: 100%;
 
-$elGraphNegMarg: -66%;
-$elevationGraphWidth: 68%;
+$elGraphNegMarg: -64%;
+$elevationGraphWidth: 64%;
 $elGraphPosMarg: 0;
-$medGraphWidth: 52%;
+$medGraphWidth: 50%;
 $medGraphNegMarg: -50%;
-$sliderButtonWidth: 3%;
 
 $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00ffff;
 $white: #fff;
 $black: #000;
-
 $sidebarWidth: 28vw;
 $smallSidebarWidth: 60vw;
 $mediumSidebarWidth: 40vw;
@@ -23,7 +21,6 @@ html, body{
     width: 100%;
     margin: 0;
     padding: 0;
-
     font-family: 'Open Sans', sans-serif;
     overflow: hidden;
 } 
@@ -62,45 +59,39 @@ html, body{
     opacity: $opacity;
     z-index: 100;
     position: absolute;
-    bottom: 5%;
+    bottom: 15%;
 
     #nested-elevation-wrapper {
         height: 100%;
-        width: (100% - $sliderButtonWidth);
-        float: left;
+        width: 100%;
         background-color: $white;
         overflow: hidden;
 
             #elevation-chart {
                 height: 100%;
                 padding: 0 1%;
-                border-top-left-radius: 5px;
-                border-bottom-left-radius: 5px;
             }
     }
-   
+
     #slider-button {
-        float:left;
-        width: $sliderButtonWidth;
-        height: 100%;
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
+        position: relative;
+        right: -15vh;
+        text-align: center;
+        float: right;
+        width: 15vh;
+        height: 2vw;
+        min-height: 25px;
+        @media screen and (max-width: 768px) {
+            height: 4vw;
+        }
+        border-top-right-radius: 1.5vw;
+        border-top-left-radius: 1.5vw;
         background-color: $tabColor;
         cursor: pointer;
-
-    span {
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
+        transform: rotate(90deg);
+        transform-origin: bottom left;
+        overflow: hidden;
     }
-    .eleImg {
-        max-width:80%;
-        vertical-align: middle;
-        margin: 0 8%;
-    }
-
-    }
-
 }
 
 #elevation-wrapper.hideChart {
@@ -150,11 +141,11 @@ svg{
 #sideMenu {
     height: $sidebarHeight;
     width: $sidebarWidth;
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 520px) {
         width: $smallSidebarWidth; 
         height: $sidebarHeight * .8;
     }
-    @media screen and (min-width: 481px) and (max-width: 1000px) {
+    @media screen and (min-width: 521px) and (max-width: 1000px) {
         width: $mediumSidebarWidth; 
     }
     position:absolute;
@@ -178,7 +169,7 @@ svg{
         min-height: 25px;
         right: $sidebarHeight;
         width: $sidebarHeight;
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 520px) {
             right: $sidebarHeight * .8;
             width: $sidebarHeight * .8;
         }
@@ -297,8 +288,8 @@ svg{
 
 .panel {
     height: 100%;
-    width: 95%;
-    padding: 1%;
+    width: 100%;
+    padding: 0;
 }
 
 .trekList {
@@ -307,30 +298,34 @@ svg{
 }
 
 #trekOptions {
-
     @media screen and (max-width: 750px){
         font-size: 2vw;
     }
 }
 
 #trekDetails {
-    height: 90%;
-    width: 100%;
-    border-bottom: none;
+    height: 100%;
 }
 
 .trekTitle {
     height: 10%;
     width: 100%;
-    padding-bottom:5%;
     border-bottom: 1px solid $black;
     text-align: center;
+    overflow: hidden;
+    min-height: 45px;
 }
 
 #legList, #about {
     width: 100%;
-    height: 90%;
+    height: 80%;
     overflow-y: scroll !important;
+}
+.totalDistance {
+    font-size: 2.5vh;
+    padding-top: 1vh;
+    border-top: 1px solid $black;
+    text-align: center;
 }
 
 .logo { 
@@ -361,6 +356,7 @@ svg{
             }
             input {
                 margin: 0 auto;
+                width: 90%;
             }
         }
     }
@@ -372,7 +368,6 @@ svg{
     & div {
         margin-bottom:1%;
     }
-
 }
 
 .legOptions {
@@ -386,13 +381,6 @@ svg{
     margin:1% 0;
 }
 
-.totalDistance {
-    height: 10%;
-    border-top: 1px solid $black;
-    padding: 2% 0;
-    width:99%;
-    text-align: center;
-}
 
 .odd {
     background-color: $tabColor;
