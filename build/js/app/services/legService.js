@@ -40,6 +40,8 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     
     markerFactory.markerIndex = markerFactory.reverseAsciiIndex(this.legs[this.legs.length - 1].dest.index.charCodeAt(0));
     trekOrigin = this.legs[0].origin;
+    mapFactory.panTo(trekOrigin.getPosition());
+    mapFactory.setZoom(14);
     this.legs[0].origin.setMap(mapFactory);
     this.legs.forEach(function(leg){
       leg.dest.setMap(mapFactory);

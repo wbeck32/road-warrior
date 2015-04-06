@@ -23,11 +23,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/mapsAPICode', function(req, res){
-  var URL = 'https://maps.googleapis.com/maps/api/js?v=3&amp;key='+process.env.GOOGLEAPIKEY;
+  var URL = 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places';
+  if (process.env.NODE_ENV === 'production'){
+      URL += '&key=' + process.env.GOOGLEAPIKEY;
+  }
   https.get(URL, function(response){
     res.set('Content-Type','text/javascript');
     response.pipe(res);
-  })
+  });
 });
 
 app.post('/api/saveatrek', [jwtAuth], function(req, res){
@@ -53,7 +56,6 @@ app.post('/api/deleteatrek/', [jwtAuth], function(req, res){
   treks.find({_id: ObjectId(req.body.trekid)}).toArray(function(err, docs){
     if (docs[0].userid === req.user._id.toString()) {
       treks.remove({_id: ObjectId(req.body.trekid)}, {justOne : true}, function(status) {
-        console.log('status: ', status);
         res.end('deleted');
       });
     } else {
@@ -141,20 +143,17 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
       bcrypt.compare(req.body.oldpassword, docs[0].password, function(err, validpass) {
         if (err) console.log('password hash error');
         else if (validpass === true) {
-          console.log(req.body.newpassword);
           bcrypt.hash(req.body.newpassword, 10, function(err, hash){
           users.update({_id: req.user._id}, {username: req.user.username, password: hash}, function(err, updateRes){
             if(err) console.log('Could not insert');
-            console.log(updateRes.result.n);
             res.end(updateRes.result.n.toString());
-          }) 
+          });
         });
         } else {
-          console.log('not a password match')
           res.end('invalid username/password combo');
         }
-      })
-    })
+      });
+    });
   }
 });
 
@@ -164,10 +163,10 @@ app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
   if (req.user) {
     users.remove({_id: req.user._id}, {justOne: true}, function(err, response) {
       res.json(response);
-    })
+    });
   }
 
-})
+});
 
 function authenticate (userid){
   var expires = moment().add(7, 'days').valueOf();
