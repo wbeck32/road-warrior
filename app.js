@@ -24,9 +24,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/mapsAPICode', function(req, res){
   var URL = 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places';
-  if (process.env.NODE_ENV === 'production'){
-      URL += '&key=' + process.env.GOOGLEAPIKEY;
-  }
+//  if (process.env.NODE_ENV === 'production'){
+//      URL += '&key=' + process.env.GOOGLEAPIKEY;
+//  }
   https.get(URL, function(response){
     res.set('Content-Type','text/javascript');
     response.pipe(res);
