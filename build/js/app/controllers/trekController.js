@@ -13,6 +13,12 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   var loadedTrek = null;
   var self = this;
 
+  this.loginToSave = false;
+
+  this.toggleLoginToSave = function () {
+    this.loginToSave = !this.loginToSave;
+  }
+
   this.signOut = function(){
     this.clearTrek();
     trekService.allTreks = [];
@@ -29,7 +35,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     legService.unRenderAll();
     legService.legs = trek.legs;
     legService.renderAll();
-    this.legs = legService.legs;
+    this.legs = legService.legs
     this.name = trek.name;
     this.hideFields();
     loadedTrek = trek;
@@ -70,7 +76,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
       this.legs = legService.legs;
       this.name = "new trek";
     } else {
-      alert('You must sign in to save a trek');
+      this.toggleLoginToSave();
     }
     
   };

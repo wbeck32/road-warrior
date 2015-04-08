@@ -70,6 +70,13 @@
             </div>
 
             <div id="legList">
+              <div data-ng-show="Trek.loginToSave">
+                <span class="errMsg">You must log in to save a trek</span>
+                <div>
+                  <span class="link" data-ng-click="SideBar.tabSwitcher('account'); Trek.toggleLoginToSave()">Go to login</span>
+                  <span class="link" data-ng-click="Trek.toggleLoginToSave()">No thanks</span>
+                </div>
+              </div>
               <div data-ng-repeat="leg in Trek.legs track by $index" class="leg" data-ng-class-odd="'odd'">
                 <span data-ng-click="Trek.toggleDetails($index)">
                   <span class="link">
