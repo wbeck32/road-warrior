@@ -27,7 +27,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
 
   this.toggleNoSuchUser = function () {
     this.noSuchUser = !this.noSuchUser;
-  }
+  };
 
   this.logIn = function () {
     $http({
