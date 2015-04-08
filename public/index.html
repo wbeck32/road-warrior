@@ -150,6 +150,7 @@
                 <input required type="password" placeholder="Password" data-ng-model="User.password" />
                 <button data-ng-disabled="logInForm.$invalid">Log in</button>
               </form>
+              <div class="errMsg" data-ng-show="User.noSuchUser">No such user!</div>
               <span>Don&rsquo;t have an account yet?</span>
               <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions()">
                 <span class="bold">sign up</span>
@@ -169,9 +170,10 @@
               </form>
               <span>Already have an account?</span>
               <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions()">
-                <span class="bold">log in</span>
+                <span class="bold">log in</span>  
               </span>
             </div> 
+
             <div class="accountInfo" data-ng-show="User.accountInfo()">
               <h3>Welcome, {{User.username}}!</h3>
               <div>

@@ -8,6 +8,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.verifyPasswordFail = false;
   this.showPasswordChange = false;
   this.showDeleteAccount = false;
+  this.noSuchUser = false;
   var self = this;
 
   if (window.localStorage.getItem('token')) {
@@ -24,6 +25,10 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     this.verify = null;
   };
 
+  this.toggleNoSuchUser = function () {
+    this.noSuchUser = !this.noSuchUser;
+  }
+
   this.logIn = function () {
     $http({
       method: 'POST',
@@ -35,9 +40,10 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
           window.localStorage.setItem("token", data.token);
           window.localStorage.setItem("user", data.user.username);
           window.localStorage.setItem("userid", data.user._id);
+          self.noSuchUser = false;
           trekService.renderAllSavedTreks();
         } else {
-          alert("No such user!");
+          self.toggleNoSuchUser();
         }
     }).error(function(data, status, headers, config){
       console.log('failure');
@@ -51,7 +57,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
       data: {username: this.username, password: this.password},
       headers: {'Content-Type': 'application/json'}
     }).success(function(data, status, headers, config){
-        if (data) {
+        if (data.token) {
           window.localStorage.setItem("token", data.token);
           window.localStorage.setItem("user", data.user.username);
           window.localStorage.setItem('userid', data.user._id);

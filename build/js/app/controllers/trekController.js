@@ -17,7 +17,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   this.toggleLoginToSave = function () {
     this.loginToSave = !this.loginToSave;
-  }
+  };
 
   this.signOut = function(){
     this.clearTrek();
@@ -35,7 +35,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     legService.unRenderAll();
     legService.legs = trek.legs;
     legService.renderAll();
-    this.legs = legService.legs
+    this.legs = legService.legs;
     this.name = trek.name;
     this.hideFields();
     loadedTrek = trek;
