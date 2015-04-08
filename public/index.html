@@ -145,10 +145,10 @@
         <div class="panel" data-ng-show="SideBar.activePanel(3)" data-ng-controller="UserController as User">
           <div class="sidebarSection" id="account">
             <div class="logIn" data-ng-show="SideBar.showLogIn()">
-              <form class="user-forms" data-ng-submit="User.logIn()">
-                <input type="text" placeholder="User Name" data-ng-model="User.username" />
-                <input type="password" placeholder="Password" data-ng-model="User.password" />
-                <button>Log in</button>
+              <form name="logInForm" class="user-forms" data-ng-submit="User.logIn()">
+                <input required type="text" placeholder="User Name" data-ng-model="User.username" />
+                <input required type="password" placeholder="Password" data-ng-model="User.password" />
+                <button data-ng-disabled="logInForm.$invalid">Log in</button>
               </form>
               <span>Don&rsquo;t have an account yet?</span>
               <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions()">
