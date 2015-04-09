@@ -98,11 +98,12 @@
                       <option value="DRIVING">Driving</option>
                       <option value="BICYCLING">Bicycling</option>
                       <option value="TRANSIT">Transit</option>
+                      <option value="CROW">Crow</option>
                     </select>
                     <input type="submit" data-ng-hide="true"/>
                   </form>
                   <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-                  <div>distance: {{ leg.rend.directions.routes[0].legs[0].distance.value |  metersToMiles }} miles</div>
+                  <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
                 </div>
               </div>
             </div> 
