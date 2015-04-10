@@ -463,6 +463,11 @@ a, .link {
     cursor: pointer;
 }
 
+#save-icon {
+    padding: 0 3px 0 3px;
+    font-size: 1.5em;
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
