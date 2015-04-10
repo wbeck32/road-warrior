@@ -10,6 +10,24 @@ var jwt = require('jwt-simple');
 var moment = require('moment');
 var bcrypt = require('bcrypt');
 var https = require('https');
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var mailgunLogin = require('./mailgunlogin.js');
+var transporter = nodemailer.createTransport(smtpTransport({
+  host: 'smtp.mailgun.org',
+  auth: {
+    user: mailgunLogin.user,
+    pass: mailgunLogin.pass
+  }
+}))
+
+var resetPasswordMailOptions = {
+    from: 'Treksmith <hello@treksmith.com>', // sender address
+    to: 'treksmithinfo@gmail.com', 
+    subject: 'Hey guys, email is kinda sorta working!', // Subject line
+    text: 'Emphasis on the kinda and the sorta.', // plaintext body
+    html: '<b>Hello world ✔</b>' // html body
+};
 
 var jwtKey = process.env.JWTKEY;
 
@@ -31,6 +49,7 @@ app.get('/mapsAPICode', function(req, res){
     res.set('Content-Type','text/javascript');
     response.pipe(res);
   });
+  console.log(mailgunLogin);
 });
 
 app.post('/api/saveatrek', [jwtAuth], function(req, res){
@@ -97,7 +116,7 @@ app.post('/api/signup', function(req, res) {
     if (docs.length === 0) {
       
       bcrypt.hash(req.body.password, 10, function(err, hash){
-        users.insert({username: req.body.username, password: hash}, function(err, docs){
+        users.insert({username: req.body.username, password: hash, email: req.body.email}, function(err, docs){
           if (err) throw err;
           res.json({
             token : authenticate(docs.ops[0]._id),

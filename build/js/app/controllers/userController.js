@@ -4,6 +4,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
 
   this.username = null;
   this.password = null;
+  this.email = null;
   this.dupeUsername = false;
   this.verifyPasswordFail = false;
   this.showPasswordChange = false;
@@ -54,7 +55,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     $http({
       method: 'POST',
       url:'/api/signup', 
-      data: {username: this.username, password: this.password},
+      data: {username: this.username, password: this.password, email: this.email},
       headers: {'Content-Type': 'application/json'}
     }).success(function(data, status, headers, config){
         if (data.token) {
