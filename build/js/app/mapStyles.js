@@ -36,7 +36,7 @@ angular.module('roadWarrior').value('mapStyles',
       "elementType": "geometry",
       "stylers": [
         {
-          "color": "#ffefd5"
+          "color": "#dbece0"
         }
       ]
     },
