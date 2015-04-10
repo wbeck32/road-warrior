@@ -28,6 +28,7 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
     for (var i = 0; i < trek.legs.length; i++) {
       marker = trek.legs[i].dest.getPosition();
       marker.name = trek.legs[i].dest.name;
+      marker.travelMode = trek.legs[i].travelMode;
       latLngArray.push(marker);
     }
     return {markers: latLngArray,
@@ -62,7 +63,7 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
       var destGoogleLatLng = new google.maps.LatLng(trek.markers[i].k, trek.markers[i].D);
       var dest = markerFactory.create(destGoogleLatLng, legService, true);
       dest.name = trek.markers[i].name;
-      var newLeg = legService.createLeg(currentOrigin, dest, true);
+      var newLeg = legService.createLeg(currentOrigin, dest, trek.markers[i].travelMode);
       legs.push(newLeg);
       currentOrigin = dest; 
     }

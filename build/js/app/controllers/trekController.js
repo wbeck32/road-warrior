@@ -35,7 +35,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
     legService.unRenderAll();
     legService.legs = trek.legs;
     legService.renderAll();
-    this.legs = legService.legs;
+    this.legs = trek.legs;
     this.name = trek.name;
     this.hideFields();
     loadedTrek = trek;
