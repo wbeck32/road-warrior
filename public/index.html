@@ -57,15 +57,15 @@
           <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
             <div class="trekTitle">
-              <span id="trekName" class="bold">{{Trek.name}}</span>
+              <div id="trekName" class="bold">{{Trek.name}}</div>
               <div data-ng-hide="Trek.showEditName" id="trekOptions">
                 <span data-ng-click="Trek.editName()" class="link">rename trek</span>&nbsp;|&nbsp;
                 <span class="link" data-ng-click="Trek.saveTrek()">save trek</span>&nbsp;|&nbsp;
                 <span class="link" data-ng-click="Trek.clearTrek()">clear trek</span>
               </div>
         
-              <form id="renameTrekForm" data-ng-show="Trek.showEditName">
-                <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
+              <form id="renameTrekForm" data-ng-show="Trek.showEditName" data-ng-submit="Trek.editName()">
+                <input type="text" data-ng-model="Trek.name" placeholder="Name your trek"/>
               </form>
             </div>
 

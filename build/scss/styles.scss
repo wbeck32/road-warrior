@@ -309,11 +309,11 @@ svg{
 
 .trekTitle {
     height: 10%;
+    min-height: 3.2em;
     width: 100%;
     border-bottom: 1px solid $black;
     text-align: center;
     overflow: hidden;
-    min-height: 45px;
 }
 
 #legList {
@@ -406,17 +406,15 @@ input {
 }
 
 #trekName {
-    width: 100%;
     text-align: center;
+    height: 1.4em;
 }
 
 #renameTrekForm {
     input {
+        display: inline-block;
+        margin: auto;
         width: 40%;
-        margin: 0;
-        position: relative !important;
-        top:0;
-        left:0;
     }
 }
 
