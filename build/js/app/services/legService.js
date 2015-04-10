@@ -144,7 +144,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     var leg;
     if (this.legs.length > 0){
       var lastLeg = this.legs[this.legs.length - 1];
-      leg = this.createLeg(lastLeg.dest, dest);
+      leg = this.createLeg(lastLeg.dest, dest, lastLeg.travelMode);
     } else if (!trekOrigin){
       trekOrigin = dest;
     } else { 
