@@ -1,6 +1,6 @@
 //  this is trekController.js
 
-angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'pathElevationService', 'neighborsService', 'mapFactory', 'markerFactory', '$http', function(trekService, legService, pathElevationService, neighborsService, mapFactory, markerFactory, $http){
+angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', function(trekService, legService){
 
   this.legs = legService.legs;
   this.name = "new trek";

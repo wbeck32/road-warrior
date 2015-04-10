@@ -43,6 +43,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       });
       this.legs = [];
     }
+    elevationProfileFactory(this.legs);
   };
 
   this.renderAll = function(){
@@ -126,8 +127,11 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       	    if (status == google.maps.DirectionsStatus.OK) {
               thisLeg.rend.setDirections(response);
               pathElevationService(thisLeg, self.legs);
-      	    }
-      	  });
+      	    } else {
+              thisLeg.travelMode = "CROW";
+              thisLeg.switchMode();
+            } 
+          });
         } else {
           this.polyline.setPath([this.origin.getPosition(), this.dest.getPosition()]);
           this.directDistance = distanceService(this.origin.getPosition(), this.dest.getPosition());
