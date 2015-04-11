@@ -34,6 +34,9 @@ mongoClient.connect(url, function(err, db){
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.set('views', __dirname + '/public/views');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 app.get('/mapsAPICode', function(req, res){
   var URL = 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places';
@@ -170,13 +173,9 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
   }
 });
 
-app.post('/api/passwordreset', function(req, res) {
+app.post('/api/passwordresetemail', function(req, res) {
   var db = app.get('mongo');
   var users = db.collection('users');
-  var nonceRequire = require('nonce')();
-  var nonce = nonceRequire();
-  var nonces = db.collection('nonces');
-  console.log(req.body.username);
   users.find({username: req.body.username}).toArray(function(err, docs){
     if (err) console.log(err);
     if (docs[0].email) {
@@ -185,24 +184,33 @@ app.post('/api/passwordreset', function(req, res) {
         to: docs[0].email, 
         subject: 'Treksmith password reset', // Subject line
         text: 'Please click on this link to reset your password', // plaintext body
-        html: '<div>Hello, </div><div>Please click <a href=http://www.treksmith.com/api/passwordset/' + docs[0].username + '/' + nonce + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
+        html: '<div>Hello, </div><div>Please click <a href=http://localhost:3000/api/passwordreset/' + passwordResetAuthenticate(docs[0]._id) + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
       };
       transporter.sendMail(resetPasswordMailOptions, function(err, info) {
-        if (err) console.log(err);
-        console.log(docs[0]._id);
-        
-        nonces.update({userid: docs[0]._id}, {nonce: nonce, userid: docs[0]._id, createdAt: new Date()}, {upsert: true}, function(err, updateRes){
-          if(err) throw err;
-          nonces.ensureIndex({"createdAt": 1}, {expireAfterSeconds: 900});
-        });
+        if (err) console.log(err);  
+        console.log('Email sent!');
+        res.end('Email sent!');
       });
+    } else {
+      res.end('Cannot reset password for this user');
     }
   });
 });
 
-app.get('/api/passwordset/:user/:nonce', function(req, res) {
-
+app.get('/api/passwordreset/:token', [jwtAuth], function(req, res) {
+  res.render('passwordreset.html');
 })
+
+app.post('/api/passwordreset/:token', [jwtAuth], function(req, res){
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  res.redirect('/');
+  bcrypt.hash(req.body.password, 10, function(err, hash){
+    users.update({_id: req.user._id}, {$set:{password: hash}}, function(err, updateRes){
+      if (err) throw err;
+    });  
+  });
+});
 
 app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
   var db = app.get('mongo');
@@ -224,10 +232,18 @@ function authenticate (userid){
   return token;
 }
 
+function passwordResetAuthenticate (userid){
+  var expires = moment().add(1, 'hours').valueOf();
+  var token = jwt.encode({
+    iss: userid,
+    exp: expires
+  }, jwtKey);
+  return token;
+}
+
 function jwtAuth (req, res, next){
 
-  var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
-
+  var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'] || req.params.token;
   if (token) {
     try {
       var decoded = jwt.decode(token, jwtKey);

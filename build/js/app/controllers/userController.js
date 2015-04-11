@@ -127,7 +127,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.resetPassword = function() {
     $http({
       method: 'POST',
-      url: '/api/passwordreset',
+      url: '/api/passwordresetemail',
       data: {
         username: this.username
       },
