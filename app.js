@@ -21,13 +21,8 @@ var transporter = nodemailer.createTransport(smtpTransport({
   }
 }))
 
-var resetPasswordMailOptions = {
-    from: 'Treksmith <hello@treksmith.com>', // sender address
-    to: 'treksmithinfo@gmail.com', 
-    subject: 'Hey guys, email is kinda sorta working!', // Subject line
-    text: 'Emphasis on the kinda and the sorta.', // plaintext body
-    html: '<b>Hello world ✔</b>' // html body
-};
+
+
 
 var jwtKey = process.env.JWTKEY;
 
@@ -49,7 +44,6 @@ app.get('/mapsAPICode', function(req, res){
     res.set('Content-Type','text/javascript');
     response.pipe(res);
   });
-  console.log(mailgunLogin);
 });
 
 app.post('/api/saveatrek', [jwtAuth], function(req, res){
@@ -175,6 +169,40 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
     });
   }
 });
+
+app.post('/api/passwordreset', function(req, res) {
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  var nonceRequire = require('nonce')();
+  var nonce = nonceRequire();
+  var nonces = db.collection('nonces');
+  console.log(req.body.username);
+  users.find({username: req.body.username}).toArray(function(err, docs){
+    if (err) console.log(err);
+    if (docs[0].email) {
+      var resetPasswordMailOptions = {
+        from: 'Treksmith <hello@treksmith.com>', // sender address
+        to: docs[0].email, 
+        subject: 'Treksmith password reset', // Subject line
+        text: 'Please click on this link to reset your password', // plaintext body
+        html: '<div>Hello, </div><div>Please click <a href=http://www.treksmith.com/api/passwordset/' + docs[0].username + '/' + nonce + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
+      };
+      transporter.sendMail(resetPasswordMailOptions, function(err, info) {
+        if (err) console.log(err);
+        console.log(docs[0]._id);
+        
+        nonces.update({userid: docs[0]._id}, {nonce: nonce, userid: docs[0]._id, createdAt: new Date()}, {upsert: true}, function(err, updateRes){
+          if(err) throw err;
+          nonces.ensureIndex({"createdAt": 1}, {expireAfterSeconds: 900});
+        });
+      });
+    }
+  });
+});
+
+app.get('/api/passwordset/:user/:nonce', function(req, res) {
+
+})
 
 app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
   var db = app.get('mongo');

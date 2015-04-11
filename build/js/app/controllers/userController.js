@@ -28,7 +28,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
 
   this.toggleNoSuchUser = function () {
     this.noSuchUser = !this.noSuchUser;
-  }
+  };
 
   this.logIn = function () {
     $http({
@@ -121,6 +121,21 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
       }
     }).error(function(data, status, headers, config){
       console.log('password change error');
+    });
+  };
+
+  this.resetPassword = function() {
+    $http({
+      method: 'POST',
+      url: '/api/passwordreset',
+      data: {
+        username: this.username
+      },
+      headers: {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+      console.log('reset post successful');
+    }).error(function(data, status, headers, config){
+      console.log('reset post failed: ' + data);
     });
   };
 
