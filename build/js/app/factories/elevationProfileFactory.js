@@ -33,7 +33,9 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     var legDistance, legPoints, incr;
 
     for (var i = 0; i < legArray.length; i++) {
-      legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
+      if (legArray[i].travelMode !== "CROW") {
+        legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
+      } else legDistance = legArray[i].directDistance;
       legPoints = legArray[i].elevationProfile.length;
       incr = legDistance / legPoints;
       for (var j = 0; j < legArray[i].elevationProfile.length; j++) {

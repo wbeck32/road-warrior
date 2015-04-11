@@ -57,15 +57,15 @@
           <div class="sidebarSection" id="trekDetails" data-ng-cloak>
 
             <div class="trekTitle">
-              <span id="trekName" class="bold">{{Trek.name}}</span>
+              <div id="trekName" class="bold">{{Trek.name}}</div>
               <div data-ng-hide="Trek.showEditName" id="trekOptions">
                 <span data-ng-click="Trek.editName()" class="link">rename trek</span>&nbsp;|&nbsp;
                 <span class="link" data-ng-click="Trek.saveTrek()">save trek</span>&nbsp;|&nbsp;
                 <span class="link" data-ng-click="Trek.clearTrek()">clear trek</span>
               </div>
         
-              <form id="renameTrekForm" data-ng-show="Trek.showEditName">
-                <input type="text" data-ng-model="Trek.name" data-ng-blur="Trek.editName()" placeholder="Name your trek"/>
+              <form id="renameTrekForm" data-ng-show="Trek.showEditName" data-ng-submit="Trek.editName()">
+                <input type="text" data-ng-model="Trek.name" placeholder="Name your trek"/>
               </form>
             </div>
 
@@ -93,16 +93,17 @@
                     <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name" /></div>
                     <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name" /></div>
                     travel mode: 
-                    <select data-ng-model="leg.travelMode" data-ng-change="leg.getDirections()">
+                    <select data-ng-model="leg.travelMode" data-ng-change="leg.switchMode()">
                       <option value="WALKING">Walking</option>
                       <option value="DRIVING">Driving</option>
                       <option value="BICYCLING">Bicycling</option>
                       <option value="TRANSIT">Transit</option>
+                      <option value="CROW">Crow</option>
                     </select>
                     <input type="submit" data-ng-hide="true"/>
                   </form>
                   <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-                  <div>distance: {{ leg.rend.directions.routes[0].legs[0].distance.value |  metersToMiles }} miles</div>
+                  <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
                 </div>
               </div>
             </div> 

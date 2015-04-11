@@ -56,6 +56,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       google.maps.event.addListener(marker, 'dragend', function(event){
       	$rootScope.$apply(function(){
       	  thisObj.moveMarker(marker);
+          elevationService(event.latLng, marker);
       	});
       });
       return marker;

@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 
 
 gulp.task('default', function() {
-  gulp.start('watch', 'start');
+  gulp.start('start');
 });
 
 gulp.task('sass', function () {
@@ -52,7 +52,7 @@ gulp.task('watch',['buildJs','sass'],function(){
   gulp.watch('public/index.html', ['updateHTML']);
 });
 
-gulp.task('start', function() {
+gulp.task('start', ['watch'], function() {
   nodemon({
     script: 'app.js'
   });
