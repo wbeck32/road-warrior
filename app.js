@@ -81,11 +81,12 @@ app.post('/api/deleteatrek/', [jwtAuth], function(req, res){
 });
 
 app.get('/api/retrieveatrek/:trekid', function(req, res) {
-	var db = app.get('mongo');
-	var treks = db.collection('treks');
-	treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
-		res.json(docs);
-	});
+  var db = app.get('mongo');
+  var treks = db.collection('treks');
+  treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
+    res.cookie('sharedTrek', JSON.stringify(docs[0]));
+    res.redirect('/');
+  });
 });
 
 app.post('/api/retrievealltreks/', [jwtAuth], function(req, res) {
