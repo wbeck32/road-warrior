@@ -158,6 +158,9 @@
               </span>
               <span class="link formSwitch" data-ng-click="User.resetPassword()">Forgot your password?</span>
             </div>
+            <div data-ng-show="User.resetEmailSent">
+              <span>An email has been sent to your account, go check it out to proceed.</span>
+            </div>
             <div class="createAccount" data-ng-show="SideBar.showCreateAccount()"> 
               <form name="createAccountForm" class="user-forms" novalidate data-ng-submit="User.createAccount()">
                 <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username"/>
