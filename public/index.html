@@ -153,7 +153,7 @@
               </form>
               <div class="errMsg" data-ng-show="User.noSuchUser">No such user!</div>
               <span>Don&rsquo;t have an account yet?</span>
-              <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions()">
+              <span class="link formSwitch" data-ng-click="SideBar.toggleAccountActions(); User.suppressErrors()">
                 <span class="bold">sign up</span>
               </span>
               <span class="link formSwitch" data-ng-click="User.resetPassword()">Forgot your password?</span>
