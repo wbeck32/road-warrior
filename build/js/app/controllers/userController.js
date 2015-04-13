@@ -10,6 +10,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.showPasswordChange = false;
   this.showDeleteAccount = false;
   this.noSuchUser = false;
+  this.resetEmailSent = false;
   var self = this;
 
   if (window.localStorage.getItem('token')) {
@@ -24,6 +25,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     this.username = null;
     this.password = null;
     this.verify = null;
+    this.email = null;
   };
 
   this.toggleNoSuchUser = function () {
@@ -125,6 +127,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   };
 
   this.resetPassword = function() {
+    this.resetEmailSent = true;
     $http({
       method: 'POST',
       url: '/api/passwordresetemail',
@@ -138,6 +141,8 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
       console.log('reset post failed: ' + data);
     });
   };
+
+
 
   this.deleteAccount = function() {
     $http({
