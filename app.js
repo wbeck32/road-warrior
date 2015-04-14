@@ -186,7 +186,7 @@ app.post('/api/passwordresetemail', function(req, res) {
         to: docs[0].email, 
         subject: 'Treksmith password reset', // Subject line
         text: 'Please click on this link to reset your password', // plaintext body
-        html: '<div>Hello, </div><div>Please click <a href=http://localhost:3000/api/passwordreset/' + passwordResetAuthenticate(docs[0]._id) + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
+        html: '<div>Hello, </div><div>Please click <a href=http://www.treksmith.com/api/passwordreset/' + passwordResetAuthenticate(docs[0]._id) + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
       };
       transporter.sendMail(resetPasswordMailOptions, function(err, info) {
         if (err) console.log(err);  

@@ -18,6 +18,10 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
     this.username = window.localStorage.getItem('user');
   }
 
+  this.suppressErrors = function(){
+    this.resetEmailSent = false;
+  };
+  
   this.signOut = function(){
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('user');
@@ -33,6 +37,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   };
 
   this.logIn = function () {
+    this.resetEmailSent = false;
     $http({
       method: 'POST',
       url:'/api/login', 
@@ -47,6 +52,7 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
           trekService.renderAllSavedTreks();
         } else {
           self.toggleNoSuchUser();
+
         }
     }).error(function(data, status, headers, config){
       console.log('failure');
