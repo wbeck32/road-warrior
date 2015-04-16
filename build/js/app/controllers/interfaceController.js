@@ -1,9 +1,8 @@
-// this is sideBarController.js
+// this is interfaceController.js
 
-angular.module('roadWarrior').controller('SideBarController', ['$http', '$cookies', 'legService', 'trekService', function($http, $cookies, legService, trekService){
+angular.module('roadWarrior').controller('InterfaceController', ['$http', '$cookies', 'legService', 'trekService', function($http, $cookies, legService, trekService){
   
-  var sideMenu = document.getElementById('sideMenu');
-  var sidebarContent = document.getElementById('sidebarContent');
+  var interface = document.getElementById('interface');
   var currentTab = null;
   var noAccount = false;
   var activePanel = [true, false, false, false];
@@ -35,10 +34,9 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', '$cookie
 
   this.tabSwitcher = function(tab){
     if (!currentTab){
-      sideMenu.className = "showMenu";
+
       loadTab(tab);
     } else if (currentTab === tab){
-      sideMenu.className = "hideMenu";
       document.getElementById(currentTab + "Tab").className = "tab";
       currentTab = null;
     } else {

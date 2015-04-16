@@ -52,10 +52,11 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   elevation.style.cursor = "pointer";
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(elevation);
 
+/*
   var elevationButton = document.getElementById('slider-button');
 
   google.maps.event.addDomListener(elevationButton, 'click', function(){
-    var chart = document.getElementById('elevation-wrapper');
+    var chart = document.getElementById('elevation-chart');
     if (showChart){
       chart.className = 'hideChart';
       elevationButton.style.backgroundColor='#00bfff';
@@ -65,9 +66,9 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
     }
     showChart = !showChart;
   });
-
+*/
   google.maps.event.addDomListener(elevation, 'click', function(){
-    var chart = document.getElementById('elevation-wrapper');
+    var chart = document.getElementById('elevation-chart');
     if (showChart){
       chart.className = "hideChart";
     } else {
