@@ -21,9 +21,6 @@ var transporter = nodemailer.createTransport(smtpTransport({
   }
 }))
 
-
-
-
 var jwtKey = process.env.JWTKEY;
 
 mongoClient.connect(url, function(err, db){
@@ -106,15 +103,33 @@ app.post('/api/usercheck', function(req, res) {
   });
 });
 
+
+
 app.post('/api/signup', function(req, res) {
+  //begin email validation
+  //end email validation
   var db = app.get('mongo');
   var users = db.collection('users');
   users.find({username: req.body.username}).toArray(function(err, docs) {
     if (docs.length === 0) {
       
       bcrypt.hash(req.body.password, 10, function(err, hash){
-        users.insert({username: req.body.username, password: hash, email: req.body.email}, function(err, docs){
+        users.insert({username: req.body.username, password: hash}, function(err, docs){
           if (err) throw err;
+          if (req.body.email){
+            var token = authenticate(docs.ops[0]._id, req.body.email);
+            var verifyEmailOptions = {
+              from: 'Treksmith <hello@treksmith.com>', // sender address
+              to: req.body.email, 
+              subject: 'This is how you validate your email address!', // Subject line
+              text: 'Please click on this link to verify your email', // plaintext body
+              html: '<a href="http://localhost:3000/api/verifyemail?access_token='+token+'">Clicky</a>'
+            };
+            transporter.sendMail(verifyEmailOptions, function(err, info) {
+              if (err) console.log(err);  
+              console.log('Email sent!');
+            });
+          }
           res.json({
             token : authenticate(docs.ops[0]._id),
             user: {username: docs.ops[0].username, _id: docs.ops[0]._id }
@@ -125,6 +140,17 @@ app.post('/api/signup', function(req, res) {
     } else {
       res.end('User already exists');
     }
+  });
+});
+
+app.get('/api/verifyemail', [jwtAuth], function(req,res){
+  var db = app.get('mongo');
+  var users = db.collection('users');
+  //users.find({username: decoded.uname}).toArray(function(err,docs){
+  //  if (docs.length === 1){
+  users.update({_id: req.user._id}, {$set:{'email' : req.email}}, function(err, addEmail){
+    if (err) throw err;
+    res.redirect('/');
   });
 });
 
@@ -223,11 +249,12 @@ app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
 
 });
 
-function authenticate (userid){
+function authenticate (userid, email){
   var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode({
     iss: userid,
-    exp: expires
+    exp: expires,
+    email: email
   }, jwtKey);
   return token;
 }
@@ -246,7 +273,7 @@ function jwtAuth (req, res, next){
   var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'] || req.params.token;
   if (token) {
     try {
-      var decoded = jwt.decode(token, jwtKey);
+      var decoded = jwt.decode(token, jwtKey); //check for decoded.email
       if (decoded.exp <= Date.now()){
         res.end('Access token expired', 400);
       }
@@ -254,6 +281,7 @@ function jwtAuth (req, res, next){
       var users = db.collection('users');
       users.find({_id: ObjectId(decoded.iss)}, {password: 0}).toArray(function(err, docs) {
         req.user = docs[0];
+        req.email = decoded.email;
         next();
       });
     } catch (err) {
