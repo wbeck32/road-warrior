@@ -1,10 +1,9 @@
 $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00ffff;
-$white: #fff;
-$black: #000;
-$interfaceWidth: 28%;
-$interfaceHeight: 80%;
+$interfaceWidth: 30em;
+$interfaceHeight: 80vh;
+$tabwidth: 4vw;
 
 html, body, #map-canvas {
     height: 100%;
@@ -15,49 +14,26 @@ html, body, #map-canvas {
     overflow: hidden;
 } 
 
+p {
+    line-height: 1.6;
+    text-indent: .5em;
+}
+
+
+h2, h3, h4 {
+    text-align: center;
+}
+
+.interfaceContainer,
+.interfaceContent,
+.tabList, 
+.tab,
+.tab span {
+    box-sizing: border-box;
+}
+
 .searchBox {
-    width: 25%;
-    height: 4vh;
-    float: center;
-    font-size: 1.5em;
-    margin-top: 4vh;
-}
-
-.errMsg {
-    color:red;
-}
-
-input.ng-untouched ~ .errMsg {
-    display:none;
-}
-
-.elevation-chart {
-    position: absolute;
-    height: 15%;
-    width: 68%;
-    bottom: 5%;
-}
-
-.interfaceContainer {
-    height: $interfaceHeight;
-    width: $interfaceWidth;
-    position:absolute;
-    top: 5%;
-    right: 0;
-}
-
-.interfaceContent {
-    width:100%;
-    height: 100%;
-    background-color:$white;
-    overflow: hidden;
-    opacity: $opacity;
-}
-
-.activeTab {
-    color: $black;
-    opacity: $opacity;
-    background-color: $activeTabColor;
+   display: none;
 }
 
 .logo { 
@@ -71,35 +47,79 @@ input.ng-untouched ~ .errMsg {
     }
 }
 
+.elevation-chart-wrapper {
+    position: absolute;
+    height: 15%;
+    left: 0; 
+    bottom: 5%;
+    right: 35em;
+}
+#elevation-chart {
+    height: 100%;
+}
+
+.interfaceContainer {
+    height: $interfaceHeight;
+    width: $interfaceWidth;
+    position:absolute;
+    top: 5%;
+    right: 0;
+}
+
+.tabList {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    width: $interfaceHeight;
+    height: 2em;
+    transform: translateX(-100%) rotate(-90deg);
+    transform-origin: bottom right;
+}
+.tab {
+    height: 100%;
+    line-height: 2em;
+    font-size: .9em;
+    text-align: center;
+    float: left;
+    width: 25%;
+    background-color: $tabColor;
+    border-radius: 15px 15px 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: $opacity;
+}
+
+.activeTab {
+    background-color: $activeTabColor;
+}
+
+.interfaceContent {
+    background-color: rgba(255,255,255,$opacity);
+    padding: 1ex 1em;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+}
+
 .leg:nth-child(even) {
     background-color: $tabColor;
 }
 
+.errMsg {
+    color:red;
+}
+
 .google-visualization-tooltip {
-    border: 0px!important;
-    box-shadow: 0px 0px 0px 0px!important;
-    background: transparent!important;
+    margin-top: -110px;
 }
 
-.google-visualization-tooltip-item-list{
-    margin: 0px;
-}
-.google-visualization-tooltip-item span{
+.google-visualization-tooltip-item span,
+.google-visualization-tooltip-square,
+input.ng-untouched ~ .errMsg,
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none!important;
-}
-
-.google-visualization-tooltip-square {
-    display: none!important;
-}
-
-.google-visualization-tooltip-item {
-    margin: 0!important;
 }
 
 .tooltip-text{
     text-shadow: .5px .5px 1px gray;
-}
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none !important;
 }

@@ -1,43 +1,45 @@
-p<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-ng-app="roadWarrior" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <meta property="og:url" content="http://www.treksmith.com" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Treksmith is a turn-by-turn trip planning application." />
-    <meta property="og:description" content="Use Treksmith to plan, create and save customizable routes." />
-    <meta property="og:image" content="http://treksmith.com/images/treksmith_fb.png" />
+    <meta property="og:url" content="http://www.treksmith.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Treksmith is a turn-by-turn trip planning application.">
+    <meta property="og:description" content="Use Treksmith to plan, create and save customizable routes.">
+    <meta property="og:image" content="http://treksmith.com/images/treksmith_fb.png">
     <title>Treksmith - Customize and save your treks.</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
 
   <body>
-    <input type="text" id="pac-input" class="searchBox"/>
+    <input type="text" id="pac-input" class="searchBox">
     <div class="logo"> 
-      <a href="http://www.treksmith.com"><img src="images/treksmith-logo.png" alt="Treksmith logo" /></a>    
+      <a href="http://www.treksmith.com"><img src="images/treksmith-logo.png" alt="Treksmith logo"></a>    
     </div> 
 
     <div id="map-canvas"></div>
 
-    <div id="elevation-chart" class="elevation-chart"></div>  
+    <div class="elevation-chart-wrapper">
+      <div id="elevation-chart"></div>  
+    </div>
 
-    <div class="interfaceContainer" id="interface" data-ng-controller="InterfaceController as Interface">  
+    <div class="interfaceContainer" id="interface" data-ng-controller="InterfaceController as Interface" data-ng-cloak>  
 
       <ul class="tabList">
-        <li class="tab" id="accountTab" aria-controls="account" data-ng-click="Interface.tabSwitcher('account')">
-          account
+        <li class="tab" id="accountTab" data-ng-click="Interface.tabSwitcher('account')">
+          <span>account</span>
         </li>
-        <li class="tab" id="trekListTab" aria-controls="trekList" data-ng-click="Interface.tabSwitcher('trekList')">
-          my treks
+        <li class="tab" id="trekListTab" data-ng-click="Interface.tabSwitcher('trekList')">
+          <span>my treks</span>
         </li>
-        <li class="tab current" id="currentTrekTab" aria-controls="trekDetails" data-ng-click="Interface.tabSwitcher('currentTrek')">
-          current trek
+        <li class="tab current" id="currentTrekTab" data-ng-click="Interface.tabSwitcher('currentTrek')">
+          <span>current trek</span>
         </li>
-        <li class="tab" id="aboutTab" aria-controls="about" data-ng-click="Interface.tabSwitcher('about')">
-          about
+        <li class="tab" id="aboutTab" data-ng-click="Interface.tabSwitcher('about')">
+          <span>about</span>
         </li>
       </ul>
 
@@ -45,91 +47,91 @@ p<!DOCTYPE html>
 
         <div class="panel" data-ng-show="Interface.activePanel(0)">
 
-            <h3>{{Trek.name}}</h3>
-            <div data-ng-hide="Trek.showEditName">
-              <a data-ng-click="Trek.editName()">rename trek</a>
-              <a data-ng-click="Trek.saveTrek()">save trek</a>
-              <a data-ng-click="Trek.clearTrek()">clear trek</a>
-            </div>  
-            <form data-ng-show="Trek.showEditName" data-ng-submit="Trek.editName()">
-              <input type="text" data-ng-model="Trek.name" placeholder="Name your trek"/>
-            </form>
+          <h3>{{Trek.name}}</h3>
+          <div data-ng-hide="Trek.showEditName">
+            <a data-ng-click="Trek.editName()">rename trek</a>
+            <a data-ng-click="Trek.saveTrek()">save trek</a>
+            <a data-ng-click="Trek.clearTrek()">clear trek</a>
+          </div>  
+          <form data-ng-show="Trek.showEditName" data-ng-submit="Trek.editName()">
+            <input type="text" data-ng-model="Trek.name" placeholder="Name your trek">
+          </form>
           
-            <div data-ng-show="Trek.loginToSave">
-              <span class="errMsg">You must log in to save a trek</span>
-              <div>
-                <a data-ng-click="Interface.tabSwitcher('account'); Trek.toggleLoginToSave()">Go to login</a>
-                <a data-ng-click="Trek.toggleLoginToSave()">No thanks</a>
-              </div>
+          <div data-ng-show="Trek.loginToSave">
+            <span class="errMsg">You must log in to save a trek</span>
+            <div>
+              <a data-ng-click="Interface.tabSwitcher('account'); Trek.toggleLoginToSave()">Go to login</a>
+              <a data-ng-click="Trek.toggleLoginToSave()">No thanks</a>
             </div>
-            
-            <div data-ng-repeat="leg in Trek.legs track by $index" class="leg">
-              <a data-ng-click="Trek.toggleDetails($index)">
-                {{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}
-              </a>
+          </div>
+          
+          <div data-ng-repeat="leg in Trek.legs track by $index" class="leg">
+            <a data-ng-click="Trek.toggleDetails($index)">
+              {{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}
+            </a>
 
-              <a data-ng-click="Trek.removeLeg($index)">delete</a>
+            <a data-ng-click="Trek.removeLeg($index)">delete</a>
 
-              <div data-ng-show="Trek.showDetails[$index]">
-                <form data-ng-submit="Trek.toggleDetails($index)">
-                  <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name" /></div>
-                  <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name" /></div>
-                  <label>travel mode: </label>
-                  <select data-ng-model="leg.travelMode" data-ng-change="leg.switchMode()">
-                    <option value="WALKING">Walking</option>
-                    <option value="DRIVING">Driving</option>
-                    <option value="BICYCLING">Bicycling</option>
-                    <option value="TRANSIT">Transit</option>
-                    <option value="CROW">Crow</option>
-                  </select>
-                  <input type="submit" data-ng-hide="true"/>
-                </form>
-                <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-                <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
-              </div>
+            <div data-ng-show="Trek.showDetails[$index]">
+              <form data-ng-submit="Trek.toggleDetails($index)">
+                <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name"></div>
+                <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name"></div>
+                <label>travel mode: </label>
+                <select data-ng-model="leg.travelMode" data-ng-change="leg.switchMode()">
+                  <option value="WALKING">Walking</option>
+                  <option value="DRIVING">Driving</option>
+                  <option value="BICYCLING">Bicycling</option>
+                  <option value="TRANSIT">Transit</option>
+                  <option value="CROW">Crow</option>
+                </select>
+                <input type="submit" data-ng-hide="true">
+              </form>
+              <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+              <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
             </div>
-           
-          <div data-ng-cloak>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
+          </div>
+          
+          <div>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
         </div>
 
         <div class="panel" data-ng-show="Interface.activePanel(1)">
           <h3>My Treks</h3>
           <div>
-            <input type="search" data-ng-model="search.name" placeholder="Search your treks" />
+            <input type="search" data-ng-model="search.name" placeholder="Search your treks">
           </div>
 
-          <div data-ng-repeat="trek in Trek.treks | filter:search" data-ng-cloak>
+          <div data-ng-repeat="trek in Trek.treks | filter:search">
             <a data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</a>
             <a data-ng-click="Trek.deleteTrek(trek)">delete trek</a>
           </div>
         </div>
 
         <div class="panel" data-ng-show="Interface.activePanel(2)">
-            <h3>About</h3>
-            <p>TrekSmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&rsquo;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
-            </p>
-            <p>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportation modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</p>
-            <h4>The team</h4>
-            <div>
-              <a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>
-              <a href="http://www.linkedin.com/in/wendybeck/en" target="_blank">LinkedIn</a>
-            </div>
-            <div>
-              <a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>
-              <a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a>
-            </div>
-            <div>
-              <a href="http://www.russelldubrock.com" target="_blank">Russ DuBrock</a>
-              <a href="https://www.linkedin.com/pub/russell-dubrock/2b/354/140" target="_blank">LinkedIn</a>
-            </div>
-            <div>
-              <a href="http://www.brycewjohnson.com" target="_blank">Bryce Johnson</a>
-              <a href="https://www.linkedin.com/in/brycewjohnson" target="_blank">LinkedIn</a>
-            </div>
-            
-            <p>
-              The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>
-            </p>
+          <h3>About</h3>
+          <p>TrekSmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&rsquo;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
+          </p>
+          <p>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportation modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</p>
+          <h4>The team</h4>
+          <div>
+            <a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>
+            <a href="http://www.linkedin.com/in/wendybeck/en" target="_blank">LinkedIn</a>
+          </div>
+          <div>
+            <a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>
+            <a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a>
+          </div>
+          <div>
+            <a href="http://www.russelldubrock.com" target="_blank">Russ DuBrock</a>
+            <a href="https://www.linkedin.com/pub/russell-dubrock/2b/354/140" target="_blank">LinkedIn</a>
+          </div>
+          <div>
+            <a href="http://www.brycewjohnson.com" target="_blank">Bryce Johnson</a>
+            <a href="https://www.linkedin.com/in/brycewjohnson" target="_blank">LinkedIn</a>
+          </div>
+          
+          <span>
+            The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>
+          </span>
         </div>
 
         <div class="panel" data-ng-show="Interface.activePanel(3)" data-ng-controller="UserController as User">
@@ -137,8 +139,8 @@ p<!DOCTYPE html>
           <div data-ng-show="Interface.showLogIn()">
 
             <form name="logInForm" data-ng-submit="User.logIn()">
-              <input required type="text" placeholder="User Name" data-ng-model="User.username" />
-              <input required type="password" placeholder="Password" data-ng-model="User.password" />
+              <input required type="text" placeholder="User Name" data-ng-model="User.username">
+              <input required type="password" placeholder="Password" data-ng-model="User.password">
               <button data-ng-disabled="logInForm.$invalid">Log in</button>
             </form>
 
@@ -146,21 +148,21 @@ p<!DOCTYPE html>
             
             <span>Don&rsquo;t have an account yet?</span>
             <a data-ng-click="Interface.toggleAccountActions(); User.suppressErrors()">sign up</a>
-            <a class="link formSwitch" data-ng-click="User.resetPassword()">Forgot your password?</a>
+            <a data-ng-click="User.resetPassword()">Forgot your password?</a>
           </div>
           <div data-ng-show="User.resetEmailSent">
             <span class="errMsg">An email has been sent to your account, go check it out to proceed. You can close this window.</span>
           </div>
           <div class="createAccount" data-ng-show="Interface.showCreateAccount()"> 
             <form name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
-              <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username"/>
+              <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
               <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
               <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
               <input type="email" placeholder="Email (optional)" name="emailInput" data-ng-model="User.email">
               <span class="errMsg" data-ng-show="createAccountForm.emailInput.$error.email">Not a valid email address.</span>
-              <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password" />
+              <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password">
               <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
-              <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)"/>
+              <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)">
               <span class="errMsg" data-ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
               <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
               <button data-ng-disabled="createAccountForm.$invalid">Sign up</button>
@@ -168,17 +170,17 @@ p<!DOCTYPE html>
             <span>Already have an account?<a data-ng-click="Interface.toggleAccountActions()">log in</a></span>
           </div> 
 
-          <div class="accountInfo" data-ng-show="User.accountInfo()">
+          <div data-ng-show="User.accountInfo()">
             <h3>Welcome, {{User.username}}!</h3>
             <div>
               <a data-ng-click="User.togglePasswordChange()">Change password</a>
-              <div class="passwordChange" data-ng-show="User.showPasswordChange">
-                <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" class="user-forms" novalidate>
-                  <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword"/>
+              <div data-ng-show="User.showPasswordChange">
+                <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" novalidate>
+                  <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword">
                   <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
-                  <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword"/>
+                  <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
                   <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
-                  <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)"/>
+                  <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)">
                   <span class="errMsg" data-ng-show="passwordChangeForm.verifyNewPassword.$error.required">Verify new password is required.</span>
                   <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
                   <button type="submit" data-ng-disabled="passwordChangeForm.$invalid" data-ng-click="passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
@@ -193,7 +195,6 @@ p<!DOCTYPE html>
                 <div><a data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Yup</a></div>
                 <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
               </div>
-
             </div>
             <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched(); createAccountForm.emailInput.$setUntouched()">Sign out</button> 
           </div>
@@ -204,7 +205,7 @@ p<!DOCTYPE html>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-cookies.min.js"></script>
     <script src="/mapsAPICode"></script>   
-    <script src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
+    <script src="https://www.google.com/jsapi?autoload={%27modules%27:[{%27name%27:%27visualization%27,%27version%27:%271%27,%27packages%27:[%27corechart%27]}]}"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
