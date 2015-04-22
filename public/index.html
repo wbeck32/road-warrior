@@ -23,29 +23,30 @@
     <div id="map-canvas"></div>
 
     <div class="elevation-chart-wrapper">
+      <div class="elevation-toggle"></div>
       <div id="elevation-chart"></div>  
     </div>
 
     <div class="interfaceContainer" id="interface" data-ng-controller="InterfaceController as Interface" data-ng-cloak>  
+      <nav>
+        <ul class="tabList">
+          <li class="tab" id="accountTab" data-ng-click="Interface.tabSwitcher('account')">
+            <span>account</span>
+          </li>
+          <li class="tab" id="trekListTab" data-ng-click="Interface.tabSwitcher('trekList')">
+            <span>my treks</span>
+          </li>
+          <li class="tab activeTab" id="currentTrekTab" data-ng-click="Interface.tabSwitcher('currentTrek')">
+            <span>current trek</span>
+          </li>
+          <li class="tab" id="aboutTab" data-ng-click="Interface.tabSwitcher('about')">
+            <span>about</span>
+          </li>
+        </ul>
+      </nav>
+      <div class="interfaceContent" data-ng-controller="TrekController as Trek" ng-switch="Interface.activePanel">  
 
-      <ul class="tabList">
-        <li class="tab" id="accountTab" data-ng-click="Interface.tabSwitcher('account')">
-          <span>account</span>
-        </li>
-        <li class="tab" id="trekListTab" data-ng-click="Interface.tabSwitcher('trekList')">
-          <span>my treks</span>
-        </li>
-        <li class="tab current" id="currentTrekTab" data-ng-click="Interface.tabSwitcher('currentTrek')">
-          <span>current trek</span>
-        </li>
-        <li class="tab" id="aboutTab" data-ng-click="Interface.tabSwitcher('about')">
-          <span>about</span>
-        </li>
-      </ul>
-
-      <div class="interfaceContent" data-ng-controller="TrekController as Trek">  
-
-        <div class="panel" data-ng-show="Interface.activePanel(0)">
+        <div class="panel" data-ng-switch-when="currentTrek">
 
           <h3>{{Trek.name}}</h3>
           <div data-ng-hide="Trek.showEditName">
@@ -94,7 +95,7 @@
           <div>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
         </div>
 
-        <div class="panel" data-ng-show="Interface.activePanel(1)">
+        <div class="panel" data-ng-switch-when="trekList">
           <h3>My Treks</h3>
           <div>
             <input type="search" data-ng-model="search.name" placeholder="Search your treks">
@@ -106,7 +107,7 @@
           </div>
         </div>
 
-        <div class="panel" data-ng-show="Interface.activePanel(2)">
+        <div class="panel" data-ng-switch-when="about">
           <h3>About</h3>
           <p>TrekSmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&rsquo;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
           </p>
@@ -134,69 +135,72 @@
           </span>
         </div>
 
-        <div class="panel" data-ng-show="Interface.activePanel(3)" data-ng-controller="UserController as User">
+        <div class="panel" data-ng-switch-when="account">
 
-          <div data-ng-show="Interface.showLogIn()">
+          <div data-ng-controller="UserController as User">
 
-            <form name="logInForm" data-ng-submit="User.logIn()">
-              <input required type="text" placeholder="User Name" data-ng-model="User.username">
-              <input required type="password" placeholder="Password" data-ng-model="User.password">
-              <button data-ng-disabled="logInForm.$invalid">Log in</button>
-            </form>
+            <div data-ng-show="Interface.showLogIn()">
 
-            <div class="errMsg" data-ng-show="User.noSuchUser">No such user!</div>
-            
-            <span>Don&rsquo;t have an account yet?</span>
-            <a data-ng-click="Interface.toggleAccountActions(); User.suppressErrors()">sign up</a>
-            <a data-ng-click="User.resetPassword()">Forgot your password?</a>
-          </div>
-          <div data-ng-show="User.resetEmailSent">
-            <span class="errMsg">An email has been sent to your account, go check it out to proceed. You can close this window.</span>
-          </div>
-          <div class="createAccount" data-ng-show="Interface.showCreateAccount()"> 
-            <form name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
-              <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
-              <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
-              <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
-              <input type="email" placeholder="Email (optional)" name="emailInput" data-ng-model="User.email">
-              <span class="errMsg" data-ng-show="createAccountForm.emailInput.$error.email">Not a valid email address.</span>
-              <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password">
-              <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
-              <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)">
-              <span class="errMsg" data-ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
-              <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
-              <button data-ng-disabled="createAccountForm.$invalid">Sign up</button>
-            </form>
-            <span>Already have an account?<a data-ng-click="Interface.toggleAccountActions()">log in</a></span>
-          </div> 
+              <form name="logInForm" data-ng-submit="User.logIn()">
+                <input required type="text" placeholder="User Name" data-ng-model="User.username">
+                <input required type="password" placeholder="Password" data-ng-model="User.password">
+                <button data-ng-disabled="logInForm.$invalid">Log in</button>
+              </form>
 
-          <div data-ng-show="User.accountInfo()">
-            <h3>Welcome, {{User.username}}!</h3>
-            <div>
-              <a data-ng-click="User.togglePasswordChange()">Change password</a>
-              <div data-ng-show="User.showPasswordChange">
-                <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" novalidate>
-                  <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword">
-                  <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
-                  <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
-                  <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
-                  <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)">
-                  <span class="errMsg" data-ng-show="passwordChangeForm.verifyNewPassword.$error.required">Verify new password is required.</span>
-                  <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
-                  <button type="submit" data-ng-disabled="passwordChangeForm.$invalid" data-ng-click="passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
-                  <button type="button"  data-ng-click= "User.cancelPasswordChange(); passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Cancel</button>
-                </form>
-              </div>
+              <div class="errMsg" data-ng-show="User.noSuchUser">No such user!</div>
+              
+              <span>Don&rsquo;t have an account yet?</span>
+              <a data-ng-click="Interface.toggleAccountActions(); User.suppressErrors()">sign up</a>
+              <a data-ng-click="User.resetPassword()">Forgot your password?</a>
             </div>
-            <div>
-              <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
-              <div data-ng-show="User.showDeleteAccount">
-                <span>Are you sure?</span>
-                <div><a data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Yup</a></div>
-                <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
-              </div>
+            <div data-ng-show="User.resetEmailSent">
+              <span class="errMsg">An email has been sent to your account, go check it out to proceed. You can close this window.</span>
             </div>
-            <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched(); createAccountForm.emailInput.$setUntouched()">Sign out</button> 
+            <div class="createAccount" data-ng-show="Interface.showCreateAccount()"> 
+              <form name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
+                <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
+                <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
+                <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
+                <input type="email" placeholder="Email (optional)" name="emailInput" data-ng-model="User.email">
+                <span class="errMsg" data-ng-show="createAccountForm.emailInput.$error.email">Not a valid email address.</span>
+                <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password">
+                <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
+                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)">
+                <span class="errMsg" data-ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
+                <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
+                <button data-ng-disabled="createAccountForm.$invalid">Sign up</button>
+              </form>
+              <span>Already have an account?<a data-ng-click="Interface.toggleAccountActions()">log in</a></span>
+            </div> 
+
+            <div data-ng-show="User.accountInfo()">
+              <h3>Welcome, {{User.username}}!</h3>
+              <div>
+                <a data-ng-click="User.togglePasswordChange()">Change password</a>
+                <div data-ng-show="User.showPasswordChange">
+                  <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" novalidate>
+                    <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword">
+                    <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
+                    <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
+                    <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
+                    <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)">
+                    <span class="errMsg" data-ng-show="passwordChangeForm.verifyNewPassword.$error.required">Verify new password is required.</span>
+                    <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
+                    <button type="submit" data-ng-disabled="passwordChangeForm.$invalid" data-ng-click="passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
+                    <button type="button"  data-ng-click= "User.cancelPasswordChange(); passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Cancel</button>
+                  </form>
+                </div>
+              </div>
+              <div>
+                <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
+                <div data-ng-show="User.showDeleteAccount">
+                  <span>Are you sure?</span>
+                  <div><a data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Yup</a></div>
+                  <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
+                </div>
+              </div>
+              <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched(); createAccountForm.emailInput.$setUntouched()">Sign out</button> 
+            </div>
           </div>
         </div>
       </div>

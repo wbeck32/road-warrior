@@ -12,13 +12,16 @@ html, body, #map-canvas {
     padding: 0;
     font-family: 'Open Sans', sans-serif;
     overflow: hidden;
-} 
+}
+
+a {
+    cursor: pointer;
+}
 
 p {
     line-height: 1.6;
     text-indent: .5em;
 }
-
 
 h2, h3, h4 {
     text-align: center;
@@ -28,7 +31,9 @@ h2, h3, h4 {
 .interfaceContent,
 .tabList, 
 .tab,
-.tab span {
+.tab span,
+.elevation-chart-wrapper,
+#elevation-chart {
     box-sizing: border-box;
 }
 
@@ -51,11 +56,28 @@ h2, h3, h4 {
     position: absolute;
     height: 15%;
     left: 0; 
-    bottom: 5%;
-    right: 35em;
+    bottom: 10%;
+    right: 40em;
+    opacity: $opacity;
+    background-color: #fff;
 }
 #elevation-chart {
     height: 100%;
+    width: 100%;
+}
+
+.google-visualization-tooltip {
+    transform: translateY(-100%);
+}
+
+.elevation-toggle {
+    height: 15vh;
+    width: 2em;
+    float: right;
+    background: url('../images/elevation_icon.png') center no-repeat $tabColor;
+    background-size: 90%;
+    border-radius: 0 15px 15px 0;
+    transform: translateX(2em);
 }
 
 .interfaceContainer {
@@ -84,7 +106,6 @@ h2, h3, h4 {
     width: 25%;
     background-color: $tabColor;
     border-radius: 15px 15px 0 0;
-    white-space: nowrap;
     overflow: hidden;
     opacity: $opacity;
 }
@@ -109,9 +130,6 @@ h2, h3, h4 {
     color:red;
 }
 
-.google-visualization-tooltip {
-    margin-top: -110px;
-}
 
 .google-visualization-tooltip-item span,
 .google-visualization-tooltip-square,

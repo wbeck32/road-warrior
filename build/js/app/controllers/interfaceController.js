@@ -2,11 +2,9 @@
 
 angular.module('roadWarrior').controller('InterfaceController', ['$http', '$cookies', 'legService', 'trekService', function($http, $cookies, legService, trekService){
   
-  var interface = document.getElementById('interface');
-  var currentTab = null;
   var noAccount = false;
-  var activePanel = [true, false, false, false];
-  var self = this;
+
+  this.activePanel = 'currentTrek';
 
   this.showLogIn = function () {
     if (window.localStorage.getItem("token") || noAccount) {
@@ -28,38 +26,18 @@ angular.module('roadWarrior').controller('InterfaceController', ['$http', '$cook
     noAccount = !noAccount;
   };
 
-  this.activePanel = function(index){
-    return activePanel[index];
-  };
-
   this.tabSwitcher = function(tab){
-    if (!currentTab){
-
-      loadTab(tab);
-    } else if (currentTab === tab){
-      document.getElementById(currentTab + "Tab").className = "tab";
-      currentTab = null;
+    if (this.activePanel === tab){
+      this.activePanel = null;
+      document.getElementById(tab + "Tab").className = "tab";
     } else {
-      loadTab(tab);
+      if (this.activePanel){
+        document.getElementById(this.activePanel + "Tab").className = "tab";
+      }
+      this.activePanel = tab;
+      document.getElementById(tab + "Tab").className = "tab activeTab";      
     }
   };
-
-  function loadTab(tab){
-    if (tab === 'currentTrek') {
-      activePanel = [true, false, false, false];
-    } else if (tab === 'trekList') {
-      activePanel = [false, true, false, false];
-    } else if (tab === 'about') {
-      activePanel = [false, false, true, false];
-    } else if (tab === 'account') {
-      activePanel = [false, false, false, true];
-    }
-    if(currentTab){
-      document.getElementById(currentTab + "Tab").className = "tab";
-    }
-    document.getElementById(tab + "Tab").className = "tab activeTab";
-    currentTab = tab;
-  }
 
   if ($cookies.sharedTrek && $cookies.sharedTrek !== 'undefined'){
     var sharedTrek = JSON.parse($cookies.sharedTrek);
