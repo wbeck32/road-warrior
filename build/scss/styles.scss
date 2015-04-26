@@ -1,17 +1,27 @@
 $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00ffff;
-$interfaceWidth: 30em;
 $interfaceHeight: 80vh;
-$tabwidth: 4vw;
+$interfaceWidth: 30em;
 
-html, body, #map-canvas {
+* {
+    box-sizing: border-box;
+}
+html {
+    font-family: 'Open Sans', sans-serif;
+}
+html, body, #map-canvas, .tab {
+    overflow: hidden;
+}
+html, body, #map-canvas, #elevation-chart, .tab {
     height: 100%;
+}
+html, body, #map-canvas, #elevation-chart {
     width: 100%;
+}
+html, body, #map-canvas, .tabList, .legList {
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans', sans-serif;
-    overflow: hidden;
 }
 
 a {
@@ -23,18 +33,12 @@ p {
     text-indent: .5em;
 }
 
-h2, h3, h4 {
+h2, h3, h4, .tab {
     text-align: center;
 }
 
-.interfaceContainer,
-.interfaceContent,
-.tabList, 
-.tab,
-.tab span,
-.elevation-chart-wrapper,
-#elevation-chart {
-    box-sizing: border-box;
+.legList, .tabList {
+    list-style-type: none;
 }
 
 .searchBox {
@@ -60,10 +64,13 @@ h2, h3, h4 {
     right: 40em;
     opacity: $opacity;
     background-color: #fff;
+    transition: all .5s ease-in .1s;
 }
-#elevation-chart {
-    height: 100%;
-    width: 100%;
+.hideElevation {
+    transform: translateX(-100%);
+    .elevation-toggle {
+        background-color: $tabColor;
+    }
 }
 
 .google-visualization-tooltip {
@@ -74,7 +81,7 @@ h2, h3, h4 {
     height: 15vh;
     width: 2em;
     float: right;
-    background: url('../images/elevation_icon.png') center no-repeat $tabColor;
+    background: url('../images/elevation_icon.png') center no-repeat $activeTabColor;
     background-size: 90%;
     border-radius: 0 15px 15px 0;
     transform: translateX(2em);
@@ -86,27 +93,26 @@ h2, h3, h4 {
     position:absolute;
     top: 5%;
     right: 0;
+    transition: width .5s ease-in .1s;
+}
+
+.hideInterface {
+    width: 0;
 }
 
 .tabList {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
     width: $interfaceHeight;
     height: 2em;
     transform: translateX(-100%) rotate(-90deg);
     transform-origin: bottom right;
 }
 .tab {
-    height: 100%;
     line-height: 2em;
     font-size: .9em;
-    text-align: center;
     float: left;
     width: 25%;
     background-color: $tabColor;
     border-radius: 15px 15px 0 0;
-    overflow: hidden;
     opacity: $opacity;
 }
 
@@ -118,7 +124,6 @@ h2, h3, h4 {
     background-color: rgba(255,255,255,$opacity);
     padding: 1ex 1em;
     overflow: auto;
-    width: 100%;
     height: 100%;
 }
 
@@ -129,7 +134,6 @@ h2, h3, h4 {
 .errMsg {
     color:red;
 }
-
 
 .google-visualization-tooltip-item span,
 .google-visualization-tooltip-square,

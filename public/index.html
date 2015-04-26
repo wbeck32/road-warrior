@@ -22,8 +22,8 @@
 
     <div id="map-canvas"></div>
 
-    <div class="elevation-chart-wrapper">
-      <div class="elevation-toggle"></div>
+    <div data-ng-class="Elevation.show" data-ng-controller="ElevationController as Elevation">
+      <div class="elevation-toggle" data-ng-click="Elevation.toggle()"></div>
       <div id="elevation-chart"></div>  
     </div>
 
@@ -44,7 +44,7 @@
           </li>
         </ul>
       </nav>
-      <div class="interfaceContent" data-ng-controller="TrekController as Trek" ng-switch="Interface.activePanel">  
+      <div class="interfaceContent" id="interfaceContent" data-ng-controller="TrekController as Trek" ng-switch="Interface.activePanel">  
 
         <div class="panel" data-ng-switch-when="currentTrek">
 
@@ -65,33 +65,33 @@
               <a data-ng-click="Trek.toggleLoginToSave()">No thanks</a>
             </div>
           </div>
-          
-          <div data-ng-repeat="leg in Trek.legs track by $index" class="leg">
-            <a data-ng-click="Trek.toggleDetails($index)">
-              {{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}
-            </a>
+          <ul class="legList">
+            <li data-ng-repeat="leg in Trek.legs track by $index" class="leg">
+              <a data-ng-click="Trek.toggleDetails($index)">
+                {{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}
+              </a>
 
-            <a data-ng-click="Trek.removeLeg($index)">delete</a>
+              <a data-ng-click="Trek.removeLeg($index)">delete</a>
 
-            <div data-ng-show="Trek.showDetails[$index]">
-              <form data-ng-submit="Trek.toggleDetails($index)">
-                <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name"></div>
-                <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name"></div>
-                <label>travel mode: </label>
-                <select data-ng-model="leg.travelMode" data-ng-change="leg.switchMode()">
-                  <option value="WALKING">Walking</option>
-                  <option value="DRIVING">Driving</option>
-                  <option value="BICYCLING">Bicycling</option>
-                  <option value="TRANSIT">Transit</option>
-                  <option value="CROW">Crow</option>
-                </select>
-                <input type="submit" data-ng-hide="true">
-              </form>
-              <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-              <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
-            </div>
-          </div>
-          
+              <div data-ng-show="Trek.showDetails[$index]">
+                <form data-ng-submit="Trek.toggleDetails($index)">
+                  <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name"></div>
+                  <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name"></div>
+                  <label>travel mode: </label>
+                  <select data-ng-model="leg.travelMode" data-ng-change="leg.switchMode()">
+                    <option value="WALKING">Walking</option>
+                    <option value="DRIVING">Driving</option>
+                    <option value="BICYCLING">Bicycling</option>
+                    <option value="TRANSIT">Transit</option>
+                    <option value="CROW">Crow</option>
+                  </select>
+                  <input type="submit" data-ng-hide="true">
+                </form>
+                <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+                <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
+              </div>
+            </li>
+          </ul>
           <div>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
         </div>
 

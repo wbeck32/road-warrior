@@ -30,9 +30,12 @@ angular.module('roadWarrior').controller('InterfaceController', ['$http', '$cook
     if (this.activePanel === tab){
       this.activePanel = null;
       document.getElementById(tab + "Tab").className = "tab";
+      document.getElementById('interface').className = "interfaceContainer hideInterface";
     } else {
       if (this.activePanel){
         document.getElementById(this.activePanel + "Tab").className = "tab";
+      } else {
+        document.getElementById('interface').className = "interfaceContainer showInterface";
       }
       this.activePanel = tab;
       document.getElementById(tab + "Tab").className = "tab activeTab";      

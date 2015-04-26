@@ -1,8 +1,8 @@
 // this is userController.js
 
-angular.module('roadWarrior').controller('UserController', ['$scope', '$http', 'trekService', function($scope, $http, trekService){
+angular.module('roadWarrior').controller('UserController', ['$scope', '$http', 'trekService', 'userService', function($scope, $http, trekService, userService){
 
-  this.username = null;
+  this.username = userService.username;
   this.password = null;
   this.email = null;
   this.dupeUsername = false;
@@ -12,11 +12,6 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
   this.noSuchUser = false;
   this.resetEmailSent = false;
   var self = this;
-
-  if (window.localStorage.getItem('token')) {
-    trekService.renderAllSavedTreks();
-    this.username = window.localStorage.getItem('user');
-  }
 
   this.suppressErrors = function(){
     this.resetEmailSent = false;
