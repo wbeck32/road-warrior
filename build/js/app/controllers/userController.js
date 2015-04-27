@@ -1,171 +1,75 @@
 // this is userController.js
 
-angular.module('roadWarrior').controller('UserController', ['$scope', '$http', 'trekService', 'userService', function($scope, $http, trekService, userService){
+angular.module('roadWarrior').controller('UserController', ['userService', function(userService){
 
   this.username = userService.username;
+  this.userState = userService.userState;
+  this.dupeUsername = userService.dupeUsername;
+
   this.password = null;
   this.email = null;
-  this.dupeUsername = false;
-  this.verifyPasswordFail = false;
+  this.passwordConfirmation = null;
+
   this.showPasswordChange = false;
   this.showDeleteAccount = false;
-  this.noSuchUser = false;
-  this.resetEmailSent = false;
-  var self = this;
 
-  this.suppressErrors = function(){
-    this.resetEmailSent = false;
-  };
   
-  this.signOut = function(){
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('user');
-    window.localStorage.removeItem('userid');
-    this.username = null;
+  var updateScope = function() {
+    this.username = userService.username;
+    this.userState = userService.userState;
     this.password = null;
-    this.verify = null;
     this.email = null;
+    this.passwordConfirmation = null;
+  }.bind(this);
+
+  var dupeUsername = function(){
+    this.dupeUsername = userService.dupeUsername;
+  }.bind(this);
+
+  this.changeUserState = function(state){
+    userService.userState = state;
+    this.userState = userService.userState;
   };
 
-  this.toggleNoSuchUser = function () {
-    this.noSuchUser = !this.noSuchUser;
+  this.signOut = function(){
+    userService.signOut();
+    updateScope();
   };
 
   this.logIn = function () {
-    this.resetEmailSent = false;
-    $http({
-      method: 'POST',
-      url:'/api/login', 
-      data: {username: this.username, password: this.password},
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-        if (data.token) {
-          window.localStorage.setItem("token", data.token);
-          window.localStorage.setItem("user", data.user.username);
-          window.localStorage.setItem("userid", data.user._id);
-          self.noSuchUser = false;
-          trekService.renderAllSavedTreks();
-        } else {
-          self.toggleNoSuchUser();
-
-        }
-    }).error(function(data, status, headers, config){
-      console.log('failure');
-    });
+    userService.logIn(this.username, this.password, updateScope);
   };
 
   this.createAccount = function () {
-    $http({
-      method: 'POST',
-      url:'/api/signup', 
-      data: {username: this.username, password: this.password, email: this.email},
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-        if (data.token) {
-          window.localStorage.setItem("token", data.token);
-          window.localStorage.setItem("user", data.user.username);
-          window.localStorage.setItem('userid', data.user._id);
-        }
-    }).error(function(data, status, headers, config){
-      console.log('Give up now.');
-    });
+    userService.createAccount(this.username, this.password, this.email, updateScope);
   };
 
   this.checkUsername = function() {
-    if(this.username) {
-      $http({
-        method: 'POST',
-        url: 'api/usercheck',
-        data: {username: this.username},
-        headers: {'Content-Type':'application/json'}
-      }).success(function(data, status, headers, config){
-        var result = parseInt(data);
-        if(result > 0){
-          self.dupeUsername = true;          
-        } else {
-          self.dupeUsername = false;
-        }
-      }).error(function(data, status, headers, config){
-        console.log('Failure.');
-      });
-    } 
-  };
-
-  this.verifyPassword = function(password, verify) {
-
-    if (password !== verify) {
-        this.verifyPasswordFail = true;
-    }
-    else {
-      this.verifyPasswordFail = false;
+    if(this.username){
+      userService.checkUsername(this.username, dupeUsername);
     }
   };
 
   this.passwordChange = function() {
-    $http({
-      method: 'POST',
-      url: '/api/passwordchange',
-      data: {
-        oldpassword: this.oldPassword,
-        newpassword: this.newPassword,
-        username: this.username,
-        access_token: window.localStorage.getItem('token')
-      },
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-      if(data === '1') {
-        alert("Password Changed!");
-        self.oldPassword = null;
-        self.newPassword = null;
-        self.verifyNewPassword = null;
-        self.togglePasswordChange();
-      } else {
-        alert("Sorry, there was an error processing your request");
-      }
-    }).error(function(data, status, headers, config){
-      console.log('password change error');
-    });
+    userService.passwordChange(this.oldPassword, this.newPassword);
+    this.oldPassword = null;
+    this.newPassword = null;
+    this.passwordConfirmation = null;
+    this.togglePasswordChange();
   };
 
   this.resetPassword = function() {
-    this.resetEmailSent = true;
-    $http({
-      method: 'POST',
-      url: '/api/passwordresetemail',
-      data: {
-        username: this.username
-      },
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-      console.log('reset post successful');
-    }).error(function(data, status, headers, config){
-      console.log('reset post failed: ' + data);
-    });
+    userService.resetPassword(this.username);
   };
 
-
-
-  this.deleteAccount = function() {
-    $http({
-      method: 'POST',
-      url: '/api/deleteaccount',
-      data: {
-        username: window.localStorage.getItem('username'),
-        access_token: window.localStorage.getItem('token')
-      },
-      headers: {'Content-Type': 'application/json'}
-    }).success(function(data, status, headers, config){
-      console.log(data);
-      self.signOut();
-    }).error(function(data, status, headers, config){
-      console.log(data);
-    });
+  this.deleteAccount = function(){
+    userService.deleteAccount(updateScope);
   };
 
   this.cancelPasswordChange = function () {
     this.oldPassword = null;
     this.newPassword = null;
-    this.verifyNewPassword = null;
+    this.passwordConfirmation = null;
     this.togglePasswordChange();
   };
 
@@ -175,14 +79,6 @@ angular.module('roadWarrior').controller('UserController', ['$scope', '$http', '
 
   this.toggleDeleteAccount = function() {
     this.showDeleteAccount = !this.showDeleteAccount;
-  };
-
-  this.accountInfo = function(){
-    if (window.localStorage.getItem("token")) {
-      return true;
-    } else {
-      return false;
-    }
   };
 
 }]);

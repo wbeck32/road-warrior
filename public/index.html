@@ -135,72 +135,73 @@
           </span>
         </div>
 
-        <div class="panel" data-ng-switch-when="account">
+        <div class="panel" data-ng-switch-when="account" data-ng-controller="UserController as User" data-ng-switch="User.userState">
 
-          <div data-ng-controller="UserController as User">
+          <div data-ng-switch-when="loggedOut">
+            <form name="logInForm" data-ng-submit="User.logIn()">
+              <input required type="text" placeholder="User Name" data-ng-model="User.username">
+              <input required type="password" placeholder="Password" data-ng-model="User.password">
+              <button data-ng-disabled="logInForm.$invalid">Log in</button>
+            </form>
 
-            <div data-ng-show="Interface.showLogIn()">
+            <span>Don&rsquo;t have an account yet?</span>
+            <a data-ng-click="User.changeUserState('newUser')">sign up</a>
+            <a data-ng-click="User.resetPassword()">Forgot your password?</a>
+          </div>
 
-              <form name="logInForm" data-ng-submit="User.logIn()">
-                <input required type="text" placeholder="User Name" data-ng-model="User.username">
-                <input required type="password" placeholder="Password" data-ng-model="User.password">
-                <button data-ng-disabled="logInForm.$invalid">Log in</button>
-              </form>
-
-              <div class="errMsg" data-ng-show="User.noSuchUser">No such user!</div>
+          <div data-ng-switch-when="newUser"> 
+            <form name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
               
-              <span>Don&rsquo;t have an account yet?</span>
-              <a data-ng-click="Interface.toggleAccountActions(); User.suppressErrors()">sign up</a>
-              <a data-ng-click="User.resetPassword()">Forgot your password?</a>
-            </div>
-            <div data-ng-show="User.resetEmailSent">
-              <span class="errMsg">An email has been sent to your account, go check it out to proceed. You can close this window.</span>
-            </div>
-            <div class="createAccount" data-ng-show="Interface.showCreateAccount()"> 
-              <form name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
-                <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
-                <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
-                <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
-                <input type="email" placeholder="Email (optional)" name="emailInput" data-ng-model="User.email">
-                <span class="errMsg" data-ng-show="createAccountForm.emailInput.$error.email">Not a valid email address.</span>
-                <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password">
-                <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
-                <input required type="password" placeholder="Re-enter password" name="verify" data-ng-model="User.verify" data-ng-blur="User.verifyPassword(User.password, User.verify)">
-                <span class="errMsg" data-ng-show="createAccountForm.verify.$error.required">Verify password is required.</span>
-                <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
-                <button data-ng-disabled="createAccountForm.$invalid">Sign up</button>
-              </form>
-              <span>Already have an account?<a data-ng-click="Interface.toggleAccountActions()">log in</a></span>
-            </div> 
+              <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
+              <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
+              <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
+              
+              <input type="email" placeholder="Email (optional)" name="email" data-ng-model="User.email">
+              <span class="errMsg" data-ng-show="createAccountForm.email.$error.email">Not a valid email address.</span>
+              
+              <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password">
+              <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
+              
+              <input required type="password" placeholder="Reenter password" name="confirmPassword" data-ng-model="User.passwordConfirmation">
+              <span class="errMsg" data-ng-show="createAccountForm.confirmPassword.$error.required">Please reenter password.</span>
+              <span class="errMsg" data-ng-show="User.password !== User.passwordConfirmation">Not a match!</span>
+              
+              <button data-ng-disabled="createAccountForm.$invalid">Sign up</button>
+            </form>
+            <span>Already have an account?<a data-ng-click="User.changeUserState('loggedOut')">log in</a></span>
+          </div> 
 
-            <div data-ng-show="User.accountInfo()">
-              <h3>Welcome, {{User.username}}!</h3>
-              <div>
-                <a data-ng-click="User.togglePasswordChange()">Change password</a>
-                <div data-ng-show="User.showPasswordChange">
-                  <form name="passwordChangeForm" data-ng-submit="User.passwordChange();" novalidate>
-                    <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword">
-                    <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
-                    <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
-                    <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
-                    <input required type="password" placeholder="Verify New Password" name="verifyNewPassword" data-ng-model="User.verifyNewPassword" data-ng-blur="User.verifyPassword(User.newPassword, User.verifyNewPassword)">
-                    <span class="errMsg" data-ng-show="passwordChangeForm.verifyNewPassword.$error.required">Verify new password is required.</span>
-                    <span class="errMsg" data-ng-show="User.verifyPasswordFail">Passwords must match.</span>
-                    <button type="submit" data-ng-disabled="passwordChangeForm.$invalid" data-ng-click="passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Submit</button>
-                    <button type="button"  data-ng-click= "User.cancelPasswordChange(); passwordChangeForm.oldPassword.$setUntouched(); passwordChangeForm.newPassword.$setUntouched(); passwordChangeForm.verifyNewPassword.$setUntouched()">Cancel</button>
-                  </form>
-                </div>
+          <div data-ng-switch-when="loggedIn">
+            <h3>Welcome, {{User.username}}!</h3>
+            <div>
+              <a data-ng-click="User.togglePasswordChange()">Change password</a>
+              <div data-ng-if="User.showPasswordChange">
+                <form name="passwordChangeForm" data-ng-submit="User.passwordChange();">
+                  
+                  <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword">
+                  <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
+                  
+                  <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
+                  <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
+                  
+                  <input required type="password" placeholder="Confirm New Password" name="confirmPassword" data-ng-model="User.passwordConfirmation">
+                  <span class="errMsg" data-ng-show="passwordChangeForm.confirmPassword.$error.required">Please reenter new password.</span>
+                  <span class="errMsg" data-ng-show="User.newPassword !== User.passwordConfirmation">Passwords must match.</span>
+                  
+                  <button type="submit" data-ng-disabled="passwordChangeForm.$invalid" data-ng-click="passwordChangeForm.$setUntouched()">Submit</button>
+                  <button type="button" data-ng-click="User.cancelPasswordChange(); passwordChangeForm.$setUntouched()">Cancel</button>
+                </form>
               </div>
-              <div>
-                <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
-                <div data-ng-show="User.showDeleteAccount">
-                  <span>Are you sure?</span>
-                  <div><a data-ng-click="User.deleteAccount(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched()">Yup</a></div>
-                  <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
-                </div>
-              </div>
-              <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.username.$setUntouched(); createAccountForm.password.$setUntouched(); createAccountForm.verify.$setUntouched(); createAccountForm.emailInput.$setUntouched()">Sign out</button> 
             </div>
+            <div>
+              <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
+              <div data-ng-show="User.showDeleteAccount">
+                <span>Are you sure?</span>
+                <div><a data-ng-click="User.deleteAccount(); createAccountForm.$setUntouched()">Yup</a></div>
+                <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
+              </div>
+            </div>
+            <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.$setUntouched()">Sign out</button> 
           </div>
         </div>
       </div>

@@ -2,29 +2,7 @@
 
 angular.module('roadWarrior').controller('InterfaceController', ['$http', '$cookies', 'legService', 'trekService', function($http, $cookies, legService, trekService){
   
-  var noAccount = false;
-
   this.activePanel = 'currentTrek';
-
-  this.showLogIn = function () {
-    if (window.localStorage.getItem("token") || noAccount) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  this.showCreateAccount = function() {
-    if (window.localStorage.getItem("token")) {
-      return false;
-    } else {
-      return noAccount;
-    }
-  };
-
-  this.toggleAccountActions = function () {
-    noAccount = !noAccount;
-  };
 
   this.tabSwitcher = function(tab){
     if (this.activePanel === tab){
