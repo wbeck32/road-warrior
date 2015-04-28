@@ -1,6 +1,6 @@
 //  this is trekController.js
 
-angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', function(trekService, legService){
+angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'legService', 'userService', function(trekService, legService, userService){
 
   this.legs = legService.legs;
   this.name = "new trek";
@@ -11,18 +11,11 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
   this.showEditName = false;
 
   var loadedTrek = null;
-  var self = this;
 
   this.loginToSave = false;
 
   this.toggleLoginToSave = function () {
     this.loginToSave = !this.loginToSave;
-  };
-
-  this.signOut = function(){
-    this.clearTrek();
-    trekService.allTreks = [];
-    this.treks = trekService.allTreks;
   };
 
   this.markerName = function(marker){
@@ -58,7 +51,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
     
   this.saveTrek = function(){
-    if (window.localStorage.getItem('token')){
+    if (userService.userState === 'loggedIn'){
       if (!loadedTrek){
         if(this.legs.length > 0){
           loadedTrek = {
@@ -84,8 +77,8 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
 
   this.hideFields = function(){
-    for (var i = 0; i < self.legs.length; i++){
-      self.showDetails[i] = false;
+    for (var i = 0; i < this.legs.length; i++){
+      this.showDetails[i] = false;
     }
   };
 

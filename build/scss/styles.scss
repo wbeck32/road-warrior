@@ -16,7 +16,7 @@ html, body, #map-canvas, .tab {
 html, body, #map-canvas, #elevation-chart, .tab {
     height: 100%;
 }
-html, body, #map-canvas, #elevation-chart {
+html, body, #map-canvas, #elevation-chart, form input {
     width: 100%;
 }
 html, body, #map-canvas, .tabList, .legList {
@@ -41,6 +41,15 @@ h2, h3, h4, .tab {
     list-style-type: none;
 }
 
+.elevation-chart-wrapper,
+.tab {
+    opacity: $opacity;
+}
+
+.tab, .elevation-toggle, .leg:nth-child(even), {
+    background-color: $tabColor;
+}
+
 .searchBox {
    display: none;
 }
@@ -62,15 +71,11 @@ h2, h3, h4, .tab {
     left: 0; 
     bottom: 10%;
     right: 40em;
-    opacity: $opacity;
     background-color: #fff;
     transition: all .5s ease-in .1s;
 }
 .hideElevation {
     transform: translateX(-100%);
-    .elevation-toggle {
-        background-color: $tabColor;
-    }
 }
 
 .google-visualization-tooltip {
@@ -111,9 +116,7 @@ h2, h3, h4, .tab {
     font-size: .9em;
     float: left;
     width: 25%;
-    background-color: $tabColor;
     border-radius: 15px 15px 0 0;
-    opacity: $opacity;
 }
 
 .activeTab {
@@ -127,9 +130,30 @@ h2, h3, h4, .tab {
     height: 100%;
 }
 
-.leg:nth-child(even) {
-    background-color: $tabColor;
+form {
+    width: 75%;
+    min-width: 15em;
+    margin: 0 auto;
 }
+
+label {
+    display: block;
+    font-size: .8em;
+    font-weight: bold;
+}
+
+form input {
+    margin-bottom: .5em;
+}
+
+form button, .float-right {
+    float: right;
+}
+
+input.ng-invalid-required.ng-touched {
+    border: 1px solid red;
+}
+
 
 .errMsg {
     color:red;
@@ -137,11 +161,19 @@ h2, h3, h4, .tab {
 
 .google-visualization-tooltip-item span,
 .google-visualization-tooltip-square,
-input.ng-untouched ~ .errMsg,
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none!important;
 }
 
 .tooltip-text{
     text-shadow: .5px .5px 1px gray;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+.clearfix:after {
+    clear: both;
 }

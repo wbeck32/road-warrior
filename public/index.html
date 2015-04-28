@@ -44,9 +44,9 @@
           </li>
         </ul>
       </nav>
-      <div class="interfaceContent" id="interfaceContent" data-ng-controller="TrekController as Trek" ng-switch="Interface.activePanel">  
+      <div class="interfaceContent" id="interfaceContent" ng-switch="Interface.activePanel">  
 
-        <div class="panel" data-ng-switch-when="currentTrek">
+        <div class="panel" data-ng-switch-when="currentTrek" data-ng-controller="TrekController as Trek">
 
           <h3>{{Trek.name}}</h3>
           <div data-ng-hide="Trek.showEditName">
@@ -71,7 +71,7 @@
                 {{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}
               </a>
 
-              <a data-ng-click="Trek.removeLeg($index)">delete</a>
+              <a class="float-right" data-ng-click="Trek.removeLeg($index)">delete</a>
 
               <div data-ng-show="Trek.showDetails[$index]">
                 <form data-ng-submit="Trek.toggleDetails($index)">
@@ -95,7 +95,7 @@
           <div>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
         </div>
 
-        <div class="panel" data-ng-switch-when="trekList">
+        <div class="panel" data-ng-switch-when="trekList" data-ng-controller="TrekController as Trek">
           <h3>My Treks</h3>
           <div>
             <input type="search" data-ng-model="search.name" placeholder="Search your treks">
@@ -103,13 +103,13 @@
 
           <div data-ng-repeat="trek in Trek.treks | filter:search">
             <a data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</a>
-            <a data-ng-click="Trek.deleteTrek(trek)">delete trek</a>
+            <a class="float-right" data-ng-click="Trek.deleteTrek(trek)">delete trek</a>
           </div>
         </div>
 
         <div class="panel" data-ng-switch-when="about">
           <h3>About</h3>
-          <p>TrekSmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&rsquo;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
+          <p>TrekSmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&#39;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
           </p>
           <p>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportation modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</p>
           <h4>The team</h4>
@@ -138,58 +138,71 @@
         <div class="panel" data-ng-switch-when="account" data-ng-controller="UserController as User" data-ng-switch="User.userState">
 
           <div data-ng-switch-when="loggedOut">
-            <form name="logInForm" data-ng-submit="User.logIn()">
-              <input required type="text" placeholder="User Name" data-ng-model="User.username">
-              <input required type="password" placeholder="Password" data-ng-model="User.password">
+
+            <h4>Log In</h4>
+            
+            <form class="clearfix" name="logInForm" data-ng-submit="User.logIn()">
+              <label for="login_name">User Name</label>
+              <input required type="text" id="login_name" placeholder="User Name" data-ng-model="User.username">
+              <label for="login_password">Password</label>
+              <input required type="password" id="login_password" placeholder="Password" data-ng-model="User.password">
               <button data-ng-disabled="logInForm.$invalid">Log in</button>
             </form>
 
-            <span>Don&rsquo;t have an account yet?</span>
+            <div>Don&#39;t have an account yet?</div>
             <a data-ng-click="User.changeUserState('newUser')">sign up</a>
             <a data-ng-click="User.resetPassword()">Forgot your password?</a>
           </div>
 
           <div data-ng-switch-when="newUser"> 
-            <form name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
-              
-              <input required type="text" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
-              <span class="errMsg" data-ng-show="User.dupeUsername">User name is already in use.</span>
-              <span class="errMsg" data-ng-show="createAccountForm.username.$error.required">User name is required.</span>
-              
-              <input type="email" placeholder="Email (optional)" name="email" data-ng-model="User.email">
-              <span class="errMsg" data-ng-show="createAccountForm.email.$error.email">Not a valid email address.</span>
-              
-              <input required type="password" placeholder="Enter password" name="password" data-ng-model="User.password">
-              <span class="errMsg" data-ng-show="createAccountForm.password.$error.required">Password is required.</span> 
-              
-              <input required type="password" placeholder="Reenter password" name="confirmPassword" data-ng-model="User.passwordConfirmation">
-              <span class="errMsg" data-ng-show="createAccountForm.confirmPassword.$error.required">Please reenter password.</span>
-              <span class="errMsg" data-ng-show="User.password !== User.passwordConfirmation">Not a match!</span>
-              
-              <button data-ng-disabled="createAccountForm.$invalid">Sign up</button>
+            
+            <h4>Sign up for TrekSmith to save and share your treks!</h4>
+
+            <form class="clearfix" name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
+              <label for="username">User Name</label>
+              <input required type="text" id="username" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
+              <label for="password">Password</label>
+              <input required type="password" id="password" name="password" placeholder="Enter password"  data-ng-model="User.password">
+
+              <label for="confirmPassword">Confirm Password</label>
+              <input required type="password" id="confirmPassword" name="confirmPassword" placeholder="Reenter password" data-ng-model="User.passwordConfirmation">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Email (optional)" data-ng-model="User.email">
+
+              <button data-ng-disabled="createAccountForm.$invalid || User.dupeUsername || User.password !== User.passwordConfirmation">Sign up</button>              
+              <div class="errMsg" data-ng-if="User.requiredErrors(createAccountForm)">*required.</div>
+              <div class="errMsg" data-ng-if="createAccountForm.email.$error.email">Not a valid email address.</div>
+              <div class="errMsg" data-ng-if="User.dupeUsername">User name is already in use.</div>
+              <div class="errMsg" data-ng-if="User.password !== User.passwordConfirmation && createAccountForm.confirmPassword.$touched">Password confirmation doesn't match!</div>
+
+
             </form>
-            <span>Already have an account?<a data-ng-click="User.changeUserState('loggedOut')">log in</a></span>
+            <div>Already have an account?</div>
+            <a data-ng-click="User.changeUserState('loggedOut')">log in</a>
+            
           </div> 
 
           <div data-ng-switch-when="loggedIn">
             <h3>Welcome, {{User.username}}!</h3>
             <div>
               <a data-ng-click="User.togglePasswordChange()">Change password</a>
+
               <div data-ng-if="User.showPasswordChange">
-                <form name="passwordChangeForm" data-ng-submit="User.passwordChange();">
-                  
-                  <input required type="password" placeholder="Enter Old Password" name="oldPassword" data-ng-model="User.oldPassword">
-                  <span class="errMsg" data-ng-show="passwordChangeForm.oldPassword.$error.required">Old password is required.</span> 
-                  
-                  <input required type="password" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
-                  <span class="errMsg" data-ng-show="passwordChangeForm.newPassword.$error.required">New password is required.</span> 
-                  
-                  <input required type="password" placeholder="Confirm New Password" name="confirmPassword" data-ng-model="User.passwordConfirmation">
-                  <span class="errMsg" data-ng-show="passwordChangeForm.confirmPassword.$error.required">Please reenter new password.</span>
-                  <span class="errMsg" data-ng-show="User.newPassword !== User.passwordConfirmation">Passwords must match.</span>
-                  
-                  <button type="submit" data-ng-disabled="passwordChangeForm.$invalid" data-ng-click="passwordChangeForm.$setUntouched()">Submit</button>
-                  <button type="button" data-ng-click="User.cancelPasswordChange(); passwordChangeForm.$setUntouched()">Cancel</button>
+                <form class="clearfix" name="passwordChangeForm" data-ng-submit="User.passwordChange();">
+
+                  <label for="oldPassword">Old Password</label>
+                  <input required type="password" id="oldPassword" placeholder="Enter Old Password" name="password" data-ng-model="User.password">
+
+                  <label for="newPassword">New Password</label>
+                  <input required type="password" id="newPassword" placeholder="Enter New Password" name="newPassword" data-ng-model="User.newPassword">
+                  <label for="confirmNewPassword">Confirm New Password</label>
+                  <input required type="password" id="confirmNewPassword" placeholder="Confirm New Password" name="confirmPassword" data-ng-model="User.passwordConfirmation">
+                  <button type="submit" data-ng-disabled="passwordChangeForm.$invalid || User.newPassword !== User.passwordConfirmation" data-ng-click="passwordChangeForm.$setUntouched()">Submit</button>
+                  <button type="button" data-ng-click="User.togglePasswordChange(); passwordChangeForm.$setUntouched()">Cancel</button>
+
+                  <div class="errMsg" data-ng-if="User.requiredErrors(passwordChangeForm)">*required.</div>
+                  <div class="errMsg" data-ng-show="User.newPassword !== User.passwordConfirmation">Password confirmation doesn't match!</div>
+
                 </form>
               </div>
             </div>
@@ -197,11 +210,11 @@
               <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
               <div data-ng-show="User.showDeleteAccount">
                 <span>Are you sure?</span>
-                <div><a data-ng-click="User.deleteAccount(); createAccountForm.$setUntouched()">Yup</a></div>
+                <div><a data-ng-click="User.deleteAccount()">Yup</a></div>
                 <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
               </div>
             </div>
-            <button data-ng-click="Trek.signOut(); User.signOut(); createAccountForm.$setUntouched()">Sign out</button> 
+            <button data-ng-click="User.signOut()">Sign out</button> 
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 // this is interfaceController.js
 
-angular.module('roadWarrior').controller('InterfaceController', ['$http', '$cookies', 'legService', 'trekService', function($http, $cookies, legService, trekService){
+angular.module('roadWarrior').controller('InterfaceController', ['$cookies', 'trekService', function($cookies, trekService){
   
   this.activePanel = 'currentTrek';
 

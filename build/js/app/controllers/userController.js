@@ -13,13 +13,13 @@ angular.module('roadWarrior').controller('UserController', ['userService', funct
   this.showPasswordChange = false;
   this.showDeleteAccount = false;
 
-  
   var updateScope = function() {
     this.username = userService.username;
     this.userState = userService.userState;
     this.password = null;
     this.email = null;
     this.passwordConfirmation = null;
+    this.newPassword = null;
   }.bind(this);
 
   var dupeUsername = function(){
@@ -28,7 +28,7 @@ angular.module('roadWarrior').controller('UserController', ['userService', funct
 
   this.changeUserState = function(state){
     userService.userState = state;
-    this.userState = userService.userState;
+    updateScope();
   };
 
   this.signOut = function(){
@@ -47,38 +47,43 @@ angular.module('roadWarrior').controller('UserController', ['userService', funct
   this.checkUsername = function() {
     if(this.username){
       userService.checkUsername(this.username, dupeUsername);
+    } else {
+      userService.dupeUsername = null;
+      dupeUsername();
     }
   };
 
   this.passwordChange = function() {
-    userService.passwordChange(this.oldPassword, this.newPassword);
-    this.oldPassword = null;
-    this.newPassword = null;
-    this.passwordConfirmation = null;
+    userService.passwordChange(this.password, this.newPassword);
     this.togglePasswordChange();
   };
 
   this.resetPassword = function() {
-    userService.resetPassword(this.username);
+    if(this.username && this.username.length > 0){
+      userService.resetPassword(this.username);
+    }
   };
 
   this.deleteAccount = function(){
     userService.deleteAccount(updateScope);
   };
 
-  this.cancelPasswordChange = function () {
-    this.oldPassword = null;
-    this.newPassword = null;
-    this.passwordConfirmation = null;
-    this.togglePasswordChange();
-  };
-
   this.togglePasswordChange = function() {
+    updateScope();
     this.showPasswordChange = !this.showPasswordChange;
   };
 
   this.toggleDeleteAccount = function() {
     this.showDeleteAccount = !this.showDeleteAccount;
+  };
+
+  this.requiredErrors = function(form){
+    if (
+      (form.username && form.username.$invalid && form.username.$touched) ||
+        (form.password.$invalid && form.password.$touched) ||
+        (form.confirmPassword.$invalid && form.confirmPassword.$touched) ||
+        (form.newPassword && form.newPassword.$invalid && form.newPassword.$touched) ) return true;
+    else return false;
   };
 
 }]);

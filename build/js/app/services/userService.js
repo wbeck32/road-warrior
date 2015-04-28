@@ -1,6 +1,6 @@
 // this is userService.js
 
-angular.module('roadWarrior').service('userService', ['$rootScope', '$http', 'trekService', function($rootScope, $http, trekService){
+angular.module('roadWarrior').service('userService', ['$http', 'trekService', 'legService', function($http, trekService, legService){
 
   this.username = null;
   this.userState = 'loggedOut';
@@ -41,6 +41,8 @@ angular.module('roadWarrior').service('userService', ['$rootScope', '$http', 'tr
     window.localStorage.removeItem('userid');
     this.username = null;
     this.userState = 'loggedOut';
+    legService.unRenderAll();
+    trekService.allTreks = [];
   };
 
   this.createAccount = function(username, password, email, cb) {
@@ -82,12 +84,12 @@ angular.module('roadWarrior').service('userService', ['$rootScope', '$http', 'tr
     });
   };
 
-  this.passwordChange = function(oldPassword, newPassword) {
+  this.passwordChange = function(password, newPassword) {
     $http({
       method: 'POST',
       url: '/api/passwordchange',
       data: {
-        oldpassword: oldPassword,
+        password: password,
         newpassword: newPassword,
         username: this.username,
         access_token: window.localStorage.getItem('token')

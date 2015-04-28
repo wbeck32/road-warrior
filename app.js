@@ -156,7 +156,7 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
   var users = db.collection('users');
   if (req.user) {
     users.find({_id: req.user._id}).toArray(function(err, docs){
-      bcrypt.compare(req.body.oldpassword, docs[0].password, function(err, validpass) {
+      bcrypt.compare(req.body.password, docs[0].password, function(err, validpass) {
         if (err) console.log('password hash error');
         else if (validpass === true) {
           bcrypt.hash(req.body.newpassword, 10, function(err, hash){
