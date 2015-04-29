@@ -46,8 +46,33 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     text-align: center;
 }
 
-.legList, .tabList {
-    list-style-type: none;
+#mapSearch, .logo, .elevation-chart-wrapper, .interfaceContainer {
+    position:absolute;
+}
+
+#mapSearch {
+    z-index:51;
+    top:5.5%;
+    left: 30%;
+    width: 40%;
+    height: 1.4em;
+}
+
+.logo { 
+    z-index:50;
+    top:1%;
+    img {
+        max-width: 30vw;
+    }
+}
+
+.elevation-chart-wrapper {
+    height: 15%;
+    left: 0;
+    width: 75%;
+    bottom: 6%;
+    background-color: #fff;
+    transition: all .5s ease-in .1s;
 }
 
 .elevation-chart-wrapper,
@@ -55,8 +80,95 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     opacity: $opacity;
 }
 
-.tab, .elevation-toggle, .leg:nth-child(even), {
+.hideElevation {
+    transform: translateX(-100%);
+    .elevation-toggle {
+        background-color: $tabColor;
+    }
+}
+
+.elevation-toggle {
+    height: 100%;
+    width: 2em;
+    float: right;
+    background: url('../images/elevation_icon.png') center no-repeat $activeTabColor;
+    background-size: 90%;
+    border-radius: 0 15px 15px 0;
+    transform: translateX(2em);
+}
+.elevation-toggle, .tab, .leg:nth-child(even), {
     background-color: $tabColor;
+}
+
+.tooltip-text{
+    width: 10em;
+}
+
+.google-visualization-tooltip {
+    transform: translateY(-15vh);
+    z-index: 100;
+}
+
+.google-visualization-tooltip-item span,
+.google-visualization-tooltip-square,
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none!important;
+}
+
+.interfaceContainer {
+    height: $interfaceHeight;
+    max-height: $maxInterfaceHeight;
+    width: $interfaceWidth;
+    max-width: 65%;
+    top: 6%;
+    right: 0;
+    transition: width .5s ease-in .1s;
+    z-index: 75;
+}
+
+.hideInterface {
+    width: 0;
+}
+
+.tabList, .legList {
+    list-style-type: none;
+}
+.tabList {
+    width: $interfaceHeight;
+    max-width: $maxInterfaceHeight;
+    height: 2em;
+    transform: translateX(-100%) rotate(-90deg);
+    transform-origin: bottom right;
+}
+.tab {
+    line-height: 2em;
+    font-size: .9em;
+    float: left;
+    width: 25%;
+    border-radius: 15px 15px 0 0;
+}
+.activeTab {
+    background-color: $activeTabColor;
+}
+
+.interfaceContent {
+    background-color: rgba(255,255,255,$opacity);
+    padding: 1ex 1em;
+    overflow: auto;
+    height: 100%;
+}
+
+.trekOptions {
+    margin: .5em auto;
+    font-size: .9em;
+    a {
+        white-space: nowrap;
+    }
+}
+
+.legList, .trek {
+    width: 85%;
+    margin: 0 auto;
 }
 .leg:nth-child(odd) {
     background-color: #dfdfdf;
@@ -74,128 +186,29 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     padding: .2em .5em;
 }
 
-.searchBox {
-
-}
-
-.logo { 
-    display:inline;
-    z-index:50;
-    position:absolute;
-    top:3%;
-    margin-left: 2%;
-    img {
-        max-width: 30vw;
-    }
-}
-
-.elevation-chart-wrapper {
-    position: absolute;
-    height: 15%;
-    left: 0;
-    width: 75%;
-    bottom: 6%;
-    background-color: #fff;
-    transition: all .5s ease-in .1s;
-}
-.hideElevation {
-    transform: translateX(-100%);
-    .elevation-toggle {
-        background-color: $tabColor;
-    }
-}
-
-.google-visualization-tooltip {
-    transform: translateY(-100%);
-}
-
-.elevation-toggle {
-    height: 100%;
-    width: 2em;
-    float: right;
-    background: url('../images/elevation_icon.png') center no-repeat $activeTabColor;
-    background-size: 90%;
-    border-radius: 0 15px 15px 0;
-    transform: translateX(2em);
-}
-
-.interfaceContainer {
-    height: $interfaceHeight;
-    max-height: $maxInterfaceHeight;
-    width: $interfaceWidth;
-    max-width: 65%;
-    position:absolute;
-    top: 5%;
-    right: 0;
-    transition: width .5s ease-in .1s;
-}
-
-.hideInterface {
-    width: 0;
-}
-
-.tabList {
-    width: $interfaceHeight;
-    max-width: $maxInterfaceHeight;
-    height: 2em;
-    transform: translateX(-100%) rotate(-90deg);
-    transform-origin: bottom right;
-}
-.tab {
-    line-height: 2em;
-    font-size: .9em;
-    float: left;
-    width: 25%;
-    border-radius: 15px 15px 0 0;
-}
-
-.activeTab {
-    background-color: $activeTabColor;
-}
-
-.interfaceContent {
-    background-color: rgba(255,255,255,$opacity);
-    padding: 1ex 1em;
-    overflow: auto;
-    height: 100%;
-}
-
 .userForm, .searchForm, {
     width: 75%;
     margin: 0 auto 2em;
 }
 
-.legList, .trek {
-    width: 85%;
-    margin: 0 auto;
+form input {
+    margin-bottom: .5em;
 }
 
-label, .formAddendum a, .userOptions a {
+label, .formAddendum a, .userOptions a, #mapSearch {
     display: block;
-}
-
-.formAddendum a, .userOptions a {
-    margin-bottom: 1em;
-}
-
-.trekOptions {
-    margin: .5em auto;
-    font-size: .9em;
-    a {
-        white-space: nowrap;
-    }
-}
-
-.userOptions label, form .errMsg {
-    text-align: left;
 }
 
 label {
     font-size: .8em;
 }
 
-form input {
-    margin-bottom: .5em;
+.formAddendum a, .userOptions a {
+    margin-bottom: 1em;
+}
+
+.userOptions label, form .errMsg {
+    text-align: left;
 }
 
 form button, .float-right {
@@ -211,15 +224,7 @@ input.ng-invalid-required.ng-touched {
     color:red;
 }
 
-.google-visualization-tooltip-item span,
-.google-visualization-tooltip-square,
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none!important;
-}
-
-.tooltip-text{
-    text-shadow: .5px .5px 1px gray;
-}
+/* micro-clearfix */
 
 .clearfix:before,
 .clearfix:after {
@@ -241,20 +246,28 @@ input.ng-invalid-required.ng-touched {
     }
 }
 
-@media screen and (min-width: 920px) {
-    .interfaceContainer {
-        max-width: 40%;
-    }
-    .elevation-chart-wrapper {
-        width: 40%;
-    }
-}
-
 @media screen and (min-width: 585px) and (max-width: 919px) {
     .interfaceContainer {
         max-width: 50%;
     }
     .elevation-chart-wrapper {
         width: 35%;
+    }
+    #mapSearch {
+        width: 30%;
+        left: 35%;
+    }
+}
+
+@media screen and (min-width: 920px) {
+    .interfaceContainer {
+        max-width: 40%;
+    }
+    .elevation-chart-wrapper {
+        width: 45%;
+    }
+    #mapSearch {
+        width: 20%;
+        left: 40%;
     }
 }

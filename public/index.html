@@ -15,12 +15,14 @@
   </head>
 
   <body>
-    <input type="text" id="pac-input" class="searchBox">
+
+    <div id="map-canvas"></div>
+
     <div class="logo"> 
       <a href="http://www.treksmith.com"><img src="images/treksmith-logo.png" alt="Treksmith logo"></a>    
     </div> 
 
-    <div id="map-canvas"></div>
+    <input type="search" id="mapSearch">
 
     <div data-ng-class="Elevation.show" data-ng-controller="ElevationController as Elevation">
       <div class="elevation-toggle" data-ng-click="Elevation.toggle()"></div>

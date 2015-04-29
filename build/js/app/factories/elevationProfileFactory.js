@@ -1,28 +1,66 @@
 // this is elevationProfileFactory.js
 
 angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', function(mapFactory){
+
+//    position: new google.maps.LatLng(latLng.k, latLng.D),
+//    map: mapFactory  
+
+  var marker = new google.maps.Marker({
+    icon: { path: google.maps.SymbolPath.CIRCLE, scale: 4 }
+  });
+  
+  var chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
+  google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
+  google.visualization.events.addListener(chart, 'onmouseout', removeMarker);
+
+  var data;
+  
+  function chartEvent (point) {
+    var latLng = JSON.parse(data.getValue(point.row, 2));
+    mapFactory.panTo({lat: latLng.k, lng: latLng.D});
+    marker.setPosition({lat: latLng.k, lng: latLng.D});
+    marker.setMap(mapFactory);
+  }
+
+  function removeMarker () {
+    marker.setMap(null);
+  }
+
+  var chartOptions =  { 
+    trigger: 'none', 
+    chartArea: {
+      left: '1%',
+      top: '1%',
+      width: '98%', 
+      height: '98%'
+    },
+    hAxis: {
+      title: 'Distance', 
+      gridlines: {
+        color: 'transparent'
+      },
+      baselineColor: 'transparent',
+      textPostion: 'in'
+    },
+    vAxis: {
+      gridlines: {
+        color: 'transparent'
+      },
+      baselineColor: 'transparent',
+      textPostion: 'in'
+    },
+    tooltip: {
+      isHtml: 'true',
+      legend: 'none'
+    },
+    focusTarget: 'category',
+    aggregationTarget: 'series'
+  };
+    
   return function (legArray) {
-    var chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
-    google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
-    var data = new google.visualization.DataTable();
 
-    function chartEvent (point) {
-      google.visualization.events.addListener(chart, 'onmouseout', removeMarker);
-      var latLng = JSON.parse(data.getValue(point.row, 2));
-      mapFactory.panTo({lat: latLng.k, lng: latLng.D}); 
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(latLng.k, latLng.D),
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 4
-        },
-        map: mapFactory
-      });
-      function removeMarker () {
-        marker.setVisible(false);
-      }
-    }
-
+    chart.clearChart();
+    data = new google.visualization.DataTable();
     data.addColumn('number', 'Distance');    
     data.addColumn('number', 'Elevation');
     data.addColumn({type: 'string', role: 'annotation'});
@@ -30,7 +68,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     data.addColumn({type:'string', role: 'annotation'}, 'Marker');
 
     var totalDistance = 0;
-    var legDistance, legPoints, incr;
+    var legDistance, legPoints, incr, elevation, location, tooltip;
 
     for (var i = 0; i < legArray.length; i++) {
       if (legArray[i].travelMode !== "CROW") {
@@ -45,10 +83,9 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
         } else if (i === legArray.length - 1 && j === legArray[i].elevationProfile.length - 1) {
           marker = legArray[i].dest.index;
         }
-
-        var elevation = legArray[i].elevationProfile[j].elevation;
-        var location = JSON.stringify(legArray[i].elevationProfile[j].location);
-        var tooltip = '<div class="tooltip-text"><div><p><b>Distance:</b> ' + Math.round(totalDistance*0.0621371)/100 + ' miles</p></div><div><p><b>Elevation:</b> ' + Math.round(legArray[i].elevationProfile[j].elevation*328.084)/100 + ' feet</p></div></div>';
+        elevation = legArray[i].elevationProfile[j].elevation;
+        location = JSON.stringify(legArray[i].elevationProfile[j].location);
+        tooltip = '<div class="tooltip-text"><div><b>Distance:</b> ' + (totalDistance*0.000621371).toFixed(2) + ' miles</div><div><b>Elevation:</b> ' + (legArray[i].elevationProfile[j].elevation*3.28084).toFixed(0) + ' feet</div></div>';
       	data.addRow([totalDistance, elevation, location, tooltip, marker]);
       	totalDistance += incr;
       }
@@ -56,36 +93,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     
     var view = new google.visualization.DataView(data);
     view.hideColumns([2]);
-    chart.draw(view, { 
-      trigger: 'none', 
-      chartArea: {
-	      left: 0,
-	      top: 0,
-        width: '100%', 
-        height: '98%'
-      }, 
-      hAxis: {
-        title: 'Distance', 
-        gridlines: {
-          color: 'transparent'
-        },
-        baselineColor: 'transparent',
-        textPostion: 'in'
-      },
-      vAxis: {
-        gridlines: {
-          color: 'transparent'
-        },
-        baselineColor: 'transparent',
-        textPostion: 'in'
-      },
-      tooltip: {
-        isHtml: 'true',
-        legend: 'none'
-      },
-      focusTarget: 'category',
-      aggregationTarget: 'series'
-    });
+    chart.draw(view, chartOptions);
   };
 }]);
 

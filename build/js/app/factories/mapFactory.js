@@ -20,10 +20,7 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  var input = /** @type {HTMLInputElement} */(
-      document.getElementById('pac-input'));
-
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+  var input = document.getElementById('mapSearch');
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
 
