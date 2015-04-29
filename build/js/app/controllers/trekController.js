@@ -43,6 +43,7 @@ angular.module('roadWarrior').controller('TrekController', [ 'trekService', 'leg
 
   this.deleteTrek = function(trek){   
     trekService.delete(trek);
+    trekService.allTreks.splice(trekService.allTreks.indexOf(trek), 1);
     if (trek.legs === this.legs) {
       this.clearTrek();
     }

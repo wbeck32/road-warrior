@@ -1,6 +1,6 @@
 // this is sideBarController.js
 
-angular.module('roadWarrior').controller('SideBarController', ['$http', 'legService', 'trekService', function($http, legService, trekService){
+angular.module('roadWarrior').controller('SideBarController', ['$http', '$cookies', 'legService', 'trekService', function($http, $cookies, legService, trekService){
   
   var sideMenu = document.getElementById('sideMenu');
   var sidebarContent = document.getElementById('sidebarContent');
@@ -61,6 +61,12 @@ angular.module('roadWarrior').controller('SideBarController', ['$http', 'legServ
     }
     document.getElementById(tab + "Tab").className = "tab activeTab";
     currentTab = tab;
+  }
+
+  if ($cookies.sharedTrek && $cookies.sharedTrek !== 'undefined'){
+    var sharedTrek = JSON.parse($cookies.sharedTrek);
+    trekService.renderSavedTrek(sharedTrek);
+    this.tabSwitcher('trekList');
   }
 
 }]);

@@ -13,7 +13,6 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
       data: {trekid: trek.id, access_token: window.localStorage.getItem('token')}
     }).success(function(data, status, headers, config){
       console.log('delete: ', status, data);
-      self.allTreks.splice(self.allTreks.indexOf(trek), 1);
     }).error(function(data, status, headers, config){
       console.log('failure');
     });

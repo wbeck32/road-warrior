@@ -19,7 +19,7 @@ var transporter = nodemailer.createTransport(smtpTransport({
     user: mailgunLogin.user,
     pass: mailgunLogin.pass
   }
-}))
+}));
 
 var jwtKey = process.env.JWTKEY;
 
@@ -78,11 +78,14 @@ app.post('/api/deleteatrek/', [jwtAuth], function(req, res){
 });
 
 app.get('/api/retrieveatrek/:trekid', function(req, res) {
-	var db = app.get('mongo');
-	var treks = db.collection('treks');
-	treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
-		res.json(docs);
-	});
+  var db = app.get('mongo');
+  var treks = db.collection('treks');
+  treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
+    if(docs.length === 1) {
+      res.cookie('sharedTrek', JSON.stringify(docs[0]));
+    }
+    res.redirect('/');
+  });
 });
 
 app.post('/api/retrievealltreks/', [jwtAuth], function(req, res) {
@@ -186,16 +189,18 @@ app.post('/api/passwordchange', [jwtAuth], function(req, res) {
         if (err) console.log('password hash error');
         else if (validpass === true) {
           bcrypt.hash(req.body.newpassword, 10, function(err, hash){
-          users.update({_id: req.user._id}, {username: req.user.username, password: hash}, function(err, updateRes){
-            if(err) console.log('Could not insert');
-            res.end(updateRes.result.n.toString());
+            users.update({_id: req.user._id}, {username: req.user.username, password: hash}, function(err, updateRes){
+              if(err) console.log('Could not insert');
+              res.end(updateRes.result.n.toString());
+            });
           });
-        });
         } else {
           res.end('invalid username/password combo');
         }
       });
     });
+  } else {
+    res.end('unauthorized');
   }
 });
 
@@ -210,7 +215,7 @@ app.post('/api/passwordresetemail', function(req, res) {
         to: docs[0].email, 
         subject: 'Treksmith password reset', // Subject line
         text: 'Please click on this link to reset your password', // plaintext body
-        html: '<div>Hello, </div><div>Please click <a href=http://localhost:3000/api/passwordreset/' + passwordResetAuthenticate(docs[0]._id) + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
+        html: '<div>Hello, </div><div>Please click <a href=http://www.treksmith.com/api/passwordreset/' + passwordResetAuthenticate(docs[0]._id) + '>here</a> to reset your password. This link will only be valid for 24 hours.</div><div>Thanks!</div><div>The Treksmith</div>' // html body
       };
       transporter.sendMail(resetPasswordMailOptions, function(err, info) {
         if (err) console.log(err);  
@@ -225,7 +230,7 @@ app.post('/api/passwordresetemail', function(req, res) {
 
 app.get('/api/passwordreset/:token', [jwtAuth], function(req, res) {
   res.render('passwordreset.html');
-})
+});
 
 app.post('/api/passwordreset/:token', [jwtAuth], function(req, res){
   var db = app.get('mongo');
@@ -245,8 +250,9 @@ app.post('/api/deleteaccount', [jwtAuth], function(req, res) {
     users.remove({_id: req.user._id}, {justOne: true}, function(err, response) {
       res.json(response);
     });
+  } else {
+    res.end('unauthorized');
   }
-
 });
 
 function authenticate (userid, email){
