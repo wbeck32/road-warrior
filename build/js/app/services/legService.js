@@ -26,7 +26,6 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 
   function unRenderLeg(leg) {
     leg.rend.setMap(null);
-    leg.rend.setPanel(null);
     leg.polyline.setMap(null);
   }
 
@@ -60,99 +59,105 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     elevationProfileFactory(this.legs);
   };
 
-  this.createLeg = function(org, des, travelMode){
+  this.Leg = function(origin, dest, travelMode){
+    this.origin = origin;
+    this.dest = dest;
+    this.rend = new google.maps.DirectionsRenderer(renderOptions);
+    this.polyline = new google.maps.Polyline(polylineOptions);
+    this.elevationProfile = [];
+    this.travelMode = travelMode || "WALKING";
+    this.showDetails = false;
+
+    google.maps.event.addListener(this.rend, 'directions_changed', function(){
+      $rootScope.$apply(dragRenderer.call(this));
+    }.bind(this));
+    google.maps.event.addListener(this.polyline, 'drag', function(){
+      this.polyline.setVisible(false);
+    }.bind(this));
+    google.maps.event.addListener(this.polyline, 'dragend', function(event){
+      $rootScope.$apply(dragPolyline.call(this,event));
+    }.bind(this));
+
+    this.getDirections();
     
-    function Leg(origin, dest){
-      this.origin = origin;
-      this.dest = dest;
-      this.rend = new google.maps.DirectionsRenderer(renderOptions);
-      this.polyline = new google.maps.Polyline(polylineOptions);
-      this.elevationProfile = [];
-      this.travelMode = travelMode || "WALKING";
-
-      var thisLeg = this;
-      google.maps.event.addListener(thisLeg.rend, 'directions_changed', function(){
-      	$rootScope.$apply(function(){ 
-      	  if (thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
-      	    var newMarker = markerFactory.create(thisLeg.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
-      	    var newLeg = self.createLeg(newMarker, thisLeg.dest);
-            newLeg.travelMode = thisLeg.travelMode;
-            newLeg.drawLeg();
-      	    self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
-      	    thisLeg.dest = newMarker;
-      	    thisLeg.getDirections();
-      	  }
-      	});
-      });
-      
-      google.maps.event.addListener(thisLeg.polyline, 'drag', function(event){
-        thisLeg.polyline.setVisible(false);
-      });
-      google.maps.event.addListener(thisLeg.polyline, 'dragend', function(event){
-        $rootScope.$apply(function(){ 
-          var newMarker = markerFactory.create(event.latLng, self);
-          var newLeg = self.createLeg(newMarker, thisLeg.dest, "CROW");
-          newLeg.drawLeg();
-      	  self.legs.splice(self.legs.indexOf(thisLeg) + 1, 0, newLeg);
-      	  thisLeg.dest = newMarker;
-      	  thisLeg.getDirections();
-          thisLeg.polyline.setVisible(true);
-        });
-      });
-
-      this.drawLeg = function() {
-        if (this.travelMode === "CROW"){
-          this.polyline.setMap(mapFactory);
-          this.rend.setMap(null);
-        } else {
-          this.rend.setMap(mapFactory);
-          this.polyline.setMap(null);
-          this.rend.setPanel(document.getElementById('directions'));
-        }
-      };
-
-      this.switchMode = function() {
-        this.getDirections();
-        this.drawLeg();
-      };
-
-      this.getDirections = function(){
-        if (this.travelMode !== "CROW"){
-      	  var request = {
-      	    origin: this.origin.getPosition(),
-      	    destination: this.dest.getPosition(),
-      	    travelMode: this.travelMode
-      	  };
-      	  directionsService.route(request, function(response, status) {
-      	    if (status == google.maps.DirectionsStatus.OK) {
-              thisLeg.rend.setDirections(response);
-              pathElevationService(thisLeg, self.legs);
-      	    } else {
-              thisLeg.travelMode = "CROW";
-              thisLeg.switchMode();
-            } 
-          });
-        } else {
-          this.polyline.setPath([this.origin.getPosition(), this.dest.getPosition()]);
-          this.directDistance = distanceService(this.origin.getPosition(), this.dest.getPosition());
-          pathElevationService(thisLeg, self.legs);
-        }
-      };
+  };
+    
+  function dragRenderer(){
+    if (this.rend.getDirections().routes[0].legs[0].via_waypoints.length > 0){
+      var newMarker = markerFactory.create(this.rend.getDirections().routes[0].legs[0].via_waypoints.pop(), self);
+      var newLeg = new self.Leg(newMarker, this.dest, this.travelMode);
+      newLeg.drawLeg();
+      self.legs.splice(self.legs.indexOf(this) + 1, 0, newLeg);
+      this.dest = newMarker;
       this.getDirections();
     }
+  }
+  
+  function dragPolyline(event){
+    var newMarker = markerFactory.create(event.latLng, self);
+    var newLeg = new self.Leg(newMarker, this.dest, "CROW");
+    newLeg.drawLeg();
+    self.legs.splice(self.legs.indexOf(this) + 1, 0, newLeg);
+    this.dest = newMarker;
+    this.getDirections();
+    this.polyline.setVisible(true);
+  }
 
-    return new Leg(org, des);
+  this.Leg.prototype.drawLeg = function() {
+    if (this.travelMode === "CROW"){
+      this.polyline.setMap(mapFactory);
+      this.rend.setMap(null);
+    } else {
+      this.rend.setMap(mapFactory);
+      this.polyline.setMap(null);
+    }
+  };
+
+  this.Leg.prototype.switchMode = function() {
+    this.getDirections();
+    this.drawLeg();
+  };
+
+  this.Leg.prototype.toggleDetails = function() {
+    this.showDetails = !this.showDetails;
+  };
+
+  this.Leg.prototype.remove = function() {
+    self.removeLeg(this);
+  };
+
+  this.Leg.prototype.getDirections = function(){
+    if (this.travelMode !== "CROW"){
+      var request = {
+      	origin: this.origin.getPosition(),
+      	destination: this.dest.getPosition(),
+      	travelMode: this.travelMode
+      };
+      directionsService.route(request, function(response, status) {
+      	if (status == google.maps.DirectionsStatus.OK) {
+          this.rend.setDirections(response);
+          pathElevationService(this, self.legs);
+      	} else {
+          this.travelMode = "CROW";
+          this.switchMode();
+        } 
+      }.bind(this));
+    } else {
+        this.polyline.setPath([this.origin.getPosition(), this.dest.getPosition()]);
+        this.directDistance = distanceService(this.origin.getPosition(), this.dest.getPosition());
+        pathElevationService(this, self.legs);
+    }
   };
 
   this.addLeg = function(dest){
     var leg;
     if (this.legs.length > 0){
       var lastLeg = this.legs[this.legs.length - 1];
-      leg = this.createLeg(lastLeg.dest, dest, lastLeg.travelMode);
+      leg = new this.Leg(lastLeg.dest, dest, lastLeg.travelMode);
     } else if (!trekOrigin){
       trekOrigin = dest;
     } else { 
-      leg = this.createLeg(trekOrigin, dest);
+      leg = new this.Leg(trekOrigin, dest);
     }
     if (leg){
       this.legs.push(leg);
@@ -161,9 +166,10 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
   };  
 
   google.maps.event.addListener(mapFactory, 'click', function(event) {
-    var newMarker = markerFactory.create(event.latLng, self);
-    self.addLeg(newMarker);
-  });
+    var newMarker = markerFactory.create(event.latLng, this);
+    this.addLeg.call(this, newMarker);
+    if(this.legs.length > 0 && this.legs[this.legs.length-1].travelMode === "CROW") $rootScope.$digest();
+  }.bind(this));
 
   this.moveMarker = function(marker){
     var neighbors = neighborsService(marker, this.legs);
@@ -179,7 +185,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
       markerFactory.resetIndex();
     } else if (!neighbors.prevLeg && neighbors.nextLeg) {
       trekOrigin = neighbors.nextLeg.dest;
-      trekOrigin.setIcon("https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + trekOrigin.index + "|009900|000000");
+      trekOrigin.setIcon("https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + trekOrigin.index + "|608040|000000");
       unRenderLeg(this.legs.shift());
       elevationProfileFactory(this.legs);
     } else if (neighbors.prevLeg && !neighbors.nextLeg) {
@@ -188,14 +194,15 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     } else {
       unRenderLeg(neighbors.prevLeg);
       unRenderLeg(neighbors.nextLeg);
-      var newLeg = this.createLeg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
+      var newLeg = new this.Leg(neighbors.prevLeg.origin, neighbors.nextLeg.dest);
       newLeg.drawLeg();
       var prevIndex = this.legs.indexOf(neighbors.prevLeg);
       this.legs.splice(prevIndex, 2, newLeg);
     }
   };
   
-  this.removeLeg = function(index) {
+  this.removeLeg = function(leg) {
+    var index = this.legs.indexOf(leg);
     if(this.legs.length === 1) {
       this.legs[0].origin.setMap(null);
       this.removeMarker(this.legs[0].dest);

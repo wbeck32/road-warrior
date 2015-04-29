@@ -1,8 +1,9 @@
 $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00ffff;
-$interfaceHeight: 80vh;
 $interfaceWidth: 30em;
+$interfaceHeight: 65vh;
+$maxInterfaceHeight: 45em;
 
 * {
     box-sizing: border-box;
@@ -16,7 +17,7 @@ html, body, #map-canvas, .tab {
 html, body, #map-canvas, #elevation-chart, .tab {
     height: 100%;
 }
-html, body, #map-canvas, #elevation-chart, form input {
+html, body, #map-canvas, #elevation-chart, form input, .searchForm input {
     width: 100%;
 }
 html, body, #map-canvas, .tabList, .legList {
@@ -24,8 +25,16 @@ html, body, #map-canvas, .tabList, .legList {
     padding: 0;
 }
 
-a {
+a, .tab {
     cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a, label, .tab {
+    font-weight: bold;
 }
 
 p {
@@ -33,7 +42,7 @@ p {
     text-indent: .5em;
 }
 
-h2, h3, h4, .tab {
+h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     text-align: center;
 }
 
@@ -49,9 +58,24 @@ h2, h3, h4, .tab {
 .tab, .elevation-toggle, .leg:nth-child(even), {
     background-color: $tabColor;
 }
+.leg:nth-child(odd) {
+    background-color: #dfdfdf;
+}
+.leg:last-child {
+    border-radius: 0 0 5px 5px;
+}
+.leg:first-child {
+    border-radius: 5px 5px 0 0;
+}
+.leg:first-child:last-child {
+    border-radius: 5px;
+}
+.leg, .trek, .teamMember {
+    padding: .2em .5em;
+}
 
 .searchBox {
-   display: none;
+
 }
 
 .logo { 
@@ -68,14 +92,17 @@ h2, h3, h4, .tab {
 .elevation-chart-wrapper {
     position: absolute;
     height: 15%;
-    left: 0; 
-    bottom: 10%;
-    right: 40em;
+    left: 0;
+    width: 75%;
+    bottom: 6%;
     background-color: #fff;
     transition: all .5s ease-in .1s;
 }
 .hideElevation {
     transform: translateX(-100%);
+    .elevation-toggle {
+        background-color: $tabColor;
+    }
 }
 
 .google-visualization-tooltip {
@@ -83,7 +110,7 @@ h2, h3, h4, .tab {
 }
 
 .elevation-toggle {
-    height: 15vh;
+    height: 100%;
     width: 2em;
     float: right;
     background: url('../images/elevation_icon.png') center no-repeat $activeTabColor;
@@ -94,7 +121,9 @@ h2, h3, h4, .tab {
 
 .interfaceContainer {
     height: $interfaceHeight;
+    max-height: $maxInterfaceHeight;
     width: $interfaceWidth;
+    max-width: 65%;
     position:absolute;
     top: 5%;
     right: 0;
@@ -107,6 +136,7 @@ h2, h3, h4, .tab {
 
 .tabList {
     width: $interfaceHeight;
+    max-width: $maxInterfaceHeight;
     height: 2em;
     transform: translateX(-100%) rotate(-90deg);
     transform-origin: bottom right;
@@ -130,16 +160,38 @@ h2, h3, h4, .tab {
     height: 100%;
 }
 
-form {
+.userForm, .searchForm, {
     width: 75%;
-    min-width: 15em;
+    margin: 0 auto 2em;
+}
+
+.legList, .trek {
+    width: 85%;
     margin: 0 auto;
 }
 
-label {
+label, .formAddendum a, .userOptions a {
     display: block;
+}
+
+.formAddendum a, .userOptions a {
+    margin-bottom: 1em;
+}
+
+.trekOptions {
+    margin: .5em auto;
+    font-size: .9em;
+    a {
+        white-space: nowrap;
+    }
+}
+
+.userOptions label, form .errMsg {
+    text-align: left;
+}
+
+label {
     font-size: .8em;
-    font-weight: bold;
 }
 
 form input {
@@ -148,12 +200,12 @@ form input {
 
 form button, .float-right {
     float: right;
+    margin-left: 1em;
 }
 
 input.ng-invalid-required.ng-touched {
-    border: 1px solid red;
+    background-color: #ffdddd;    
 }
-
 
 .errMsg {
     color:red;
@@ -171,9 +223,38 @@ input.ng-invalid-required.ng-touched {
 
 .clearfix:before,
 .clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+    content: " ";
+    display: table;
 }
 .clearfix:after {
     clear: both;
+}
+
+/* Media queries */
+
+@media screen and (min-width: 585px) {
+    .interfaceContainer {
+        height: 83vh;
+    }
+    .tabList {
+        width: 83vh;
+    }
+}
+
+@media screen and (min-width: 920px) {
+    .interfaceContainer {
+        max-width: 40%;
+    }
+    .elevation-chart-wrapper {
+        width: 40%;
+    }
+}
+
+@media screen and (min-width: 585px) and (max-width: 919px) {
+    .interfaceContainer {
+        max-width: 50%;
+    }
+    .elevation-chart-wrapper {
+        width: 35%;
+    }
 }

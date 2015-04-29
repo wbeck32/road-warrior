@@ -3,7 +3,6 @@
 angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapStyles){
 
   var currentPosition = {lat: 45.5227, lng: -122.6731};
-  var showChart = false;
   var mapOptions = {
     zoom: 16,
     draggableCursor: 'crosshair',
@@ -46,37 +45,6 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   locateMe.src = "/images/locationIcon.svg";
   locateMe.style.cursor = "pointer";
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locateMe);
-
-  var elevation = document.createElement('img');
-  elevation.src = "/images/elevation_icon.png";
-  elevation.style.cursor = "pointer";
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(elevation);
-
-/*
-  var elevationButton = document.getElementById('slider-button');
-
-  google.maps.event.addDomListener(elevationButton, 'click', function(){
-    var chart = document.getElementById('elevation-chart');
-    if (showChart){
-      chart.className = 'hideChart';
-      elevationButton.style.backgroundColor='#00bfff';
-    } else {
-      chart.className = 'showChart';
-      elevationButton.style.backgroundColor='#00ffff';
-    }
-    showChart = !showChart;
-  });
-*/
-  google.maps.event.addDomListener(elevation, 'click', function(){
-    var chart = document.getElementById('elevation-chart');
-    if (showChart){
-      chart.className = "hideChart";
-    } else {
-      chart.className = "showChart";
-    }
-    showChart = !showChart;
-  });
-
 
   google.maps.event.addDomListener(locateMe, 'click', function(){
     if (navigator.geolocation) {

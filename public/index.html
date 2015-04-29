@@ -44,21 +44,26 @@
           </li>
         </ul>
       </nav>
-      <div class="interfaceContent" id="interfaceContent" ng-switch="Interface.activePanel">  
+      <div class="interfaceContent" id="interfaceContent" ng-switch="Interface.activePanel" data-ng-controller="TrekController as Trek">  
 
-        <div class="panel" data-ng-switch-when="currentTrek" data-ng-controller="TrekController as Trek">
+        
+        <div class="panel" data-ng-switch-when="currentTrek">
 
           <h3>{{Trek.name}}</h3>
-          <div data-ng-hide="Trek.showEditName">
+          <div class="centerText">total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
+          <div class="centerText trekOptions" data-ng-hide="Trek.showEditName">
             <a data-ng-click="Trek.editName()">rename trek</a>
+            |
             <a data-ng-click="Trek.saveTrek()">save trek</a>
-            <a data-ng-click="Trek.clearTrek()">clear trek</a>
+            |
+            <a data-ng-click="Trek.clearMap()">clear map</a>
           </div>  
           <form data-ng-show="Trek.showEditName" data-ng-submit="Trek.editName()">
-            <input type="text" data-ng-model="Trek.name" placeholder="Name your trek">
+            <label for="newTrekName">New Name</label>
+            <input type="text" id="newTrekName" data-ng-model="Trek.name" placeholder="Name your trek">
           </form>
           
-          <div data-ng-show="Trek.loginToSave">
+          <div data-ng-show="Trek.loginToSave" class="formAddendum">
             <span class="errMsg">You must log in to save a trek</span>
             <div>
               <a data-ng-click="Interface.tabSwitcher('account'); Trek.toggleLoginToSave()">Go to login</a>
@@ -66,15 +71,15 @@
             </div>
           </div>
           <ul class="legList">
-            <li data-ng-repeat="leg in Trek.legs track by $index" class="leg">
-              <a data-ng-click="Trek.toggleDetails($index)">
+            <li data-ng-repeat="leg in Trek.legs" class="leg">
+
+              <a data-ng-click="leg.toggleDetails()">
                 {{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}
               </a>
-
-              <a class="float-right" data-ng-click="Trek.removeLeg($index)">delete</a>
-
-              <div data-ng-show="Trek.showDetails[$index]">
-                <form data-ng-submit="Trek.toggleDetails($index)">
+              <a class="float-right" data-ng-click="leg.remove()">delete</a>
+              
+              <div data-ng-show="leg.showDetails">
+                <form data-ng-submit="leg.toggleDetails()">
                   <div><label>origin name: </label><input type="text" data-ng-model="leg.origin.name"></div>
                   <div><label>destination name: </label><input type="text" data-ng-model="leg.dest.name"></div>
                   <label>travel mode: </label>
@@ -87,24 +92,27 @@
                   </select>
                   <input type="submit" data-ng-hide="true">
                 </form>
-                <div>net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-                <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
+                <div class="centerText">net elevation gain: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
+                <div class="centerText">distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
               </div>
             </li>
           </ul>
-          <div>total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
+          
         </div>
 
-        <div class="panel" data-ng-switch-when="trekList" data-ng-controller="TrekController as Trek">
+        <div class="panel" data-ng-switch-when="trekList">
           <h3>My Treks</h3>
-          <div>
-            <input type="search" data-ng-model="search.name" placeholder="Search your treks">
-          </div>
 
-          <div data-ng-repeat="trek in Trek.treks | filter:search">
+          <div class="searchForm">
+            <label for="searchTreks">Search your treks</label>
+            <input type="search" id="searchTreks" data-ng-model="search.name" placeholder="Search your treks">
+          </div>
+          
+          <div class="trek" data-ng-repeat="trek in Trek.treks | filter:search">
             <a data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</a>
             <a class="float-right" data-ng-click="Trek.deleteTrek(trek)">delete trek</a>
           </div>
+
         </div>
 
         <div class="panel" data-ng-switch-when="about">
@@ -113,26 +121,30 @@
           </p>
           <p>Our goal was to build a web app that would allow a user to create a route (or trek, as we call them) on a map and then save and retrieve them from their own user account. The user can add, subtract and drag waypoints on their trek to change it as they choose and set transportation modes for each leg of their trek. Additionally they can rename treks and waypoints and see distance and elevation between waypoints and as a total.</p>
           <h4>The team</h4>
-          <div>
+          <div class="teamMember">
             <a href="http://www.wendybeck.io" target="_blank">Wendy Beck</a>
+            &sect;
             <a href="http://www.linkedin.com/in/wendybeck/en" target="_blank">LinkedIn</a>
           </div>
-          <div>
+          <div class="teamMember">
             <a href="http://www.describetheruckus.com" target="_blank">Mike Burnett</a>
+            &sect;
             <a href="http://www.linkedin.com/in/mtburnett/en" target="_blank">LinkedIn</a>
           </div>
-          <div>
+          <div class="teamMember">
             <a href="http://www.russelldubrock.com" target="_blank">Russ DuBrock</a>
+            &sect;
             <a href="https://www.linkedin.com/pub/russell-dubrock/2b/354/140" target="_blank">LinkedIn</a>
           </div>
-          <div>
+          <div class="teamMember">
             <a href="http://www.brycewjohnson.com" target="_blank">Bryce Johnson</a>
+            &sect;
             <a href="https://www.linkedin.com/in/brycewjohnson" target="_blank">LinkedIn</a>
           </div>
           
-          <span>
+          <p>
             The code for this project can be found on <a href="https://github.com/wbeck32/road-warrior" target="_blank">GitHub</a>
-          </span>
+          </p>
         </div>
 
         <div class="panel" data-ng-switch-when="account" data-ng-controller="UserController as User" data-ng-switch="User.userState">
@@ -141,7 +153,7 @@
 
             <h4>Log In</h4>
             
-            <form class="clearfix" name="logInForm" data-ng-submit="User.logIn()">
+            <form class="clearfix userForm" name="logInForm" data-ng-submit="User.logIn()">
               <label for="login_name">User Name</label>
               <input required type="text" id="login_name" placeholder="User Name" data-ng-model="User.username">
               <label for="login_password">Password</label>
@@ -149,16 +161,18 @@
               <button data-ng-disabled="logInForm.$invalid">Log in</button>
             </form>
 
-            <div>Don&#39;t have an account yet?</div>
-            <a data-ng-click="User.changeUserState('newUser')">sign up</a>
-            <a data-ng-click="User.resetPassword()">Forgot your password?</a>
+            <div class="formAddendum">Don&#39;t have an account yet?
+              <a data-ng-click="User.changeUserState('newUser')">sign up</a>
+              <a data-ng-click="User.resetPassword()">Forgot your password?</a>
+            </div>
+
           </div>
 
           <div data-ng-switch-when="newUser"> 
             
             <h4>Sign up for TrekSmith to save and share your treks!</h4>
 
-            <form class="clearfix" name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
+            <form class="clearfix userForm" name="createAccountForm" novalidate data-ng-submit="User.createAccount()">
               <label for="username">User Name</label>
               <input required type="text" id="username" name="username" placeholder="User Name" data-ng-blur="User.checkUsername()" data-ng-model="User.username">
               <label for="password">Password</label>
@@ -177,18 +191,21 @@
 
 
             </form>
-            <div>Already have an account?</div>
+
+            <div class="formAddendum">Already have an account?
             <a data-ng-click="User.changeUserState('loggedOut')">log in</a>
-            
+            </div>
+
           </div> 
 
           <div data-ng-switch-when="loggedIn">
             <h3>Welcome, {{User.username}}!</h3>
-            <div>
+
+            <div class="userOptions">
               <a data-ng-click="User.togglePasswordChange()">Change password</a>
 
               <div data-ng-if="User.showPasswordChange">
-                <form class="clearfix" name="passwordChangeForm" data-ng-submit="User.passwordChange();">
+                <form class="clearfix userForm" name="passwordChangeForm" data-ng-submit="User.passwordChange();">
 
                   <label for="oldPassword">Old Password</label>
                   <input required type="password" id="oldPassword" placeholder="Enter Old Password" name="password" data-ng-model="User.password">
@@ -205,16 +222,17 @@
 
                 </form>
               </div>
-            </div>
-            <div>
+
               <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
               <div data-ng-show="User.showDeleteAccount">
                 <span>Are you sure?</span>
                 <div><a data-ng-click="User.deleteAccount()">Yup</a></div>
                 <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
               </div>
+
+              <button data-ng-click="User.signOut()">Sign out</button> 
             </div>
-            <button data-ng-click="User.signOut()">Sign out</button> 
+
           </div>
         </div>
       </div>
