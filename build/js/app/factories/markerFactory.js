@@ -49,7 +49,11 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       
       google.maps.event.addListener(marker, 'click', function(event){
       	$rootScope.$apply(function(){
-      	  thisObj.removeMarker(marker);
+          if(thisObj.legs.length === 1) {
+      	    thisObj.removeLeg(thisObj.legs[0]);
+          } else {
+      	    thisObj.removeMarker(marker);
+          }
       	});
       });
 

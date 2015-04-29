@@ -46,17 +46,18 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
   };
 
   this.renderAll = function(){
-    
-    markerFactory.markerIndex = markerFactory.reverseAsciiIndex(this.legs[this.legs.length - 1].dest.index.charCodeAt(0));
-    trekOrigin = this.legs[0].origin;
-    mapFactory.panTo(trekOrigin.getPosition());
-    mapFactory.setZoom(14);
-    this.legs[0].origin.setMap(mapFactory);
-    this.legs.forEach(function(leg){
-      leg.dest.setMap(mapFactory);
-      leg.drawLeg();
-    });
-    elevationProfileFactory(this.legs);
+    if(this.legs.length > 0) {
+      markerFactory.markerIndex = markerFactory.reverseAsciiIndex(this.legs[this.legs.length - 1].dest.index.charCodeAt(0));
+      trekOrigin = this.legs[0].origin;
+      mapFactory.panTo(trekOrigin.getPosition());
+      mapFactory.setZoom(14);
+      this.legs[0].origin.setMap(mapFactory);
+      this.legs.forEach(function(leg){
+        leg.dest.setMap(mapFactory);
+        leg.drawLeg();
+      });
+      elevationProfileFactory(this.legs);
+    }
   };
 
   this.Leg = function(origin, dest, travelMode){

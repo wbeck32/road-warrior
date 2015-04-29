@@ -40,6 +40,13 @@ angular.module('roadWarrior').controller('TrekController', ['trekService', 'legS
     trekService.allTreks.splice(trekService.allTreks.indexOf(trek), 1);
   };
 
+  this.removeLeg = function(leg){
+    leg.remove();
+    if (this.legs.length === 0 && loadedTrek) {
+      this.deleteTrek(loadedTrek);
+    }
+  };
+  
   this.clearMap = function(){
     legService.unRenderAll();
     this.legs = legService.legs;

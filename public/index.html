@@ -77,7 +77,7 @@
 
               <div class="expandLeg" data-ng-click="leg.toggleDetails()">
                 <a>{{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}</a>
-                <a class="float-right" data-ng-click="leg.remove()">delete</a>
+                <a class="float-right" data-ng-click="Trek.removeLeg(leg)">delete</a>
               </div>
 
               <div data-ng-show="leg.showDetails">
