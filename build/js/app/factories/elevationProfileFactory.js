@@ -13,8 +13,8 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
   google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
   google.visualization.events.addListener(chart, 'onmouseout', removeMarker);
 
-  var data;
-  
+  var data, view;
+
   function chartEvent (point) {
     var latLng = JSON.parse(data.getValue(point.row, 2));
     mapFactory.panTo({lat: latLng.k, lng: latLng.D});
@@ -56,7 +56,18 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
     focusTarget: 'category',
     aggregationTarget: 'series'
   };
-    
+
+  window.addEventListener('resize', resizeThrottler);
+  var resizeTimeout;
+  function resizeThrottler(){
+    if (!resizeTimeout && view) {
+      resizeTimeout = window.setTimeout(function(){
+        resizeTimeout = null;
+        chart.draw(view, chartOptions);
+      }, 650);
+    }
+  }
+  
   return function (legArray) {
 
     chart.clearChart();
@@ -91,7 +102,7 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
       }
     }
     
-    var view = new google.visualization.DataView(data);
+    view = new google.visualization.DataView(data);
     view.hideColumns([2]);
     chart.draw(view, chartOptions);
   };

@@ -9,7 +9,8 @@ $maxInterfaceHeight: 45em;
     box-sizing: border-box;
 }
 html {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
+    color: #222;
 }
 html, body, #map-canvas, .tab {
     overflow: hidden;
@@ -25,7 +26,7 @@ html, body, #map-canvas, .tabList, .legList {
     padding: 0;
 }
 
-a, .tab {
+a, .tab, .expandLeg {
     cursor: pointer;
 }
 
@@ -39,7 +40,18 @@ a, label, .tab {
 
 p {
     line-height: 1.6;
-    text-indent: .5em;
+}
+p:not(:first-of-type) {
+   text-indent: .5em;
+}
+p:first-of-type:first-letter {
+    line-height: 1em;
+    font-size: 3.1em;
+    padding: 0 .1em;
+}
+
+p:first-of-type:first-letter, .tab, .travelMode {
+    float: left;
 }
 
 h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
@@ -71,8 +83,11 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     left: 0;
     width: 75%;
     bottom: 6%;
-    background-color: #fff;
     transition: all .5s ease-in .1s;
+}
+
+.elevation-chart-wrapper, select {
+   background-color: #fff;
 }
 
 .elevation-chart-wrapper,
@@ -90,13 +105,17 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 .elevation-toggle {
     height: 100%;
     width: 2em;
-    float: right;
     background: url('../images/elevation_icon.png') center no-repeat $activeTabColor;
     background-size: 90%;
     border-radius: 0 15px 15px 0;
     transform: translateX(2em);
 }
-.elevation-toggle, .tab, .leg:nth-child(even), {
+
+.elevation-toggle, form button, .float-right, .legStat {
+    float: right;
+}
+
+.tab, .leg:nth-child(even), {
     background-color: $tabColor;
 }
 
@@ -106,7 +125,6 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 
 .google-visualization-tooltip {
     transform: translateY(-15vh);
-    z-index: 100;
 }
 
 .google-visualization-tooltip-item span,
@@ -122,8 +140,7 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     max-width: 65%;
     top: 6%;
     right: 0;
-    transition: width .5s ease-in .1s;
-    z-index: 75;
+    transition: width .5s ease-in;
 }
 
 .hideInterface {
@@ -143,9 +160,9 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 .tab {
     line-height: 2em;
     font-size: .9em;
-    float: left;
     width: 25%;
     border-radius: 15px 15px 0 0;
+    color: #000;
 }
 .activeTab {
     background-color: $activeTabColor;
@@ -158,7 +175,7 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     height: 100%;
 }
 
-.trekOptions {
+.trekOptions, .legStat {
     margin: .5em auto;
     font-size: .9em;
     a {
@@ -186,12 +203,16 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     padding: .2em .5em;
 }
 
+select:focus {
+    outline: none;
+}
+
 .userForm, .searchForm, {
     width: 75%;
     margin: 0 auto 2em;
 }
 
-form input {
+form input, select {
     margin-bottom: .5em;
 }
 
@@ -199,7 +220,7 @@ label, .formAddendum a, .userOptions a, #mapSearch {
     display: block;
 }
 
-label {
+label, {
     font-size: .8em;
 }
 
@@ -212,7 +233,6 @@ label {
 }
 
 form button, .float-right {
-    float: right;
     margin-left: 1em;
 }
 
