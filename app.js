@@ -121,13 +121,13 @@ app.post('/api/signup', function(req, res) {
             var verifyEmailOptions = {
               from: 'Treksmith <hello@treksmith.com>', // sender address
               to: req.body.email, 
-              subject: 'This is how you validate your email address!', // Subject line
-              text: 'Please click on this link to verify your email', // plaintext body
-              html: '<a href="http://localhost:3000/api/verifyemail?access_token='+token+'">Clicky</a>'
+              subject: 'Please confirm your Treksmith email address', // Subject line
+              text: 'Thanks for signing up for Treksmith. We promise we will not sell or share your e-mail address with anyone.', // plaintext body
+              html: 'Thanks for signing up for Treksmith. We promise we will not sell or share your e-mail address with anyone. <br/><a href="http://localhost:3000/api/verifyemail?access_token='+token+'">Click here to confirm your email address</a>.'
             };
             transporter.sendMail(verifyEmailOptions, function(err, info) {
               if (err) console.log(err);  
-              console.log('Email sent!');
+              //console.log('Email sent!');
             });
           }
           res.json({
