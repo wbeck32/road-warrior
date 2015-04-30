@@ -10,7 +10,6 @@
     <meta property="og:description" content="Use Treksmith to plan, create and save customizable routes.">
     <meta property="og:image" content="http://treksmith.com/images/treksmith_fb.png">
     <title>Treksmith - Customize and save your treks.</title>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
 
@@ -46,7 +45,7 @@
           </li>
         </ul>
       </nav>
-      <div class="interfaceContent" id="interfaceContent" ng-switch="Interface.activePanel" data-ng-controller="TrekController as Trek">  
+      <div class="interfaceContent" id="interfaceContent" data-ng-switch="Interface.activePanel" data-ng-controller="TrekController as Trek">  
 
         
         <div class="panel" data-ng-switch-when="currentTrek">
@@ -55,9 +54,9 @@
           <div class="centerText">total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
           <div class="centerText trekOptions" data-ng-hide="Trek.showEditName">
             <a data-ng-click="Trek.editName()">rename trek</a>
-            |
+            <span class="divider"></span>
             <a data-ng-click="Trek.saveTrek()">save trek</a>
-            |
+            <span class="divider"></span>
             <a data-ng-click="Trek.clearMap()">clear map</a>
           </div>  
           <form data-ng-show="Trek.showEditName" data-ng-submit="Trek.editName()">
@@ -232,13 +231,14 @@
               <a data-ng-click= "User.toggleDeleteAccount()">Delete account</a>
               <div data-ng-show="User.showDeleteAccount">
                 <span>Are you sure?</span>
-                <div><a data-ng-click="User.deleteAccount()">Yup</a></div>
-                <div><a data-ng-click="User.toggleDeleteAccount()">Nope</a></div>
+                <div class="verticalSpace">
+                  <a data-ng-click="User.deleteAccount()">Yup</a>
+                  <span class="divider"></span>
+                  <a data-ng-click="User.toggleDeleteAccount()">Nope</a>
+                </div>
               </div>
-
-              <button data-ng-click="User.signOut()">Sign out</button> 
+              <button data-ng-click="User.signOut()">Sign out</button>
             </div>
-
           </div>
         </div>
       </div>

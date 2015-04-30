@@ -57,7 +57,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       	$rootScope.$apply(function(){
           if(thisObj.legs.length === 1) {
       	    thisObj.removeLeg(thisObj.legs[0]);
-          } else {
+          } else if (thisObj.legs.length > 1) {
       	    thisObj.removeMarker(marker);
           }
       	});

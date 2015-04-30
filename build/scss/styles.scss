@@ -9,7 +9,8 @@ $maxInterfaceHeight: 45em;
     box-sizing: border-box;
 }
 html {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
     color: #222;
 }
 html, body, #map-canvas, .tab {
@@ -26,6 +27,11 @@ html, body, #map-canvas, .tabList, .legList {
     padding: 0;
 }
 
+a {
+    font-weight: 400;
+    display: inline-block;
+}
+
 a, .tab, .expandLeg {
     cursor: pointer;
 }
@@ -33,9 +39,11 @@ a, .tab, .expandLeg {
 a:hover {
     text-decoration: underline;
 }
-
-a, label, .tab {
-    font-weight: bold;
+a:active {
+    transform: translate(1px,1px);
+}
+label, .tab {
+    font-weight: 500;
 }
 
 p {
@@ -184,7 +192,7 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 }
 
 .legList, .trek {
-    width: 85%;
+    width: 95%;
     margin: 0 auto;
 }
 .leg:nth-child(odd) {
@@ -216,7 +224,7 @@ form input, select {
     margin-bottom: .5em;
 }
 
-label, .formAddendum a, .userOptions a, #mapSearch {
+label, .formAddendum a, .userOptions > a,  #mapSearch {
     display: block;
 }
 
@@ -232,8 +240,34 @@ label, {
     text-align: left;
 }
 
-form button, .float-right {
-    margin-left: 1em;
+form button, .float-right, .divider {
+    margin-left: 1vw;
+}
+
+.divider {
+    margin-right: 1vw;
+}
+.divider::after {
+    content: "|";
+}
+
+button {
+    background-color: transparent;
+    box-shadow:  0 0 .2em black;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: .5em;
+}
+button:hover {
+    background-color: $tabColor;
+}
+button:active {
+    background-color: $activeTabColor;
+    box-shadow:  0 0 .4em #000;
+}
+
+.verticalSpace {
+    padding: 1em 0;
 }
 
 input.ng-invalid-required.ng-touched {
