@@ -32,6 +32,10 @@ a {
     display: inline-block;
 }
 
+a[href] {
+    color: #003fff;
+}
+
 a, .tab, .expandLeg {
     cursor: pointer;
 }
@@ -46,16 +50,16 @@ label, .tab {
     font-weight: 500;
 }
 
-p {
+.about p {
     line-height: 1.6;
 }
-p:not(:first-of-type) {
-   text-indent: .5em;
+.about p:nth-of-type(2) {
+    text-indent: 1em;
 }
-p:first-of-type:first-letter {
+.about p:first-of-type:first-letter {
     line-height: 1em;
     font-size: 3.1em;
-    padding: 0 .1em;
+    padding-right: .1em;
 }
 
 p:first-of-type:first-letter, .tab, .travelMode {
@@ -105,9 +109,13 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 
 .hideElevation {
     transform: translateX(-100%);
-    .elevation-toggle {
-        background-color: $tabColor;
-    }
+}
+
+.hideElevation .elevation-toggle,
+button:hover,
+button:focus,
+.tab {
+    background-color: $tabColor;
 }
 
 .elevation-toggle {
@@ -121,10 +129,6 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 
 .elevation-toggle, form button, .float-right, .legStat {
     float: right;
-}
-
-.tab, .leg:nth-child(even), {
-    background-color: $tabColor;
 }
 
 .tooltip-text{
@@ -172,7 +176,7 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     border-radius: 15px 15px 0 0;
     color: #000;
 }
-.activeTab {
+.activeTab, button:active {
     background-color: $activeTabColor;
 }
 
@@ -196,7 +200,10 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     margin: 0 auto;
 }
 .leg:nth-child(odd) {
-    background-color: #dfdfdf;
+    background-color: rgba(0,191,255,.75);
+}
+.leg:nth-child(even) {
+    background-color: rgba(0,255,255,.15);
 }
 .leg:last-child {
     border-radius: 0 0 5px 5px;
@@ -209,6 +216,9 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 }
 .leg, .trek, .teamMember {
     padding: .2em .5em;
+}
+.github {
+    margin: 1em 0;
 }
 
 select:focus {
@@ -224,16 +234,12 @@ form input, select {
     margin-bottom: .5em;
 }
 
-label, .formAddendum a, .userOptions > a,  #mapSearch {
+label, #mapSearch {
     display: block;
 }
 
 label, {
     font-size: .8em;
-}
-
-.formAddendum a, .userOptions a {
-    margin-bottom: 1em;
 }
 
 .userOptions label, form .errMsg {
@@ -258,11 +264,8 @@ button {
     border-radius: 5px;
     padding: .5em;
 }
-button:hover {
-    background-color: $tabColor;
-}
+
 button:active {
-    background-color: $activeTabColor;
     box-shadow:  0 0 .4em #000;
 }
 
@@ -276,6 +279,8 @@ input.ng-invalid-required.ng-touched {
 
 .errMsg {
     color:red;
+    font-size: .9em;
+    font-weight: 500;
 }
 
 /* micro-clearfix */
