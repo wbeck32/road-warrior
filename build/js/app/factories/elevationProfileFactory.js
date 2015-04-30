@@ -2,18 +2,17 @@
 
 angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', function(mapFactory){
 
-//    position: new google.maps.LatLng(latLng.k, latLng.D),
-//    map: mapFactory  
-
   var marker = new google.maps.Marker({
     icon: { path: google.maps.SymbolPath.CIRCLE, scale: 4 }
   });
-  
-  var chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
-  google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
-  google.visualization.events.addListener(chart, 'onmouseout', removeMarker);
+
+  var chartWrapper = document.getElementById('elevation-chart-wrapper');
 
   var data, view;
+  
+  var chart = new google.visualization.LineChart(document.getElementById('elevation-chart'));
+    google.visualization.events.addListener(chart, 'onmouseover', chartEvent);
+    google.visualization.events.addListener(chart, 'onmouseout', removeMarker);
 
   function chartEvent (point) {
     var latLng = JSON.parse(data.getValue(point.row, 2));
@@ -69,42 +68,43 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
   }
   
   return function (legArray) {
+    if (!chartWrapper.classList.contains('hideElevation')){
+      chart.clearChart();
+      data = new google.visualization.DataTable();
+      data.addColumn('number', 'Distance');    
+      data.addColumn('number', 'Elevation');
+      data.addColumn({type: 'string', role: 'annotation'});
+      data.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+      data.addColumn({type:'string', role: 'annotation'}, 'Marker');
 
-    chart.clearChart();
-    data = new google.visualization.DataTable();
-    data.addColumn('number', 'Distance');    
-    data.addColumn('number', 'Elevation');
-    data.addColumn({type: 'string', role: 'annotation'});
-    data.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
-    data.addColumn({type:'string', role: 'annotation'}, 'Marker');
+      var totalDistance = 0;
+      var legDistance, legPoints, incr, elevation, location, tooltip;
 
-    var totalDistance = 0;
-    var legDistance, legPoints, incr, elevation, location, tooltip;
-
-    for (var i = 0; i < legArray.length; i++) {
-      if (legArray[i].travelMode !== "CROW") {
-        legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
-      } else legDistance = legArray[i].directDistance;
-      legPoints = legArray[i].elevationProfile.length;
-      incr = legDistance / legPoints;
-      for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
-        var marker = '';
-        if (j === 0) {
-          marker = legArray[i].origin.index;
-        } else if (i === legArray.length - 1 && j === legArray[i].elevationProfile.length - 1) {
-          marker = legArray[i].dest.index;
+      for (var i = 0; i < legArray.length; i++) {
+        if (legArray[i].travelMode !== "CROW") {
+          legDistance = legArray[i].rend.directions.routes[0].legs[0].distance.value;
+        } else legDistance = legArray[i].directDistance;
+        legPoints = legArray[i].elevationProfile.length;
+        incr = legDistance / legPoints;
+        for (var j = 0; j < legArray[i].elevationProfile.length; j++) {
+          var marker = '';
+          if (j === 0) {
+            marker = legArray[i].origin.index;
+          } else if (i === legArray.length - 1 && j === legArray[i].elevationProfile.length - 1) {
+            marker = legArray[i].dest.index;
+          }
+          elevation = legArray[i].elevationProfile[j].elevation;
+          location = JSON.stringify(legArray[i].elevationProfile[j].location);
+          tooltip = '<div class="tooltip-text"><div><b>Distance:</b> ' + (totalDistance*0.000621371).toFixed(2) + ' miles</div><div><b>Elevation:</b> ' + (legArray[i].elevationProfile[j].elevation*3.28084).toFixed(0) + ' feet</div></div>';
+      	  data.addRow([totalDistance, elevation, location, tooltip, marker]);
+      	  totalDistance += incr;
         }
-        elevation = legArray[i].elevationProfile[j].elevation;
-        location = JSON.stringify(legArray[i].elevationProfile[j].location);
-        tooltip = '<div class="tooltip-text"><div><b>Distance:</b> ' + (totalDistance*0.000621371).toFixed(2) + ' miles</div><div><b>Elevation:</b> ' + (legArray[i].elevationProfile[j].elevation*3.28084).toFixed(0) + ' feet</div></div>';
-      	data.addRow([totalDistance, elevation, location, tooltip, marker]);
-      	totalDistance += incr;
       }
+      
+      view = new google.visualization.DataView(data);
+      view.hideColumns([2]);
+      chart.draw(view, chartOptions);
     }
-    
-    view = new google.visualization.DataView(data);
-    view.hideColumns([2]);
-    chart.draw(view, chartOptions);
   };
 }]);
 
