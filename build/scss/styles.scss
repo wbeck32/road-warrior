@@ -9,7 +9,8 @@ $maxInterfaceHeight: 45em;
     box-sizing: border-box;
 }
 html {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
     color: #222;
 }
 html, body, #map-canvas, .tab {
@@ -26,6 +27,15 @@ html, body, #map-canvas, .tabList, .legList {
     padding: 0;
 }
 
+a {
+    font-weight: 400;
+    display: inline-block;
+}
+
+a[href] {
+    color: #003fff;
+}
+
 a, .tab, .expandLeg {
     cursor: pointer;
 }
@@ -33,21 +43,23 @@ a, .tab, .expandLeg {
 a:hover {
     text-decoration: underline;
 }
-
-a, label, .tab {
-    font-weight: bold;
+a:active {
+    transform: translate(1px,1px);
+}
+label, .tab {
+    font-weight: 500;
 }
 
-p {
+.about p {
     line-height: 1.6;
 }
-p:not(:first-of-type) {
-   text-indent: .5em;
+.about p:nth-of-type(2) {
+    text-indent: 1em;
 }
-p:first-of-type:first-letter {
+.about p:first-of-type:first-letter {
     line-height: 1em;
     font-size: 3.1em;
-    padding: 0 .1em;
+    padding-right: .1em;
 }
 
 p:first-of-type:first-letter, .tab, .travelMode {
@@ -97,9 +109,13 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 
 .hideElevation {
     transform: translateX(-100%);
-    .elevation-toggle {
-        background-color: $tabColor;
-    }
+}
+
+.hideElevation .elevation-toggle,
+button:hover,
+button:focus,
+.tab {
+    background-color: $tabColor;
 }
 
 .elevation-toggle {
@@ -113,10 +129,6 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 
 .elevation-toggle, form button, .float-right, .legStat {
     float: right;
-}
-
-.tab, .leg:nth-child(even), {
-    background-color: $tabColor;
 }
 
 .tooltip-text{
@@ -164,7 +176,7 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
     border-radius: 15px 15px 0 0;
     color: #000;
 }
-.activeTab {
+.activeTab, button:active {
     background-color: $activeTabColor;
 }
 
@@ -184,11 +196,14 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 }
 
 .legList, .trek {
-    width: 85%;
+    width: 95%;
     margin: 0 auto;
 }
 .leg:nth-child(odd) {
-    background-color: #dfdfdf;
+    background-color: rgba(0,191,255,.75);
+}
+.leg:nth-child(even) {
+    background-color: rgba(0,255,255,.15);
 }
 .leg:last-child {
     border-radius: 0 0 5px 5px;
@@ -201,6 +216,9 @@ h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
 }
 .leg, .trek, .teamMember {
     padding: .2em .5em;
+}
+.github {
+    margin: 1em 0;
 }
 
 select:focus {
@@ -216,7 +234,7 @@ form input, select {
     margin-bottom: .5em;
 }
 
-label, .formAddendum a, .userOptions a, #mapSearch {
+label, #mapSearch {
     display: block;
 }
 
@@ -224,16 +242,35 @@ label, {
     font-size: .8em;
 }
 
-.formAddendum a, .userOptions a {
-    margin-bottom: 1em;
-}
-
 .userOptions label, form .errMsg {
     text-align: left;
 }
 
-form button, .float-right {
-    margin-left: 1em;
+form button, .float-right, .divider {
+    margin-left: 1vw;
+}
+
+.divider {
+    margin-right: 1vw;
+}
+.divider::after {
+    content: "|";
+}
+
+button {
+    background-color: transparent;
+    box-shadow:  0 0 .2em black;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: .5em;
+}
+
+button:active {
+    box-shadow:  0 0 .4em #000;
+}
+
+.verticalSpace {
+    padding: 1em 0;
 }
 
 input.ng-invalid-required.ng-touched {
@@ -242,6 +279,8 @@ input.ng-invalid-required.ng-touched {
 
 .errMsg {
     color:red;
+    font-size: .9em;
+    font-weight: 500;
 }
 
 /* micro-clearfix */

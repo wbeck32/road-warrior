@@ -77,7 +77,9 @@ angular.module('roadWarrior').controller('TrekController', ['trekService', 'legS
   };
 
   this.editName = function(){
-    this.showEditName = !this.showEditName;
+    if(this.name.length > 0) {
+      this.showEditName = !this.showEditName;
+    }
   };
 
 }]);
