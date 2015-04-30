@@ -127,6 +127,14 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     self.removeLeg(this);
   };
 
+  this.Leg.prototype.getDistance = function() {
+    if (this.travelMode !== 'CROW'){
+      if (this.rend.directions){
+        return this.rend.directions.routes[0].legs[0].distance.value * 0.0006214;
+      } else return 0;
+    } else return this.directDistance * 0.0006214;
+  };
+  
   this.Leg.prototype.getDirections = function(){
     if (this.travelMode !== "CROW"){
       var request = {

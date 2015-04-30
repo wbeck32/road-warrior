@@ -4,7 +4,12 @@ angular.module('roadWarrior').controller('TrekController', ['trekService', 'legS
 
   this.legs = legService.legs;
   this.name = "new trek";
-
+  this.totalDistance = function(){
+    return this.legs.reduce(function(prev, leg, index, array){
+      return prev + leg.getDistance();
+    }, 0).toFixed(2);
+  };
+  
   this.treks = trekService.allTreks;
   
   this.showEditName = false;

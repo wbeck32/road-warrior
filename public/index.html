@@ -51,7 +51,7 @@
         <div class="panel" data-ng-switch-when="currentTrek">
 
           <h3>{{Trek.name}}</h3>
-          <div class="centerText">total distance: {{ Trek.legs|totalDistance | metersToMiles }} miles</div>
+          <div class="centerText">total distance: {{ Trek.totalDistance() }} miles</div>
           <div class="centerText trekOptions" data-ng-hide="Trek.showEditName">
             <a data-ng-click="Trek.editName()">rename trek</a>
             <span class="divider"></span>
@@ -77,7 +77,7 @@
             <li data-ng-repeat="leg in Trek.legs" class="leg clearfix">
 
               <div class="expandLeg" data-ng-click="leg.toggleDetails()">
-                <a>{{leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{leg.dest.index}}{{Trek.markerName(leg.dest)}}</a>
+                <a>{{::leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{::leg.dest.index}}{{Trek.markerName(leg.dest)}}</a>
                 <a class="float-right" data-ng-click="Trek.removeLeg(leg)">delete</a>
               </div>
 
@@ -96,8 +96,8 @@
                     </select>
                   </div>
                   <div class="legStat">
-                    <div>net elevation: {{ leg.dest.elevation - leg.origin.elevation | metersToFeet }} feet</div>
-                    <div>distance: {{ [leg] | totalDistance |  metersToMiles }} miles</div>
+                    <div>net elevation: {{((leg.dest.elevation-leg.origin.elevation)*3.281).toFixed(0)}} feet</div>
+                    <div>distance: {{ leg.getDistance().toFixed(2) }} miles</div>
                   </div>
                   <input type="submit" data-ng-hide="true">
                 </form>
@@ -207,7 +207,7 @@
           </div> 
 
           <div data-ng-switch-when="loggedIn">
-            <h3>Welcome, {{User.username}}!</h3>
+            <h3>Welcome, {{::User.username}}!</h3>
 
             <div class="userOptions">
               <p><a data-ng-click="User.togglePasswordChange()">Change password</a></p>
