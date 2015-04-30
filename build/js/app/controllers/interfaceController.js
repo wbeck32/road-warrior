@@ -2,7 +2,7 @@
 
 angular.module('roadWarrior').controller('InterfaceController', ['$cookies', 'trekService', function($cookies, trekService){
   
-  this.activePanel = 'currentTrek';
+  this.activePanel = null;
 
   var interface = document.getElementById('interface');
   

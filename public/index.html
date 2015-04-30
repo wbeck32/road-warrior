@@ -28,7 +28,7 @@
       <div id="elevation-chart"></div>  
     </div>
 
-    <div class="interfaceContainer" id="interface" data-ng-controller="InterfaceController as Interface" data-ng-cloak>  
+    <div class="interfaceContainer hideInterface" id="interface" data-ng-controller="InterfaceController as Interface" data-ng-cloak>  
       <nav>
         <ul class="tabList">
           <li class="tab" id="accountTab" data-ng-click="Interface.tabSwitcher('account')">
@@ -37,7 +37,7 @@
           <li class="tab" id="trekListTab" data-ng-click="Interface.tabSwitcher('trekList')">
             <span>my treks</span>
           </li>
-          <li class="tab activeTab" id="currentTrekTab" data-ng-click="Interface.tabSwitcher('currentTrek')">
+          <li class="tab" id="currentTrekTab" data-ng-click="Interface.tabSwitcher('currentTrek')">
             <span>current trek</span>
           </li>
           <li class="tab" id="aboutTab" data-ng-click="Interface.tabSwitcher('about')">
