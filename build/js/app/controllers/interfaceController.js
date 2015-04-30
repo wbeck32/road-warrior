@@ -4,19 +4,21 @@ angular.module('roadWarrior').controller('InterfaceController', ['$cookies', 'tr
   
   this.activePanel = 'currentTrek';
 
+  var interface = document.getElementById('interface');
+  
   this.tabSwitcher = function(tab){
     if (this.activePanel === tab){
       this.activePanel = null;
-      document.getElementById(tab + "Tab").className = "tab";
-      document.getElementById('interface').className = "interfaceContainer hideInterface";
+      document.getElementById(tab + 'Tab').classList.remove('activeTab');
+      interface.classList.add('hideInterface');
     } else {
       if (this.activePanel){
-        document.getElementById(this.activePanel + "Tab").className = "tab";
+        document.getElementById(this.activePanel + 'Tab').classList.remove('activeTab');
       } else {
-        document.getElementById('interface').className = "interfaceContainer showInterface";
+        interface.classList.remove('hideInterface');
       }
       this.activePanel = tab;
-      document.getElementById(tab + "Tab").className = "tab activeTab";      
+      document.getElementById(tab + 'Tab').classList.add('activeTab');      
     }
   };
 

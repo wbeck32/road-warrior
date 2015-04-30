@@ -2,7 +2,8 @@
 
 angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
   
-
+  var interface = document.getElementById('interface');
+  
   return {
     
     markerIndex : 0,
@@ -44,7 +45,12 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
       this.markerIndex++;
       
       if (!dontRenderNow) {
-        mapFactory.panTo(latLng);
+        if (interface.classList.contains("hideInterface")){
+          mapFactory.panTo(latLng);
+        } else {
+          var span = mapFactory.getBounds().toSpan();
+          mapFactory.panTo({lat: latLng.lat(), lng: latLng.lng() + span.lng()/4});
+        }
       }
       
       google.maps.event.addListener(marker, 'click', function(event){
