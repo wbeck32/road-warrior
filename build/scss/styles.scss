@@ -145,6 +145,11 @@ button:focus,
     display: none!important;
 }
 
+#noUsername {
+    color: transparent;
+    transition: color 1s ease-in;
+}
+
 .interfaceContainer {
     height: $interfaceHeight;
     max-height: $maxInterfaceHeight;

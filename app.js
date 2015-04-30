@@ -126,7 +126,7 @@ app.post('/api/signup', function(req, res) {
               to: req.body.email, 
               subject: 'Please confirm your Treksmith email address', // Subject line
               text: 'Thanks for signing up for Treksmith. We promise we will not sell or share your e-mail address with anyone.', // plaintext body
-              html: 'Thanks for signing up for Treksmith. We promise we will not sell or share your e-mail address with anyone. <br/><a href="http://localhost:3000/api/verifyemail?access_token='+token+'">Click here to confirm your email address</a>.'
+              html: 'Thanks for signing up for Treksmith. We promise we will not sell or share your e-mail address with anyone. <br/><a href="http://treksmith.com/api/verifyemail?access_token='+token+'">Click here to confirm your email address</a>.'
             };
             transporter.sendMail(verifyEmailOptions, function(err, info) {
               if (err) console.log(err);  

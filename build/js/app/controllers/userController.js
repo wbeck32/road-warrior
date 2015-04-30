@@ -61,6 +61,12 @@ angular.module('roadWarrior').controller('UserController', ['userService', funct
   this.resetPassword = function() {
     if(this.username && this.username.length > 0){
       userService.resetPassword(this.username);
+    } else {
+      var noUsername = document.getElementById('noUsername');
+      noUsername.setAttribute('style', 'color: red');
+      window.setTimeout(function(){
+        noUsername.setAttribute('style', 'color: transparent');
+      }, 3000);      
     }
   };
 
