@@ -42,7 +42,7 @@ angular.module('roadWarrior').service('userService', ['$http', 'trekService', 'l
     this.username = null;
     this.userState = 'loggedOut';
     legService.unRenderAll();
-    trekService.allTreks = [];
+    trekService.allTreks.splice(0,trekService.allTreks.length);
   };
 
   this.createAccount = function(username, password, email, cb) {

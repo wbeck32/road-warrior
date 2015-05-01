@@ -40,7 +40,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 	leg.dest.setMap(null);
         unRenderLeg(leg);
       });
-      this.legs = [];
+      this.legs.splice(0,this.legs.length);
     }
     elevationProfileFactory(this.legs);
   };
