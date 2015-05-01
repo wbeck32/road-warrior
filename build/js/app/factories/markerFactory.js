@@ -49,7 +49,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
           mapFactory.panTo(latLng);
         } else {
           var span = mapFactory.getBounds().toSpan();
-          mapFactory.panTo({lat: latLng.lat(), lng: latLng.lng() + span.lng()/4});
+          mapFactory.panTo({lat: latLng.lat(), lng: latLng.lng() + span.lng()/3});
         }
       }
       
