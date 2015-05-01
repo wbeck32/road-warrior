@@ -74,6 +74,11 @@ angular.module('roadWarrior').controller('TrekController', ['trekService', 'legS
         else {
           loadedTrek.name = this.name;
         }
+        var saveTrek = document.getElementById('saveTrek');
+        saveTrek.setAttribute('style', 'color: green');
+        window.setTimeout(function(){
+          saveTrek.setAttribute('style', 'color: black');
+        }, 1000);
         trekService.saveTrek(loadedTrek);
       } else {
         this.toggleLoginToSave();
