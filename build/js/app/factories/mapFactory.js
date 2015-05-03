@@ -3,7 +3,6 @@
 angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapStyles){
 
   var currentPosition = {lat: 45.5227, lng: -122.6731};
-  var showChart = false;
   var mapOptions = {
     zoom: 16,
     draggableCursor: 'crosshair',
@@ -21,10 +20,7 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  var input = /** @type {HTMLInputElement} */(
-      document.getElementById('pac-input'));
-
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+  var input = document.getElementById('mapSearch');
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
 
@@ -46,36 +42,6 @@ angular.module('roadWarrior').factory('mapFactory', ['mapStyles', function(mapSt
   locateMe.src = "/images/locationIcon.svg";
   locateMe.style.cursor = "pointer";
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locateMe);
-
-  var elevation = document.createElement('img');
-  elevation.src = "/images/elevation_icon.png";
-  elevation.style.cursor = "pointer";
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(elevation);
-
-  var elevationButton = document.getElementById('slider-button');
-
-  google.maps.event.addDomListener(elevationButton, 'click', function(){
-    var chart = document.getElementById('elevation-wrapper');
-    if (showChart){
-      chart.className = 'hideChart';
-      elevationButton.style.backgroundColor='#00bfff';
-    } else {
-      chart.className = 'showChart';
-      elevationButton.style.backgroundColor='#00ffff';
-    }
-    showChart = !showChart;
-  });
-
-  google.maps.event.addDomListener(elevation, 'click', function(){
-    var chart = document.getElementById('elevation-wrapper');
-    if (showChart){
-      chart.className = "hideChart";
-    } else {
-      chart.className = "showChart";
-    }
-    showChart = !showChart;
-  });
-
 
   google.maps.event.addDomListener(locateMe, 'click', function(){
     if (navigator.geolocation) {

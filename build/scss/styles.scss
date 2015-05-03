@@ -1,473 +1,337 @@
-$height: 100%;
-
-$elGraphNegMarg: -64%;
-$elevationGraphWidth: 64%;
-$elGraphPosMarg: 0;
-$medGraphWidth: 50%;
-$medGraphNegMarg: -50%;
-
 $opacity: .8;
 $tabColor: #00bfff;
 $activeTabColor: #00ffff;
-$white: #fff;
-$black: #000;
-$sidebarWidth: 28vw;
-$smallSidebarWidth: 60vw;
-$mediumSidebarWidth: 40vw;
-$sidebarHeight: 80vh;
+$interfaceWidth: 30em;
+$interfaceHeight: 65vh;
+$maxInterfaceHeight: 45em;
 
-html, body{
+* {
+    box-sizing: border-box;
+}
+html {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    color: #222;
+}
+html, body, #map-canvas, .tab {
+    overflow: hidden;
+}
+html, body, #map-canvas, #elevation-chart, .tab {
     height: 100%;
+}
+html, body, #map-canvas, #elevation-chart, form input, .searchForm input {
     width: 100%;
+}
+html, body, #map-canvas, .tabList, .legList {
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans', sans-serif;
-    overflow: hidden;
-} 
-
-#map-canvas {
-    height: 100%;
-    width: 100%;
 }
 
-#pac-input {
-    width: 25%;
-    height: 4vh;
-    float: center;
-    font-size: 1.5em;
-    margin-top: 4vh;
+a {
+    font-weight: 400;
+    display: inline-block;
 }
 
-.errMsg {
-    color:red;
+a[href] {
+    color: #003fff;
 }
 
-.user-forms input.ng-untouched ~ .errMsg {
-    display:none;
+a, .tab, .expandLeg {
+    cursor: pointer;
 }
 
-.bold {
-    font-weight:bold;
+a:hover {
+    text-decoration: underline;
+}
+a:active {
+    transform: translate(1px,1px);
+}
+label, .tab {
+    font-weight: 500;
 }
 
-#elevation-wrapper {
-    width: $elevationGraphWidth;
-    @media screen and (min-width: 481px) and (max-width: 1000px) {
-        width: $medGraphWidth;
-    }
-    height: 15%;
-    opacity: $opacity;
-    z-index: 100;
-    position: absolute;
-    bottom: 15%;
-
-    #nested-elevation-wrapper {
-        height: 100%;
-        width: 100%;
-        background-color: $white;
-        overflow: hidden;
-
-            #elevation-chart {
-                height: 100%;
-                padding: 0 1%;
-            }
-    }
-
-    #slider-button {
-        position: relative;
-        right: -15vh;
-        text-align: center;
-        float: right;
-        width: 15vh;
-        height: 2vw;
-        min-height: 25px;
-        @media screen and (max-width: 768px) {
-            height: 4vw;
-        }
-        border-top-right-radius: 1.5vw;
-        border-top-left-radius: 1.5vw;
-        background-color: $tabColor;
-        cursor: pointer;
-        transform: rotate(90deg);
-        transform-origin: bottom left;
-        overflow: hidden;
-    }
+.about p {
+    line-height: 1.6;
+}
+.about p:nth-of-type(2) {
+    text-indent: 1em;
+}
+.about p:first-of-type:first-letter {
+    line-height: 1em;
+    font-size: 3.1em;
+    padding-right: .1em;
 }
 
-#elevation-wrapper.hideChart {
-    margin-left: $elGraphNegMarg;
-    @media screen and (min-width: 481px) and (max-width: 1000px) {
-        margin-left: $medGraphNegMarg;
-    }
+p:first-of-type:first-letter, .tab, .travelMode {
+    float: left;
 }
 
-#elevation-wrapper.showChart {
-    margin-left: $elGraphPosMarg;
-}
-svg{
-    overflow: visible!important;
+h2, h3, h4, .tab, .centerText, .formAddendum, .userOptions, .teamMember {
+    text-align: center;
 }
 
-.hideChart {
-    animation-duration: 1s;
-    animation-name: slideout;
-}
-
-.showChart {
-    animation-duration: 1s;
-    animation-name: slidein;
-}
-
-@keyframes slideout {
-    from { margin-left: $elGraphPosMarg; }
-    to { margin-left: $elGraphNegMarg; }
-}
-@keyframes slidein {
-    from { margin-left: $elGraphNegMarg; }
-    to { margin-left: $elGraphPosMarg; }
-}
-
-@media screen and (min-width: 481px) and (max-width: 1000px) {
-    @keyframes slideout {
-        from { margin-left: $elGraphPosMarg; }
-        to { margin-left: $medGraphNegMarg; }
-    }
-    @keyframes slidein {
-        from { margin-left: $medGraphNegMarg; }
-        to { margin-left: $elGraphPosMarg; }
-    }
-}
-
-#sideMenu {
-    height: $sidebarHeight;
-    width: $sidebarWidth;
-    @media screen and (max-width: 520px) {
-        width: $smallSidebarWidth; 
-        height: $sidebarHeight * .8;
-    }
-    @media screen and (min-width: 521px) and (max-width: 1000px) {
-        width: $mediumSidebarWidth; 
-    }
+#mapSearch, .logo, .elevation-chart-wrapper, .interfaceContainer {
     position:absolute;
-    top: 5%;
-
-    #sidebarContent {
-        width:100%;
-        height: 100%;
-        background-color:$white;
-        overflow: hidden;
-        opacity: $opacity;
-        margin-left: -1px;
-    }
-
-    .tabList {
-        position: relative;
-        height: 2vw;
-        @media screen and (max-width: 768px) {
-            height: 4vw;
-        }
-        min-height: 25px;
-        right: $sidebarHeight;
-        width: $sidebarHeight;
-        @media screen and (max-width: 520px) {
-            right: $sidebarHeight * .8;
-            width: $sidebarHeight * .8;
-        }
-        transform: rotate(-90deg);
-        transform-origin: bottom right;
-
-        .tab {
-            height: 100%;
-            width: 25%;
-            float: left;
-            border-top-left-radius: 1.5vw;
-            border-top-right-radius: 1.5vw;
-            background-color: $tabColor;
-            color: $black;
-            overflow:hidden;
-            cursor: pointer;
-            opacity: 0.8;
-            div {
-                span {
-                    display: inline-block;
-                    height: 100%;
-                    vertical-align: middle;
-                }
-                vertical-align: middle;
-                text-align: center;
-                font-size: .8em;
-            }
-        }
-        .activeTab {
-            color: $black;
-            opacity: $opacity;
-            background-color: $activeTabColor;
-        }
-    }
 }
 
-#sideMenu.hideMenu {
-    right: -$sidebarWidth;
-    @media screen and (max-width: 480px) {
-        right: -$smallSidebarWidth;
-    }
-    @media screen and (min-width: 481px) and (max-width: 1000px) {
-        right: -$mediumSidebarWidth;
-    }
-}
-
-#sideMenu.showMenu {
-    right: 0;
-}
-
-.hideMenu {
-    animation-duration: 1s;
-    animation-name: hideMenu;
-}
-
-.showMenu {
-    animation-duration: 1s;
-    animation-name: showMenu;
-}
-
-@media screen and (min-width: 1001px) {
-    @keyframes showMenu {
-        from { right: -$sidebarWidth; }
-        to { right: 0; }
-    }
-    @keyframes hideMenu {
-        from { right: 0; }
-        to { right: -$sidebarWidth; }
-    }
-}
-@media screen and (max-width: 480px) {
-    @keyframes showMenu {
-        from { right: -$smallSidebarWidth; }
-        to { right: 0; }
-    }
-    @keyframes hideMenu {
-        from { right: 0; }
-        to { right: -$smallSidebarWidth; }
-    }
-}
-    @media screen and (min-width: 481px) and (max-width: 1000px) {
-    @keyframes showMenu {
-        from { right: -$mediumSidebarWidth; }
-        to { right: 0; }
-    }
-    @keyframes hideMenu {
-        from { right: 0; }
-        to { right: -$mediumSidebarWidth; }
-    }
-}
-
-.google-visualization-tooltip {
-    border: 0px!important;
-    box-shadow: 0px 0px 0px 0px!important;
-    background: transparent!important;
-}
-
-.google-visualization-tooltip-item-list{
-    margin: 0px;
-}
-.google-visualization-tooltip-item span{
-    display: none!important;
-}
-
-.google-visualization-tooltip-square {
-    display: none!important;
-}
-
-.google-visualization-tooltip-item {
-    margin: 0!important;
-}
-
-.tooltip-text{
-    text-shadow: .5px .5px 1px gray;
-}
-
-.panel {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-}
-
-.trekList {
-    margin:0 0 1% 0;
-    max-height:20%;
-}
-
-#trekOptions {
-    @media screen and (max-width: 750px){
-        font-size: 2vw;
-    }
-}
-
-#trekDetails {
-    height: 100%;
-}
-
-.trekTitle {
-    height: 10%;
-    width: 100%;
-    border-bottom: 1px solid $black;
-    text-align: center;
-    overflow: hidden;
-    min-height: 45px;
-}
-
-#legList {
-    width: 100%;
-    height: 80%;
-    overflow-y: scroll !important;
-}
-.totalDistance {
-    font-size: 2.5vh;
-    padding-top: 1vh;
-    border-top: 1px solid $black;
-    text-align: center;
+#mapSearch {
+    z-index:51;
+    top:5.5%;
+    left: 30%;
+    width: 40%;
+    height: 1.4em;
 }
 
 .logo { 
-    display:inline;
     z-index:50;
-    position:absolute;
-    top:3%;
-    margin-left: 2%;
+    top:1%;
     img {
         max-width: 30vw;
     }
 }
 
-.leg, .trek {
+.elevation-chart-wrapper {
+    height: 15%;
+    left: 0;
+    width: 75%;
+    bottom: 6%;
+    transition: all .5s ease-in .1s;
+}
+
+.elevation-chart-wrapper, select {
+   background-color: #fff;
+}
+
+.elevation-chart-wrapper,
+.tab {
+    opacity: $opacity;
+}
+
+.hideElevation {
+    transform: translateX(-100%);
+}
+
+.hideElevation .elevation-toggle,
+button:hover,
+button:focus,
+.tab {
+    background-color: $tabColor;
+}
+
+.elevation-toggle {
+    height: 100%;
+    width: 2em;
+    background: url('../images/elevation_icon.png') center no-repeat $activeTabColor;
+    background-size: 90%;
+    border-radius: 0 15px 15px 0;
+    transform: translateX(2em);
+}
+
+.elevation-toggle, form button, .float-right, .legStat {
+    float: right;
+}
+
+.tooltip-text{
+    width: 10em;
+}
+
+.google-visualization-tooltip {
+    transform: translateY(-15vh);
+}
+
+.google-visualization-tooltip-item span,
+.google-visualization-tooltip-square,
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none!important;
+}
+
+#noUsername {
+    color: transparent;
+    transition: color 1s ease-in;
+}
+
+.interfaceContainer {
+    height: $interfaceHeight;
+    max-height: $maxInterfaceHeight;
+    width: $interfaceWidth;
+    max-width: 65%;
+    top: 6%;
+    right: 0;
+    transition: width .5s ease-in;
+}
+
+.hideInterface {
+    width: 0;
+}
+
+.tabList, .legList {
+    list-style-type: none;
+}
+.tabList {
+    width: $interfaceHeight;
+    max-width: $maxInterfaceHeight;
+    height: 2em;
+    transform: translateX(-100%) rotate(-90deg);
+    transform-origin: bottom right;
+}
+.tab {
+    line-height: 2em;
+    font-size: .9em;
+    width: 25%;
+    border-radius: 15px 15px 0 0;
+    color: #000;
+}
+.activeTab, button:active {
+    background-color: $activeTabColor;
+}
+
+.interfaceContent {
+    background-color: rgba(255,255,255,$opacity);
+    padding: 1ex 1em;
+    overflow: auto;
+    height: 100%;
+}
+
+.trekOptions, .legStat {
+    margin: .5em auto;
+    font-size: .9em;
+    a {
+        white-space: nowrap;
+    }
+}
+
+.legList, .trek {
     width: 95%;
-    margin: 2% auto;
-    padding: 0 1%;
+    margin: 0 auto;
 }
-
-.leg {
-    div {
-        text-align: center;
-        form {
-            text-align: center;
-            select {
-                display: block;
-                margin: 0 auto;
-            }
-            input {
-                margin: 0 auto;
-                width: 90%;
-            }
-        }
-    }
+.leg:nth-child(odd) {
+    background-color: rgba(0,191,255,.75);
 }
-
-.aboutLink {
-    padding:2%;
-
-    & div {
-        margin-bottom:1%;
-    }
+.leg:nth-child(even) {
+    background-color: rgba(0,255,255,.15);
 }
-
-.legOptions {
-    padding: 1%;
-    margin: 2% 1%;
-    border: 1px solid $black;
+.leg:last-child {
+    border-radius: 0 0 5px 5px;
+}
+.leg:first-child {
+    border-radius: 5px 5px 0 0;
+}
+.leg:first-child:last-child {
     border-radius: 5px;
 }
-
-.legOptions div {
-    margin:1% 0;
+.leg, .trek, .teamMember {
+    padding: .2em .5em;
+}
+.github {
+    margin: 1em 0;
 }
 
-
-.odd {
-    background-color: $tabColor;
-    padding:1% 0;
+select:focus {
+    outline: none;
 }
 
-.user-forms {
-    width: 90%;
-    padding: 6%;
-    input {
-        margin: 5% auto;
+.userForm, .searchForm, {
+    width: 75%;
+    margin: 0 auto 2em;
+}
+
+form input, select {
+    margin-bottom: .5em;
+}
+
+label, #mapSearch {
+    display: block;
+}
+
+label, {
+    font-size: .8em;
+}
+
+.userOptions label, form .errMsg {
+    text-align: left;
+}
+
+form button, .float-right, .divider {
+    margin-left: 1vw;
+}
+
+.divider {
+    margin-right: 1vw;
+}
+.divider::after {
+    content: "|";
+}
+
+button {
+    background-color: transparent;
+    box-shadow:  0 0 .2em black;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: .5em;
+}
+
+button:active {
+    box-shadow:  0 0 .4em #000;
+}
+
+.verticalSpace {
+    padding: 1em 0;
+}
+
+input.ng-invalid-required.ng-touched {
+    background-color: #ffdddd;    
+}
+
+.errMsg {
+    color:red;
+    font-size: .9em;
+    font-weight: 500;
+}
+
+/* micro-clearfix */
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+
+/* Media queries */
+
+@media screen and (min-width: 585px) {
+    .interfaceContainer {
+        height: 83vh;
     }
-    button {
-        display: block;
-        margin: 0 auto;
+    .tabList {
+        width: 83vh;
+    }
+}
+
+@media screen and (min-width: 585px) and (max-width: 919px) {
+    .interfaceContainer {
+        max-width: 50%;
+    }
+    .elevation-chart-wrapper {
+        width: 35%;
+    }
+    #mapSearch {
         width: 30%;
+        left: 35%;
     }
 }
 
-input {
-    display: block;
-    margin: 1% 0;
-}
-
-#trekName {
-    width: 100%;
-    text-align: center;
-}
-
-#renameTrekForm {
-    input {
-        width: 40%;
-        margin: 0;
-        position: relative !important;
-        top:0;
-        left:0;
+@media screen and (min-width: 920px) {
+    .interfaceContainer {
+        max-width: 40%;
     }
-}
-
-#trekList {
-    input {
-        margin: 5% auto;
+    .elevation-chart-wrapper {
+        width: 45%;
     }
-    .myTreks {
-        margin-top: 5%;
-        text-align: center;
+    #mapSearch {
+        width: 20%;
+        left: 40%;
     }
-}
-
-#about {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll !important;
-    div.bold {
-        text-align: center;
-    }
-    .teamMember {
-        text-align: center;
-        margin: 2% 0;
-    }
-}
-
-#account {
-    text-align: center;
-    button {
-        margin: 5% 0;
-    }
-    form > button {
-        margin: 5% auto;
-    }
-}
-
-.formSwitch {
-    display: block;
-}
-
-a, .link {
-    text-decoration:underline;
-    color: $black;
-    cursor: pointer;
-}
-
-#save-icon {
-    padding: 0 3px 0 3px;
-    font-size: 1.5em;
-}
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none !important;
 }

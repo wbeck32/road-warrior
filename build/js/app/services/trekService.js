@@ -13,7 +13,6 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
       data: {trekid: trek.id, access_token: window.localStorage.getItem('token')}
     }).success(function(data, status, headers, config){
       console.log('delete: ', status, data);
-      self.allTreks.splice(self.allTreks.indexOf(trek), 1);
     }).error(function(data, status, headers, config){
       console.log('failure');
     });
@@ -63,7 +62,7 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
       var destGoogleLatLng = new google.maps.LatLng(trek.markers[i].k, trek.markers[i].D);
       var dest = markerFactory.create(destGoogleLatLng, legService, true);
       dest.name = trek.markers[i].name;
-      var newLeg = legService.createLeg(currentOrigin, dest, trek.markers[i].travelMode);
+      var newLeg = new legService.Leg(currentOrigin, dest, trek.markers[i].travelMode);
       legs.push(newLeg);
       currentOrigin = dest; 
     }

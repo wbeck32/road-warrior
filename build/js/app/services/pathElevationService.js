@@ -2,7 +2,7 @@
 
 angular.module('roadWarrior').factory('pathElevationService', ['mapFactory', 'elevationProfileFactory', function(mapFactory, elevationProfileFactory){
   
-  var pathElevator = new google.maps.ElevationService();  
+  var pathElevator = new google.maps.ElevationService();
 
   return function(leg, legArray) {
     
