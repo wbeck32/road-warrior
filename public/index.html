@@ -11,7 +11,6 @@
     <meta property="og:image" content="http://treksmith.com/images/treksmith_fb.png">
     <title>Treksmith - Customize and save your treks.</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   </head>
 
   <body>
@@ -29,7 +28,7 @@
       <div id="elevation-chart"></div>  
     </div>
 
-    <div class="interfaceContainer hideInterface" id="interface" data-ng-controller="InterfaceController as Interface" data-ng-cloak>  
+    <div class="interfaceContainer hideInterface" id="interface" data-ng-controller="InterfaceController as Interface">  
       <nav>
         <ul class="tabList">
           <li class="tab" id="accountTab" data-ng-click="Interface.tabSwitcher('account')">
@@ -77,8 +76,8 @@
             <li data-ng-repeat="leg in Trek.legs" class="leg clearfix">
 
               <div class="expandLeg" data-ng-click="leg.toggleDetails()">
-                <a>{{::leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{::leg.dest.index}}{{Trek.markerName(leg.dest)}}</a>
-                <a class="float-right" data-ng-click="Trek.removeLeg(leg)">delete</a>
+                <a title="show details">{{::leg.origin.index}}{{Trek.markerName(leg.origin)}} => {{::leg.dest.index}}{{Trek.markerName(leg.dest)}}</a>
+                <a class="float-right" data-ng-click="Trek.removeLeg(leg)"><img class="icon" title="delete this leg" src="images/closeIcon.svg"></a>
               </div>
 
               <div data-ng-show="leg.showDetails">
@@ -116,11 +115,13 @@
           </div>
           
           <div class="trek" data-ng-repeat="trek in Trek.treks | filter:search">
-            <a data-ng-click="Trek.renderTrek(trek)">{{trek.name}}</a>
-            <a class="link" data-ng-click="Trek.shareTrek(trek)"><i class="ion ion-android-share-alt save-icon float-right"></i></a>
-            <a class="float-right" data-ng-click="Trek.deleteTrek(trek)">delete trek</a>
+            <a data-ng-click="Trek.renderTrek(trek)" title="load this trek">{{trek.name}}</a>
+            <a data-ng-click="Trek.deleteTrek(trek)" class="float-right"><img class="icon" title="delete this trek" src="images/closeIcon.svg"></a>
+            <a data-ng-click="Trek.shareTrek(trek)" class="float-right"><img class="icon" src="images/shareIcon.svg"></a>
           </div>
 
+        </div>
+          
         <div class="panel about" data-ng-switch-when="about">
           <h3>About</h3>
           <p>Treksmith is a project developed by a group of students at <a href="http://www.portlandcodeschool.com/" target="_blank">Portland Code School</a>. Its purpose is to demonstrate what we&#39;ve learned about the MEAN stack, Mongodb, Express, Angular and Node.js. We spent all day every day for three months learning advanced JavaScript and then spent a month building out this project.
@@ -201,7 +202,7 @@
             </form>
 
             <div class="formAddendum">Already have an account?
-            <a data-ng-click="User.changeUserState('loggedOut')">log in</a>
+              <a data-ng-click="User.changeUserState('loggedOut')">log in</a>
             </div>
 
           </div> 
@@ -244,9 +245,8 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
-
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-cookies.min.js"></script>
