@@ -3,7 +3,15 @@
 angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactory', 'elevationService', function($rootScope, mapFactory, elevationService){
   
   var interface = document.getElementById('interface');
-  
+  var map = document.getElementById('map-canvas');
+
+  function getNewCenter(){
+    var totalWidth = parseInt(window.getComputedStyle(map).getPropertyValue('width').slice(0,-2));
+    var interfaceWidth = parseInt(window.getComputedStyle(interface).getPropertyValue('width').slice(0,-2));
+    var newCenterFraction = (interfaceWidth/2) / totalWidth;
+    return newCenterFraction;
+  }
+
   return {
     
     markerIndex : 0,
@@ -49,7 +57,7 @@ angular.module('roadWarrior').factory('markerFactory', ['$rootScope', 'mapFactor
           mapFactory.panTo(latLng);
         } else {
           var span = mapFactory.getBounds().toSpan();
-          mapFactory.panTo({lat: latLng.lat(), lng: latLng.lng() + span.lng()/3});
+          mapFactory.panTo({lat: latLng.lat(), lng: latLng.lng() + span.lng() * getNewCenter() });
         }
       }
       
