@@ -36,7 +36,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.get('/mapsAPICode', function(req, res){
-  var URL = 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places,geometry';
+  var URL = 'https://maps.googleapis.com/maps/api/js?v=3.19&libraries=places,geometry';
 //  if (process.env.NODE_ENV === 'production'){
 //      URL += '&key=' + process.env.GOOGLEAPIKEY;
 //  }
@@ -291,15 +291,13 @@ function jwtAuth (req, res, next){
         next();
       });
     } catch (err) {
-      return next();
+      next();
     }
   } else {
     next();
   }
 
 };
-
-
 
 app.listen(3000);
 
