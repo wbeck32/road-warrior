@@ -29,7 +29,7 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
     leg.polyline.setMap(null);
   }
 
-  this.unRenderAll = function(){
+  this.unRenderAll = function(signout){
     markerFactory.resetIndex();
     if (trekOrigin) {
       trekOrigin.setMap(null);
@@ -40,7 +40,11 @@ angular.module('roadWarrior').service('legService', ['$rootScope', 'mapFactory',
 	leg.dest.setMap(null);
         unRenderLeg(leg);
       });
-      this.legs.splice(0,this.legs.length);
+      if (signout === true) {
+        this.legs.splice(0,this.legs.length);
+      } else {
+        this.legs = [];
+      }
     }
     elevationProfileFactory(this.legs);
   };
