@@ -76,11 +76,15 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
       url:'/api/retrievealltreks/',
       data: {access_token: window.localStorage.getItem('token')}
     }).success(function(data, status, headers, config){
+      if (data !== "Access token expired") {
         data.forEach(function(trek){
           self.renderSavedTrek(trek);
         });
+      } else {
+        window.alert("Access token expired! Please log out and log back in.");
+      }
     }).error(function(data, status, headers, config){
-      console.log('failure');
+      console.log('no response from Treksmith API');
     });
   };
 
