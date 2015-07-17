@@ -26,6 +26,7 @@ angular.module('roadWarrior').controller('InterfaceController', ['$cookies', 'tr
     var sharedTrek = JSON.parse($cookies.sharedTrek);
     trekService.renderSavedTrek(sharedTrek);
     this.tabSwitcher('trekList');
+    delete $cookies.sharedTrek;
   }
 
 }]);

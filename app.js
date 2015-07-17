@@ -47,15 +47,17 @@ app.get('/mapsAPICode', function(req, res){
 });
 
 app.post('/api/saveatrek', [jwtAuth], function(req, res){
-  var trek = req.body.trek;
-  if (req.user && (req.user._id.toString() === trek.userid)) {
+  var id = ObjectId(req.body.trek.id);
+  delete req.body.trek.id;
+
+  if (req.user && (req.user._id.toString() === req.body.trek.userid)) {
     var db = app.get('mongo');
     var treks = db.collection('treks');
-    treks.update({_id: ObjectId(trek.id)}, trek, {upsert: true}, function(err, updateRes){
-      if(updateRes.result.upserted){
-        res.end(updateRes.result.upserted[0]._id.toString());
+    treks.update({_id: id}, req.body.trek, {upsert: true}, function(err, updateRes){
+      if(updateRes.result.upserted){ 
+       res.end(updateRes.result.upserted[0]._id.toString());
       } else {
-        res.end("trek updated");
+        res.end();
       }
     });
   } else {
@@ -82,6 +84,8 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
   var treks = db.collection('treks');
   treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
     if(docs.length === 1) {
+      delete docs[0].userid;
+      delete docs[0]._id;
       res.cookie('sharedTrek', JSON.stringify(docs[0]));
     }
     res.redirect('/');
