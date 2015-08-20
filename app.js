@@ -96,9 +96,9 @@ app.post('/api/retrievealltreks/', [jwtAuth], function(req, res) {
   if (req.user){
   var db = app.get('mongo');
   var treks = db.collection('treks');
-  treks.find({userid: req.user._id.toString()}).toArray(function(err, docs) {
-    res.json(docs);
-  });
+    treks.find({userid: req.user._id.toString()}).toArray(function(err, docs) {
+      res.json(docs);
+    });
 } else res.end("unauthorized");
 });
 
@@ -286,14 +286,15 @@ function jwtAuth (req, res, next){
       var decoded = jwt.decode(token, jwtKey); //check for decoded.email
       if (decoded.exp <= Date.now()){
         res.end('Access token expired', 400);
+      } else {
+        var db = app.get('mongo');
+        var users = db.collection('users');
+        users.find({_id: ObjectId(decoded.iss)}, {password: 0}).toArray(function(err, docs) {
+          req.user = docs[0];
+          req.email = decoded.email;
+          next();
+        });
       }
-      var db = app.get('mongo');
-      var users = db.collection('users');
-      users.find({_id: ObjectId(decoded.iss)}, {password: 0}).toArray(function(err, docs) {
-        req.user = docs[0];
-        req.email = decoded.email;
-        next();
-      });
     } catch (err) {
       next();
     }
