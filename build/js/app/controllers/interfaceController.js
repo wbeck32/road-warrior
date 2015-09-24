@@ -1,6 +1,6 @@
 // this is interfaceController.js
 
-angular.module('roadWarrior').controller('InterfaceController', ['$cookies', 'trekService', function($cookies, trekService){
+angular.module('roadWarrior').controller('InterfaceController', [function(){
   
   this.activePanel = null;
 
@@ -21,12 +21,5 @@ angular.module('roadWarrior').controller('InterfaceController', ['$cookies', 'tr
       document.getElementById(tab + 'Tab').classList.add('activeTab');      
     }
   };
-
-  if ($cookies.sharedTrek && $cookies.sharedTrek !== 'undefined'){
-    var sharedTrek = JSON.parse($cookies.sharedTrek);
-    trekService.renderSavedTrek(sharedTrek);
-    this.tabSwitcher('trekList');
-    delete $cookies.sharedTrek;
-  }
 
 }]);

@@ -1,6 +1,6 @@
 //  this is trekController.js
 
-angular.module('roadWarrior').controller('TrekController', ['trekService', 'legService', 'userService', function(trekService, legService, userService){
+angular.module('roadWarrior').controller('TrekController', ['$cookies','trekService', 'legService', 'userService', function($cookies, trekService, legService, userService){
 
   this.legs = legService.legs;
   this.name = "new trek";
@@ -92,4 +92,12 @@ angular.module('roadWarrior').controller('TrekController', ['trekService', 'legS
     }
   };
 
+  if ($cookies.sharedTrek && $cookies.sharedTrek !== 'undefined'){
+    var sharedTrek = JSON.parse($cookies.sharedTrek);
+    if (sharedTrek.userid !== window.localStorage.getItem('userid')) {
+      trekService.renderSavedTrek(sharedTrek);
+    }
+    delete $cookies.sharedTrek;
+  }
+  
 }]);

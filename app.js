@@ -66,17 +66,19 @@ app.post('/api/saveatrek', [jwtAuth], function(req, res){
 });
 
 app.post('/api/deleteatrek/', [jwtAuth], function(req, res){
-  var db = app.get('mongo');
-  var treks = db.collection('treks');
-  treks.find({_id: ObjectId(req.body.trekid)}).toArray(function(err, docs){
-    if (docs[0].userid === req.user._id.toString()) {
-      treks.remove({_id: ObjectId(req.body.trekid)}, {justOne : true}, function(status) {
-        res.end('deleted');
-      });
-    } else {
-      res.end('unauthorized');
-    }
-  });
+  if (req.body.trekid){
+    var db = app.get('mongo');
+    var treks = db.collection('treks');
+    treks.find({_id: ObjectId(req.body.trekid)}).toArray(function(err, docs){
+      if (docs[0].userid === req.user._id.toString()) {
+        treks.remove({_id: ObjectId(req.body.trekid)}, {justOne : true}, function(status) {
+          res.end('deleted');
+        });
+      } else {
+        res.end('unauthorized');
+      }
+    });
+  }
 });
 
 app.get('/api/retrieveatrek/:trekid', function(req, res) {
@@ -84,7 +86,6 @@ app.get('/api/retrieveatrek/:trekid', function(req, res) {
   var treks = db.collection('treks');
   treks.find({_id: ObjectId(req.params.trekid)}).toArray(function(err, docs) {
     if(docs.length === 1) {
-      delete docs[0].userid;
       delete docs[0]._id;
       res.cookie('sharedTrek', JSON.stringify(docs[0]));
     }

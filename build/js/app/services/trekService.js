@@ -55,11 +55,11 @@ angular.module('roadWarrior').service('trekService', ['$http', 'markerFactory', 
   this.renderSavedTrek = function(trek) {
     markerFactory.resetIndex();
     var legs = [];
-    var origGoogleLatLng = new google.maps.LatLng(trek.markers[0].k, trek.markers[0].D);
+    var origGoogleLatLng = new google.maps.LatLng(trek.markers[0].A, trek.markers[0].F);
     var currentOrigin = markerFactory.create(origGoogleLatLng, legService, true);
     currentOrigin.name = trek.markers[0].name;
     for(var i = 1; i < trek.markers.length; i++) {
-      var destGoogleLatLng = new google.maps.LatLng(trek.markers[i].k, trek.markers[i].D);
+      var destGoogleLatLng = new google.maps.LatLng(trek.markers[i].A, trek.markers[i].F);
       var dest = markerFactory.create(destGoogleLatLng, legService, true);
       dest.name = trek.markers[i].name;
       var newLeg = new legService.Leg(currentOrigin, dest, trek.markers[i].travelMode);

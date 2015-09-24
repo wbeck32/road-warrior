@@ -121,7 +121,7 @@
           <div class="trek" data-ng-repeat="trek in Trek.treks | filter:search">
             <a data-ng-click="Trek.renderTrek(trek)" title="load this trek">{{trek.name}}</a>
             <a data-ng-click="Trek.deleteTrek(trek)" class="float-right"><img class="icon" title="delete this trek" src="images/closeIcon.svg"></a>
-            <a data-ng-click="Trek.shareTrek(trek)" class="float-right"><img class="icon" title="share this trek" src="images/shareIcon.svg"></a>
+            <a class="float-right" href="http://treksmith.com/api/retrieveatrek/{{trek.id}}">share link</a>
           </div>
 
         </div>
