@@ -10,7 +10,6 @@ var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     autoprefixer = require('autoprefixer-core');
 
-
 gulp.task('default', function() {
   gulp.start('start');
 });
@@ -21,8 +20,8 @@ gulp.task('sass', function () {
     .pipe(sass())
     .pipe(postcss([ autoprefixer({ browsers: ['last 2 version'] }) ]))
     .pipe(concat('styles.css'))
-    .pipe(sourcemaps.write())
     .pipe(minifycss())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('public/css'))
     .pipe(livereload());
 });

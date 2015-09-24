@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^0.8.2",
+    "bcrypt": "^0.8.5",
     "body-parser": "^1.12.2",
     "ejs": "^2.3.1",
     "express": "^4.12.2",
+    "gulp-sass": "^2.0.4",
     "jwt-simple": "^0.2.0",
     "moment": "^2.9.0",
     "mongodb": "^2.0.24",

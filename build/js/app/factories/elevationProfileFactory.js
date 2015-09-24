@@ -16,8 +16,8 @@ angular.module('roadWarrior').factory('elevationProfileFactory', ['mapFactory', 
 
   function chartEvent (point) {
     var latLng = JSON.parse(data.getValue(point.row, 2));
-    mapFactory.panTo({lat: latLng.k, lng: latLng.D});
-    marker.setPosition({lat: latLng.k, lng: latLng.D});
+    mapFactory.panTo({lat: latLng.A, lng: latLng.F});
+    marker.setPosition({lat: latLng.A, lng: latLng.F});
     marker.setMap(mapFactory);
   }
 
