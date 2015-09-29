@@ -74,6 +74,7 @@ gulp.task('watch',['buildJs','sass'],function(){
 
 gulp.task('start', ['watch'], function() {
   nodemon({
-    script: 'app.js'
+    script: 'app.js',
+    ignore: ['build/**/*','public/**/*']
   });
 });
